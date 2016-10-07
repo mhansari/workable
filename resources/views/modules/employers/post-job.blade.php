@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        {!! Form::select('DepartmentID', $adtypes, null, ['data-parsley-required-message'=>'Required', 'id'=>'DepartmentID','class'=>'form-control','placeholder'=>'Select Department','required'=>'required']) !!}
+                        {!! Form::select('DepartmentID', $depts, null, ['data-parsley-required-message'=>'Required', 'id'=>'DepartmentID','class'=>'form-control','placeholder'=>'Select Department','required'=>'required']) !!}
                     </div>
                 </div> <a class="glyphicon glyphicon-plus" id="add_de" href="#" data-toggle="modal" data-target="#myModal3"></a>
             </div>
@@ -252,7 +252,7 @@
                         url: "{{route('emp.department_html')}}",
                        async:true, 
                         success: function(data) {
-                            alert(data);
+                            //alert(data);
                              $('#modal-content').html(data);
                             
                         }

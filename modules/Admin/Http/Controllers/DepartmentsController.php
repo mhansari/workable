@@ -42,6 +42,7 @@ class DepartmentsController extends Controller {
 		{
 			//echo $request->input('Department');
 				$departments = new Departments;
+				$departments->employer_id = $request->input('employer_id');
 				$departments->name = $request->input('Department');
 				$departments->country_id = $request->input('CountryID');
 				$departments->state_id = $request->input('StateID');
