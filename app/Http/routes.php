@@ -194,6 +194,7 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('/messages/invalid_activation_code', array('as'=>'emp.invalid_activation_code' ,'uses'=>'\App\Http\Controllers\MessagesController@invalid_activation_code'));
 	Route::get('/employers/home', '\Modules\Employers\Http\Controllers\EmployersController@home');
 	Route::get('/employers/post-job', array('as'=>'emp.post', 'uses'=>'\App\Http\Controllers\JobsController@postJob'));
+	Route::post('/employers/create', array('as'=>'emp.savejob', 'uses'=>'\App\Http\Controllers\JobsController@create'));
 
 	//HTMLS
 	Route::get('/htmls/login_html', array('as'=>'emp.login_html' ,'uses'=>'\App\Http\Controllers\HtmlsController@login_html'));

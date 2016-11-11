@@ -26,7 +26,8 @@
 	       <script type="text/javascript" src="{{ asset('editor/ckeditor/samples/js/sample.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js')}}"></script>
      <script src="{{ asset('js/jquery.maskedinput.min.js')}}"></script>
-
+<link rel="stylesheet" href="{{ URL::asset('css/bootstrap-multiselect.css') }}" type="text/css">
+<script type="text/javascript" src="{{ URL::asset('js/bootstrap-multiselect.js') }} "></script>
           
  
 
