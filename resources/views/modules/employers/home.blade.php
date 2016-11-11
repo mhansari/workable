@@ -1,33 +1,20 @@
-@extends('employers::layouts.master')
+@extends('layouts.app')
+
 @section('content')
-
-<div class="row">
-    <div class="col-md-10 col-center-block">
-
-    	<div class="row">
-    		<div class="col-md-12">
-    			<div class="btn-group">
-                    <button type="button" class="btn btn-default">Jobs</button>
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu">                   
-                        <li><a href="{{route('emp.post')}}">Post a Job</a></li>
-                        <li><a href="#">Posted Jobs</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 list-col ">
+           <div class="panel panel-default">
+                <div class="panel-heading"><h4>Welcome {{ $user->first_name . ' ' . $user->last_name }}!</h4></div>
+                <div class="panel-body ">
+                    
                 </div>
-    		</div>
-    	</div>
-       
-    </div>
-</div>
- <div class="row">
-            <div class="col-md-12">
-                @yield('sub-content')
             </div>
         </div>
+         
+    </div>
+</div>
 
-@stop
+
+
+@endsection

@@ -1,0 +1,15 @@
+{
+    "name": "Seeker",
+    "alias": "seeker",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Seeker\\Providers\\SeekerServiceProvider"
+    ],
+    "aliases":{},
+    "files": [
+        "start.php"
+    ]
+}

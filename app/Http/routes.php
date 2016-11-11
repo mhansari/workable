@@ -1,6 +1,6 @@
 <?php
 DB::enableQueryLog();
-
+ 
 /*
 |--------------------------------------------------------------------------
 | Routes File
@@ -13,13 +13,8 @@ DB::enableQueryLog();
 */
 use Illuminate\Support\Facades\Redirect;
 Route::group(['middleware' => 'web'], function () {
-	Route::get('/', function () {
-    	return view('welcome');
-	});
-	Route::get('/admin/dashboard', function () {
-    	return view("admin::dashboard");
-    	//echo "dashboard";
-	});
+	Route::get('/', '\App\Http\Controllers\HomeController@welcome');
+	Route::get('/jobs/{country}/{id}','\App\Http\Controllers\JobsController@listbycategory');
 	Route::get('/admin', '\Modules\Admin\Http\Controllers\SiteController@index');
 	Route::get('/admin/login', '\Modules\Admin\Http\Controllers\SiteController@login');
 	Route::post('/admin/login','\Modules\Admin\Http\Controllers\SiteController@login');
@@ -80,6 +75,18 @@ Route::group(['middleware' => 'web'], function () {
 	Route::post('/admin/ad-type/edit/{id}','\Modules\Admin\Http\Controllers\AdTypeController@edit');
 	Route::post('/admin/ad-type/update/{id}',array('as'=>'adtype.update','uses'=>'\Modules\Admin\Http\Controllers\AdTypeController@update'));
 	Route::get('/admin/ad-type/delete/{id}','\Modules\Admin\Http\Controllers\AdTypeController@delete');
+
+
+	//Employers Departments
+	Route::get('/employers/departments','\Modules\Employers\Http\Controllers\DepartmentsController@index');
+	Route::get('/employers/departments/all','\Modules\Employers\Http\Controllers\DepartmentsController@allDepartments');
+	Route::get('/employers/departments/create','\Modules\Employers\Http\Controllers\DepartmentsController@create');
+	Route::post('/employers/departments/create',array('as'=>'department.add','uses'=>'\Modules\Employers\Http\Controllers\DepartmentsController@create'));
+	
+	Route::get('/employers/departments/edit/{id}','\Modules\Employers\Http\Controllers\DepartmentsController@edit');
+	Route::post('/employers/departments/edit/{id}','\Modules\Employers\Http\Controllers\DepartmentsController@edit');
+	Route::post('/employers/departments/update/{id}',array('as'=>'departments.update','uses'=>'\Modules\Employers\Http\Controllers\DepartmentsController@update'));
+	Route::get('/employers/departments/delete/{id}','\Modules\Employers\Http\Controllers\DepartmentsController@delete');
 
 
 	//Departments
@@ -186,8 +193,19 @@ Route::group(['middleware' => 'web'], function () {
 
 	//Employers
 	Route::get('/employers', '\Modules\Employers\Http\Controllers\EmployersController@index');
+	Route::get('/employers/update_company', '\Modules\Employers\Http\Controllers\CompanyInfoController@updateCompnay');
+	Route::get('/employers/logo', '\Modules\Employers\Http\Controllers\CompanyInfoController@logo');
+	Route::post('/employers/save', array('as'=>'updatecompany' ,'uses'=>'\Modules\Employers\Http\Controllers\CompanyInfoController@save'));
+	Route::post('/employers/uploadLogo', array('as'=>'upload.logo' ,'uses'=>'\Modules\Employers\Http\Controllers\CompanyInfoController@uploadLogo'));
+
+	Route::get('/employers/cover', '\Modules\Employers\Http\Controllers\CompanyInfoController@cover');
+	Route::post('/employers/uploadCover', array('as'=>'upload.cover' ,'uses'=>'\Modules\Employers\Http\Controllers\CompanyInfoController@uploadCover'));
+
+	Route::get('/employers/success', '\Modules\Employers\Http\Controllers\EmployersController@success');
 	Route::post('/employers/signup', array('as'=>'emp.signup' ,'uses'=>'\Modules\Employers\Http\Controllers\EmployersController@createUser'));
-	Route::post('/employers/login', array('as'=>'emp.login' ,'uses'=>'\Modules\Employers\Http\Controllers\EmployersController@login'));
+	Route::get('/employers/register', array('as'=>'emp.register' ,'uses'=>'\Modules\Employers\Http\Controllers\EmployersController@register'));
+	Route::get('/employers/login', array('as'=>'emp.login' ,'uses'=>'\Modules\Employers\Http\Controllers\EmployersController@login'));
+	Route::post('/employers/dologin', array('as'=>'emp.dologin' ,'uses'=>'\Modules\Employers\Http\Controllers\EmployersController@dologin'));
 	Route::get('/employers/activate/{code}', array('as'=>'emp.activate' ,'uses'=>'\Modules\Employers\Http\Controllers\EmployersController@activate'));
 	Route::get('/messages/already_activated', array('as'=>'emp.already_activated' ,'uses'=>'\App\Http\Controllers\MessagesController@already_activated'));
 	Route::get('/messages/user_activated', array('as'=>'emp.user_activated' ,'uses'=>'\App\Http\Controllers\MessagesController@user_activated'));
@@ -198,6 +216,9 @@ Route::group(['middleware' => 'web'], function () {
 	//HTMLS
 	Route::get('/htmls/login_html', array('as'=>'emp.login_html' ,'uses'=>'\App\Http\Controllers\HtmlsController@login_html'));
 	Route::get('/htmls/signup_html', array('as'=>'emp.signup_html' ,'uses'=>'\App\Http\Controllers\HtmlsController@signup_html'));
+
+		Route::get('/htmls/seeker_login_html', array('as'=>'seeker.login_html' ,'uses'=>'\App\Http\Controllers\HtmlsController@seeker_login_html'));
+	Route::get('/htmls/seeker_signup_html', array('as'=>'seeker.signup_html' ,'uses'=>'\App\Http\Controllers\HtmlsController@seeker_signup_html'));
 	Route::get('/htmls/department_html', array('as'=>'emp.department_html' ,'uses'=>'\App\Http\Controllers\HtmlsController@department_html'));
 });
 

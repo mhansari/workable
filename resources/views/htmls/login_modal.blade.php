@@ -99,6 +99,7 @@ $( document ).ready(function() {
 				        data: {
 					        'email' : $('#email').val(), 
 					        'pwd' : $('#password').val(), 
+                  'ut' : 1,
 					        'remember_me' :$("input[name='remember_me']:checked").val(), 
 					        '_token': $_token
 				        },

@@ -96,7 +96,7 @@
 	        			<div class="col-md-12">
 	        				By clicking on <b>Submit</b> button you are agreeing to the (TOS).
 	        			</div>{!! Form::token() !!}
-
+{{ Form::hidden('ut', 1,array('id'=>'ut')) }}
 	        	</div>
         	{{Form::close()}}
         </div>
@@ -264,7 +264,8 @@ $( document ).ready(function() {
 				        'pwd' : $('#password').val(), 
 				        'question' : $('#QuestionID').val(), 
 				        'answer' : $('#security_answer').val(), 
-				        'newsletter' : $('#newsletter').val(), 
+				        'newsletter' : $('#newsletter').val(),
+				        'ut' : $('#ut').val(),  
 				        '_token': $_token},
 				        success: function(data) {
 				        	if(data.error)

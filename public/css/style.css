@@ -1,0 +1,78 @@
+.panel-height
+{
+    height: 41px;
+}
+
+
+
+.list{
+
+    margin: 0px;
+    border-width: 0px;
+    padding: 5px;
+}
+
+.error-label
+{
+    margin-left:25%;
+}
+.input-width {
+ 
+    width: 35%;
+    
+}
+.result{
+
+    margin: 0px;
+    border-width: 0px;
+    padding: 5px;
+}
+.btn.btn-xs {
+    padding: 3px 12px;
+    font-size: 11px;
+}
+.result-border{
+
+    border-right:1px;
+    border-right-style: solid;
+    border-right-color: #ccc;
+}
+.form-list{
+
+	   /* width: 100%;*/
+    margin: 0px;
+    border-width: 0px;
+}
+
+.list-col
+{
+
+	padding:5px;
+}
+.test{}
+.logo-employers-alignment{
+
+       margin-left: auto;
+    margin-right: auto;
+        align-items: center;
+    display: flex;
+    border-style: solid;
+    width: 152px;
+    height: 152px;
+    text-align: center;
+    border-width: 1px;
+    border-color: #ddd;
+}
+.cover-employers-alignment{
+
+       margin-left: auto;
+    margin-right: auto;
+        align-items: center;
+    display: flex;
+    border-style: solid;
+    width: 350px;
+    height: 81px;
+    text-align: center;
+    border-width: 1px;
+    border-color: #ddd;
+}
