@@ -75,6 +75,7 @@
                         url: "{{route('department.add')}}",
                         data: {
                        'Department': $('#Department').val(),
+                       'employer_id': {{{ Auth::user()->id }}},
                         'CountryID': $('#CountryID').val(),
                         'StateID': $('#StateID').val(),
                         'CityID': $('#CityID').val(),

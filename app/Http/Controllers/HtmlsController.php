@@ -35,6 +35,23 @@ class HtmlsController extends Controller {
 		
 		return view('htmls.signup_modal', compact('countries','states', 'cities','questions'));
 	}
+
+	public function seeker_login_html()
+	{
+
+		return view('htmls.seeker_login_modal');
+	}
+	public function seeker_signup_html()
+	{
+
+		$countries = Countries::all()->lists('Name', 'id');
+		$questions = SecurityQuestion::all()->lists('Name', 'id');
+		$states = array();//States::all()->lists('Name', 'id');
+		$cities = array();//Cities::all()->lists('Name', 'id');
+
+		
+		return view('htmls.seeker_signup_modal', compact('countries','states', 'cities','questions'));
+	}
 	public function department_html()
 	{
 

@@ -19,6 +19,7 @@ use Mail;
 use App;
 use Auth;
 use Hash;
+use App\CompanyInfo;
 class EmployersController extends Controller {
 	
 	public function index()
@@ -34,47 +35,72 @@ class EmployersController extends Controller {
 	}
 	public function home()
 	{
-		//echo "i am home";
-		return view('employers::home');
+		$user = SiteUsers::find(Auth::user()->id);
+		return view('employers::home')->with('user', $user);
+	}
+	public function register()
+	{
+		$countries = Countries::all()->lists('Name', 'id');
+		$questions = SecurityQuestion::all()->lists('Name', 'id');
+		$states = array();//States::all()->lists('Name', 'id');
+		$cities = array();//Cities::all()->lists('Name', 'id');
+
+		return view('employers::register', compact('countries','states', 'cities','questions'))->with('msg','');
+	}
+
+	public function login()
+	{
+		return view('employers::login')->with('msg','');
+	}
+	public function success()
+	{
+		return view('employers::register+success')->with('msg','');
 	}
 	public function createUser(Request $request)
 	{
-			
+		//var_dump($request);
 		$users = SiteUsers::select('id')->where('Email', '=',$request->input('email'))->get();
 
-		if(count($users)>0)
+		if(count($users)>1)
 		{
-			return response()->json(['error' => 'Email address already exists.']);
+			$countries = Countries::all()->lists('Name', 'id');
+			$questions = SecurityQuestion::all()->lists('Name', 'id');
+			$states = array();//States::all()->lists('Name', 'id');
+			$cities = array();//Cities::all()->lists('Name', 'id');
+			Session::set('msg', "Email address already exists.");
+			return Redirect::to('employers/register')->withInput(Input::except('password', 'password_confirm'))->with('msg','Email address already exists.');
 		}
 		else
 		{
 			if($request->input('firstname'))
 			{
-					 $user = new SiteUsers;
-					 $user->first_name = $request->input('firstname');
+					$user = new SiteUsers;
+					$company_info = new CompanyInfo;
+					$user->first_name = $request->input('firstname');
 					$user->last_name = $request->input('lastname');
 					$user->gender = $request->input('gender');
 					$user->dob = date("Y-m-d",strtotime($request->input('dob')));
-					$user->country_id = $request->input('country');
-					$user->state_id = $request->input('state');
-					$user->city_id = $request->input('city');
-					$user->mobile_prefix = $request->input('mobile-prefix');
-					$user->mobile_phone = $request->input('mobile-number');
+					$company_info->country_id = $user->country_id = $request->input('CountryID');
+					$company_info->state_id = $user->state_id = $request->input('StateID');
+					$company_info->city_id = $user->city_id = $request->input('CityID');
+				//	$user->mobile_prefix = $request->input('mobile-prefix');
+					$company_info->mobile = $user->mobile_phone = $request->input('mobile_number');
 					$user->email = $request->input('email');
-					$user->password = Hash::make($request->input('pwd'));
-					$user->question_id = $request->input('question');
-					$user->answer = $request->input('answer');
+					$user->password = Hash::make($request->input('confirm_password'));
+					$user->question_id = $request->input('QuestionID');
+					$user->answer = $request->input('security_answer');
 					$user->newsletter = ($request->input('newsletter')==''?'0':'1');
-					$user->user_type = '1';
+					$user->user_type = $request->input('ut');
 					$code = str_random(10);
 					$user->code = $code;
 					$user->suspended = '0';
-					 $user->active = '0';
+					$user->active = '0';
 					$user->save();
-					$this->activationEmail( $user->FirstName . ' ' . $user->LastName, $user->Email, $code);
-
-
-					return response()->json(['success' => 'Your account has created, Activation link has been emailed on the provided email address.']);
+					$company_info->user_id = $user->id;
+					$company_info->save();
+					//$this->activationEmail( $user->FirstName . ' ' . $user->LastName, $user->Email, $code);
+					Session::set('msg', "Your account has created, Activation link has been emailed on the provided email address.");
+					return Redirect::to('employers/success');
 
 
 			}
@@ -83,35 +109,42 @@ class EmployersController extends Controller {
 		
 	}
 
-	public function login(Request $request)
+	public function dologin(Request $request)
 	{
+		//print_r($request);
 		$data = array(
 					'email' => $request->input('email'), 
-					'password' => $request->input('pwd'),
+					'password' => $request->input('password'),
+					'user_type' => $request->input('ut'),
 					);
-		$r = (Input::has('remember_me')) ? true : false;
+		$r = (Input::has('remember')) ? true : false;
         if (Auth::attempt($data, $r)) {
           	$user = Auth::user();
           	if(!$user->active)
           	{
-          		return response()->json(['error' => 'Your account has not activated yet, please activate your account.']);
+          		Session::set('msg', "Your account has not activated yet, please activate your account.");
+				return Redirect::to('employers/login')->withInput(Input::except('password'));
+          		//return response()->json(['error' => 'Your account has not activated yet, please activate your account.']);
           	}
 
           	if($user->suspended == 1)
           	{
-          		return response()->json(['error' => 'Your account has suspended, contact support for more information']);
+          		Session::set('msg', "Your account has suspended, contact support for more information.");
+				return Redirect::to('employers/login')->withInput(Input::except('password'));
+          		//return response()->json(['error' => 'Your account has suspended, contact support for more information']);
           	}
           	if($user->user_type==1){
-
-          	 return response()->json(['success' => 'employer']);
+          		return Redirect::to('employers/home');
           	}
           	else{
-          		return response()->json(['success' => 'seeker']);
+          		return Redirect::to('employers/seeker');
           	}
         }
         else
         {
-        	return response()->json(['error' => 'Invalid credentials.']);
+        	Session::set('msg', "Invalid credentials.");
+			return Redirect::to('employers/login')->withInput(Input::except('password'));
+        	//return response()->json(['error' => 'Invalid credentials.']);
         }
     
 	

@@ -21,6 +21,13 @@ use App\AfterExpiryActions;
 use Auth; 
 
 use DB;
+use App\Departments;
+use Auth;
+use App\Categories;
+use App\ExperianceLevels;
+use Carbon\Carbon ;
+use App\Config;
+use App\JobCities;
 class JobsController extends Controller
 {
     public function postJob()
@@ -53,7 +60,7 @@ class JobsController extends Controller
 		return view('employers::post-job',compact('adtypes','CareerLevel','experiancelevels','categories','countries','states','cities','shift','afterexpiryActions','depts'));
 	
 	}
-
+$depts = Departments::where('employer_id', Auth::user()->id)->lists('name', 'id');
     public function create(Request $request)
 	{
 	// $countries = Countries::all();
@@ -100,3 +107,14 @@ class JobsController extends Controller
       
 	}
 }//
+
+	public function listbycategory($country,$seo)
+	{
+		$c = Config::all()->keyBy('k');
+		$j = \App\Jobs::with(['adtype','jobtype','cities'])->get();		
+		$cntry = Countries::where('active',1)->where('seo',$country)->first();
+		$el = ExperianceLevels::where('active',1)->orderBy('name')->lists('name','id');
+		$obj2 = Categories::where('active',1)->orderBy('name')->lists('name','id');
+		return view('search', compact('obj2','el'))->with('cntry', $cntry)->with('j',$j)->with('config',$c);
+	}
+}

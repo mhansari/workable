@@ -394,7 +394,7 @@
                         url: "{{route('emp.department_html')}}",
                        async:true, 
                         success: function(data) {
-                            alert(data);
+                            //alert(data);
                              $('#modal-content').html(data);
                             
                         }
