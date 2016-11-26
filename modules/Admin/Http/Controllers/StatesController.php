@@ -21,7 +21,7 @@ class StatesController extends Controller {
 
 	public function getByCountry($cid)
 	{
-			$states = States::select('Name','id')->where('CountryID', '=', $cid)->get();
+			$states = States::select('Name','id')->where('CountryID', '=', $cid)->orderBy('Name','asc')->get();
 			return $states;
 	}
 	public function allStates()

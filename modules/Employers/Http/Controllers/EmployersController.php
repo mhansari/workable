@@ -38,14 +38,19 @@ class EmployersController extends Controller {
 		$user = SiteUsers::find(Auth::user()->id);
 		return view('employers::home')->with('user', $user);
 	}
-	public function register()
+	public function dashboard()
+	{
+		$user = SiteUsers::find(Auth::user()->id);
+		return view('employers::dashboard')->with('user', $user);
+	}
+	public function register($id)
 	{
 		$countries = Countries::all()->lists('Name', 'id');
 		$questions = SecurityQuestion::all()->lists('Name', 'id');
 		$states = array();//States::all()->lists('Name', 'id');
 		$cities = array();//Cities::all()->lists('Name', 'id');
 
-		return view('employers::register', compact('countries','states', 'cities','questions'))->with('msg','');
+		return view('employers::register', compact('countries','states', 'cities','questions'))->with('msg','')->with('ut',$id);
 	}
 
 	public function login()
@@ -68,7 +73,7 @@ class EmployersController extends Controller {
 			$states = array();//States::all()->lists('Name', 'id');
 			$cities = array();//Cities::all()->lists('Name', 'id');
 			Session::set('msg', "Email address already exists.");
-			return Redirect::to('employers/register')->withInput(Input::except('password', 'password_confirm'))->with('msg','Email address already exists.');
+			return Redirect::to('create')->withInput(Input::except('password', 'password_confirm'))->with('msg','Email address already exists.');
 		}
 		else
 		{
@@ -100,7 +105,7 @@ class EmployersController extends Controller {
 					$company_info->save();
 					//$this->activationEmail( $user->FirstName . ' ' . $user->LastName, $user->Email, $code);
 					Session::set('msg', "Your account has created, Activation link has been emailed on the provided email address.");
-					return Redirect::to('employers/success');
+					return Redirect::to('employers/success/' . $request->input('ut'));
 
 
 			}
@@ -115,7 +120,7 @@ class EmployersController extends Controller {
 		$data = array(
 					'email' => $request->input('email'), 
 					'password' => $request->input('password'),
-					'user_type' => $request->input('ut'),
+				//	'user_type' => $request->input('ut'),
 					);
 		$r = (Input::has('remember')) ? true : false;
         if (Auth::attempt($data, $r)) {
@@ -123,27 +128,27 @@ class EmployersController extends Controller {
           	if(!$user->active)
           	{
           		Session::set('msg', "Your account has not activated yet, please activate your account.");
-				return Redirect::to('employers/login')->withInput(Input::except('password'));
+				return Redirect::to('account/login/' . $request->input('ut'))->withInput(Input::except('password'));
           		//return response()->json(['error' => 'Your account has not activated yet, please activate your account.']);
           	}
 
           	if($user->suspended == 1)
           	{
           		Session::set('msg', "Your account has suspended, contact support for more information.");
-				return Redirect::to('employers/login')->withInput(Input::except('password'));
+				return Redirect::to('account/login/' . $request->input('ut'))->withInput(Input::except('password'));
           		//return response()->json(['error' => 'Your account has suspended, contact support for more information']);
           	}
-          	if($user->user_type==1){
-          		return Redirect::to('employers/home');
-          	}
-          	else{
-          		return Redirect::to('employers/seeker');
-          	}
+        //  	if($user->user_type==1){
+          		return Redirect::to('account/home');
+          //	}
+          	//else{
+          		//return Redirect::to('seeker/home');
+          	//}
         }
         else
         {
         	Session::set('msg', "Invalid credentials.");
-			return Redirect::to('employers/login')->withInput(Input::except('password'));
+			return Redirect::to('account/login')->withInput(Input::except('password'));
         	//return response()->json(['error' => 'Invalid credentials.']);
         }
     
@@ -181,6 +186,16 @@ class EmployersController extends Controller {
 		{
 			return Redirect::to('messages/invalid_activation_code');
 		}
+	}
+
+	public function show($id)
+	{
+		$c = App\Config::all()->keyBy('k');
+		$company = CompanyInfo::with(['city','country','categories','inctype','jobs'])->find($id);
+		//$latest = $company->jobs()->orderBy('created_at', 'desc')->get();
+		$latest = App\Jobs::where('user_id',$id)->where('active',1)->orderBy('created_at', 'desc')->limit(30)->get();
+
+		return view('employers::show')->with('company',$company)->with('latest',$latest)->with('config',$c);;
 	}
 	
 }

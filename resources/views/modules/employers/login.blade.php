@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col-md-6 list-col col-md-offset-3">
            <div class="panel panel-default">
-                <div class="panel-heading"><h4>Login - Employer</h4></div>
+                <div class="panel-heading"><h4>Login
+                </h4></div>
                 <div class="panel-body ">
                     @if (Session::has('msg'))
                     <div class="alert alert-danger">
@@ -41,7 +42,6 @@
                         </div>
 
                        {!! Form::token() !!}
-                        {{ Form::hidden('ut', 1,array('id'=>'ut')) }}
                 </div>
                  <div class="col-md-12 col-md-offset-5">
                            <div class="form-group">

@@ -4,10 +4,18 @@ namespace Yajra\Datatables;
 
 use Collective\Html\HtmlServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use League\Fractal\Manager;
+use League\Fractal\Serializer\DataArraySerializer;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Yajra\Datatables\Generators\DataTablesMakeCommand;
 use Yajra\Datatables\Generators\DataTablesScopeCommand;
 
+/**
+ * Class DatatablesServiceProvider.
+ *
+ * @package Yajra\Datatables
+ * @author  Arjay Angeles <aqangeles@gmail.com>
+ */
 class DatatablesServiceProvider extends ServiceProvider
 {
     /**
@@ -34,7 +42,7 @@ class DatatablesServiceProvider extends ServiceProvider
     /**
      * Publish datatables assets.
      */
-    private function publishAssets()
+    protected function publishAssets()
     {
         $this->publishes([
             __DIR__ . '/config/config.php' => config_path('datatables.php'),
@@ -52,7 +60,7 @@ class DatatablesServiceProvider extends ServiceProvider
     /**
      * Register datatables commands.
      */
-    private function registerCommands()
+    protected function registerCommands()
     {
         $this->commands(DataTablesMakeCommand::class);
         $this->commands(DataTablesScopeCommand::class);
@@ -71,8 +79,24 @@ class DatatablesServiceProvider extends ServiceProvider
 
         $this->registerRequiredProviders();
 
-        $this->app->singleton('datatables', function ($app) {
-            return new Datatables($app->make(Request::class));
+        $this->app->singleton('datatables', function () {
+            return new Datatables($this->app->make(Request::class));
+        });
+
+        $this->app->singleton('datatables.fractal', function () {
+            $fractal = new Manager;
+            $config  = $this->app['config'];
+            $request = $this->app['request'];
+
+            $includesKey = $config->get('datatables.fractal.includes', 'include');
+            if ($request->get($includesKey)) {
+                $fractal->parseIncludes($request->get($includesKey));
+            }
+
+            $serializer = $config->get('datatables.fractal.serializer', DataArraySerializer::class);
+            $fractal->setSerializer(new $serializer);
+
+            return $fractal;
         });
 
         $this->registerAliases();
@@ -83,7 +107,7 @@ class DatatablesServiceProvider extends ServiceProvider
      *
      * @return bool
      */
-    private function isLumen()
+    protected function isLumen()
     {
         return str_contains($this->app->version(), 'Lumen');
     }
@@ -91,7 +115,7 @@ class DatatablesServiceProvider extends ServiceProvider
     /**
      * Register 3rd party providers.
      */
-    private function registerRequiredProviders()
+    protected function registerRequiredProviders()
     {
         $this->app->register(HtmlServiceProvider::class);
         $this->app->register(ExcelServiceProvider::class);
@@ -100,11 +124,11 @@ class DatatablesServiceProvider extends ServiceProvider
     /**
      * Create aliases for the dependency.
      */
-    private function registerAliases()
+    protected function registerAliases()
     {
         if (class_exists('Illuminate\Foundation\AliasLoader')) {
             $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-            $loader->alias('Datatables', \Yajra\Datatables\Datatables::class);
+            $loader->alias('Datatables', \Yajra\Datatables\Facades\Datatables::class);
         }
     }
 

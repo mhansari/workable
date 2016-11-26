@@ -2,24 +2,20 @@
 
 namespace Yajra\Datatables\Engines;
 
-/*
- * Laravel Datatables Base Engine
- *
- * @package  Laravel
- * @category Package
- * @author   Arjay Angeles <aqangeles@gmail.com>
- */
-
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
-use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
-use League\Fractal\Serializer\DataArraySerializer;
 use Yajra\Datatables\Contracts\DataTableEngineContract;
 use Yajra\Datatables\Helper;
 use Yajra\Datatables\Processors\DataProcessor;
 
+/**
+ * Class BaseEngine.
+ *
+ * @package Yajra\Datatables\Engines
+ * @author  Arjay Angeles <aqangeles@gmail.com>
+ */
 abstract class BaseEngine implements DataTableEngineContract
 {
     /**
@@ -39,7 +35,7 @@ abstract class BaseEngine implements DataTableEngineContract
     /**
      * Builder object.
      *
-     * @var mixed
+     * @var \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder
      */
     protected $query;
 
@@ -63,12 +59,15 @@ abstract class BaseEngine implements DataTableEngineContract
      * @var array
      */
     protected $columnDef = [
-        'append' => [],
-        'edit'   => [],
-        'excess' => ['rn', 'row_num'],
-        'filter' => [],
-        'order'  => [],
-        'escape' => [],
+        'index'     => false,
+        'append'    => [],
+        'edit'      => [],
+        'excess'    => ['rn', 'row_num'],
+        'filter'    => [],
+        'order'     => [],
+        'escape'    => [],
+        'blacklist' => ['password', 'remember_token'],
+        'whitelist' => '*',
     ];
 
     /**
@@ -105,11 +104,19 @@ abstract class BaseEngine implements DataTableEngineContract
      * @var bool
      */
     protected $autoFilter = true;
+    
+    /**
+     * Select trashed records in count function for models with soft deletes trait.
+     * By default we do not select soft deleted records
+     *
+     * @var bool
+     */
+    protected $withTrashed = false;
 
     /**
      * Callback to override global search.
      *
-     * @var \Closure
+     * @var callable
      */
     protected $filterCallback;
 
@@ -163,16 +170,23 @@ abstract class BaseEngine implements DataTableEngineContract
     /**
      * Fractal serializer class.
      *
-     * @var string
+     * @var string|null
      */
-    protected $serializer;
+    protected $serializer = null;
 
     /**
      * Custom ordering callback.
      *
-     * @var \Closure
+     * @var callable
      */
     protected $orderCallback;
+
+    /**
+     * Skip paginate as needed.
+     *
+     * @var bool
+     */
+    protected $skipPaging = false;
 
     /**
      * Array of data to append on json response.
@@ -189,14 +203,28 @@ abstract class BaseEngine implements DataTableEngineContract
      */
     public function setupKeyword($value)
     {
-        $keyword = '%' . $value . '%';
-        if ($this->isWildcard()) {
-            $keyword = $this->wildcardLikeString($value);
-        }
-        // remove escaping slash added on js script request
-        $keyword = str_replace('\\', '%', $keyword);
+        if ($this->isSmartSearch()) {
+            $keyword = '%' . $value . '%';
+            if ($this->isWildcard()) {
+                $keyword = $this->wildcardLikeString($value);
+            }
+            // remove escaping slash added on js script request
+            $keyword = str_replace('\\', '%', $keyword);
 
-        return $keyword;
+            return $keyword;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Check if DataTables uses smart search.
+     *
+     * @return bool
+     */
+    protected function isSmartSearch()
+    {
+        return Config::get('datatables.search.smart', true);
     }
 
     /**
@@ -219,7 +247,7 @@ abstract class BaseEngine implements DataTableEngineContract
     public function wildcardLikeString($str, $lowercase = true)
     {
         $wild   = '%';
-        $length = strlen($str);
+        $length = Str::length($str);
         if ($length) {
             for ($i = 0; $i < $length; $i++) {
                 $wild .= $str[$i] . '%';
@@ -230,62 +258,6 @@ abstract class BaseEngine implements DataTableEngineContract
         }
 
         return $wild;
-    }
-
-    /**
-     * Setup column name to be use for filtering.
-     *
-     * @param integer $i
-     * @param bool $wantsAlias
-     * @return string
-     */
-    public function setupColumnName($i, $wantsAlias = false)
-    {
-        $column = $this->getColumnName($i);
-        if (Str::contains(Str::upper($column), ' AS ')) {
-            $column = $this->extractColumnName($column, $wantsAlias);
-        }
-
-        return $column;
-    }
-
-    /**
-     * Get column name by order column index.
-     *
-     * @param int $column
-     * @return mixed
-     */
-    protected function getColumnName($column)
-    {
-        $name = $this->request->columnName($column) ?: (isset($this->columns[$column]) ? $this->columns[$column] : $this->columns[0]);
-
-        return in_array($name, $this->extraColumns, true) ? $this->columns[0] : $name;
-    }
-
-    /**
-     * Get column name from string.
-     *
-     * @param string $str
-     * @param bool $wantsAlias
-     * @return string
-     */
-    public function extractColumnName($str, $wantsAlias)
-    {
-        $matches = explode(' as ', Str::lower($str));
-
-        if (! empty($matches)) {
-            if ($wantsAlias) {
-                return array_pop($matches);
-            } else {
-                return array_shift($matches);
-            }
-        } elseif (strpos($str, '.')) {
-            $array = explode('.', $str);
-
-            return array_pop($array);
-        }
-
-        return $str;
     }
 
     /**
@@ -365,7 +337,7 @@ abstract class BaseEngine implements DataTableEngineContract
      * Add column in collection.
      *
      * @param string $name
-     * @param string $content
+     * @param string|callable $content
      * @param bool|int $order
      * @return $this
      */
@@ -379,10 +351,22 @@ abstract class BaseEngine implements DataTableEngineContract
     }
 
     /**
+     * Add DT row index column on response.
+     *
+     * @return $this
+     */
+    public function addIndexColumn()
+    {
+        $this->columnDef['index'] = true;
+
+        return $this;
+    }
+
+    /**
      * Edit column's content.
      *
      * @param string $name
-     * @param string $content
+     * @param string|callable $content
      * @return $this
      */
     public function editColumn($name, $content)
@@ -417,14 +401,28 @@ abstract class BaseEngine implements DataTableEngineContract
 
         return $this;
     }
+    
+    /**
+     * Change withTrashed flag value.
+     *
+     * @param bool $withTrashed
+     * @return $this
+     */
+    public function withTrashed($withTrashed = true)
+    {
+        $this->withTrashed = $withTrashed;
+        
+        return $this;
+    }
 
     /**
      * Allows previous API calls where the methods were snake_case.
      * Will convert a camelCase API call to a snake_case call.
+     * Allow query builder method to be used by the engine.
      *
-     * @param  $name
-     * @param  $arguments
-     * @return $this|mixed
+     * @param  string $name
+     * @param  array $arguments
+     * @return mixed
      */
     public function __call($name, $arguments)
     {
@@ -441,7 +439,7 @@ abstract class BaseEngine implements DataTableEngineContract
     }
 
     /**
-     * Sets DT_RowClass template
+     * Sets DT_RowClass template.
      * result: <tr class="output_from_your_template">.
      *
      * @param string|callable $content
@@ -455,7 +453,7 @@ abstract class BaseEngine implements DataTableEngineContract
     }
 
     /**
-     * Sets DT_RowId template
+     * Sets DT_RowId template.
      * result: <tr id="output_from_your_template">.
      *
      * @param string|callable $content
@@ -496,7 +494,7 @@ abstract class BaseEngine implements DataTableEngineContract
     }
 
     /**
-     * Set DT_RowAttr templates
+     * Set DT_RowAttr templates.
      * result: <tr attr1="attr1" attr2="attr2">.
      *
      * @param array $data
@@ -527,7 +525,7 @@ abstract class BaseEngine implements DataTableEngineContract
      * Override default column filter search.
      *
      * @param string $column
-     * @param string $method
+     * @param string|callable $method
      * @return $this
      * @internal param $mixed ...,... All the individual parameters required for specified $method
      * @internal string $1 Special variable that returns the requested search keyword.
@@ -536,6 +534,23 @@ abstract class BaseEngine implements DataTableEngineContract
     {
         $params                             = func_get_args();
         $this->columnDef['filter'][$column] = ['method' => $method, 'parameters' => array_splice($params, 2)];
+
+        return $this;
+    }
+
+    /**
+     * Order each given columns versus the given custom sql.
+     *
+     * @param array $columns
+     * @param string $sql
+     * @param array $bindings
+     * @return $this
+     */
+    public function orderColumns(array $columns, $sql, $bindings = [])
+    {
+        foreach ($columns as $column) {
+            $this->orderColumn($column, str_replace(':column', $column, $sql), $bindings);
+        }
 
         return $this;
     }
@@ -604,13 +619,6 @@ abstract class BaseEngine implements DataTableEngineContract
     }
 
     /**
-     * Count total items.
-     *
-     * @return integer
-     */
-    abstract public function totalCount();
-
-    /**
      * Sort records.
      *
      * @param  boolean $skip
@@ -624,13 +632,6 @@ abstract class BaseEngine implements DataTableEngineContract
     }
 
     /**
-     * Perform sorting of columns.
-     *
-     * @return void
-     */
-    abstract public function ordering();
-
-    /**
      * Perform necessary filters.
      *
      * @return void
@@ -639,36 +640,15 @@ abstract class BaseEngine implements DataTableEngineContract
     {
         if ($this->autoFilter && $this->request->isSearchable()) {
             $this->filtering();
-        } else {
-            if (is_callable($this->filterCallback)) {
-                call_user_func($this->filterCallback, $this->filterCallbackParameters);
-            }
+        }
+
+        if (is_callable($this->filterCallback)) {
+            call_user_func($this->filterCallback, $this->filterCallbackParameters);
         }
 
         $this->columnSearch();
         $this->filteredRecords = $this->isFilterApplied ? $this->count() : $this->totalRecords;
     }
-
-    /**
-     * Perform global search.
-     *
-     * @return void
-     */
-    abstract public function filtering();
-
-    /**
-     * Perform column search.
-     *
-     * @return void
-     */
-    abstract public function columnSearch();
-
-    /**
-     * Count results.
-     *
-     * @return integer
-     */
-    abstract public function count();
 
     /**
      * Apply pagination.
@@ -677,17 +657,10 @@ abstract class BaseEngine implements DataTableEngineContract
      */
     public function paginate()
     {
-        if ($this->request->isPaginationable()) {
+        if ($this->request->isPaginationable() && ! $this->skipPaging) {
             $this->paging();
         }
     }
-
-    /**
-     * Perform pagination
-     *
-     * @return void
-     */
-    abstract public function paging();
 
     /**
      * Render json response.
@@ -704,13 +677,11 @@ abstract class BaseEngine implements DataTableEngineContract
         ], $this->appends);
 
         if (isset($this->transformer)) {
-            $fractal = new Manager();
-            if ($this->request->get('include')) {
-                $fractal->parseIncludes($this->request->get('include'));
-            }
+            $fractal = app('datatables.fractal');
 
-            $serializer = $this->serializer ?: Config::get('datatables.fractal.serializer', DataArraySerializer::class);
-            $fractal->setSerializer(new $serializer);
+            if ($this->serializer) {
+                $fractal->setSerializer($this->createSerializer());
+            }
 
             //Get transformer reflection
             //Firs method parameter should be data/object to transform
@@ -720,11 +691,11 @@ abstract class BaseEngine implements DataTableEngineContract
             //If parameter is class assuming it requires object
             //Else just pass array by default
             if ($parameter->getClass()) {
-                $resource = new Collection($this->results(), new $this->transformer());
+                $resource = new Collection($this->results(), $this->createTransformer());
             } else {
                 $resource = new Collection(
                     $this->getProcessedData($object),
-                    new $this->transformer()
+                    $this->createTransformer()
                 );
             }
 
@@ -742,11 +713,32 @@ abstract class BaseEngine implements DataTableEngineContract
     }
 
     /**
-     * Get results
+     * Get or create transformer serializer instance.
      *
-     * @return array
+     * @return \League\Fractal\Serializer\SerializerAbstract
      */
-    abstract public function results();
+    protected function createSerializer()
+    {
+        if ($this->serializer instanceof \League\Fractal\Serializer\SerializerAbstract) {
+            return $this->serializer;
+        }
+
+        return new $this->serializer();
+    }
+
+    /**
+     * Get or create transformer instance.
+     *
+     * @return \League\Fractal\TransformerAbstract
+     */
+    protected function createTransformer()
+    {
+        if ($this->transformer instanceof \League\Fractal\TransformerAbstract) {
+            return $this->transformer;
+        }
+
+        return new $this->transformer();
+    }
 
     /**
      * Get processed data
@@ -759,7 +751,8 @@ abstract class BaseEngine implements DataTableEngineContract
         $processor = new DataProcessor(
             $this->results(),
             $this->columnDef,
-            $this->templates
+            $this->templates,
+            $this->request['start']
         );
 
         return $processor->process($object);
@@ -790,24 +783,15 @@ abstract class BaseEngine implements DataTableEngineContract
     }
 
     /**
-     * Set auto filter off and run your own filter.
-     * Overrides global search
-     *
-     * @param \Closure $callback
-     * @return $this
-     */
-    abstract public function filter(\Closure $callback);
-
-    /**
      * Update flags to disable global search
      *
-     * @param  \Closure $callback
+     * @param  callable $callback
      * @param  mixed $parameters
-     * @return void
+     * @param  bool $autoFilter
      */
-    public function overrideGlobalSearch(\Closure $callback, $parameters)
+    public function overrideGlobalSearch(callable $callback, $parameters, $autoFilter = false)
     {
-        $this->autoFilter               = false;
+        $this->autoFilter               = $autoFilter;
         $this->isFilterApplied          = true;
         $this->filterCallback           = $callback;
         $this->filterCallbackParameters = $parameters;
@@ -846,10 +830,10 @@ abstract class BaseEngine implements DataTableEngineContract
     /**
      * Override default ordering method with a closure callback.
      *
-     * @param \Closure $closure
+     * @param callable $closure
      * @return $this
      */
-    public function order(\Closure $closure)
+    public function order(callable $closure)
     {
         $this->orderCallback = $closure;
 
@@ -857,12 +841,179 @@ abstract class BaseEngine implements DataTableEngineContract
     }
 
     /**
+     * Update list of columns that is not allowed for search/sort.
+     *
+     * @param  array $blacklist
+     * @return $this
+     */
+    public function blacklist(array $blacklist)
+    {
+        $this->columnDef['blacklist'] = $blacklist;
+
+        return $this;
+    }
+
+    /**
+     * Update list of columns that is not allowed for search/sort.
+     *
+     * @param  string|array $whitelist
+     * @return $this
+     */
+    public function whitelist($whitelist = '*')
+    {
+        $this->columnDef['whitelist'] = $whitelist;
+
+        return $this;
+    }
+
+    /**
+     * Set smart search config at runtime.
+     *
+     * @param bool $bool
+     * @return $this
+     */
+    public function smart($bool = true)
+    {
+        Config::set('datatables.search.smart', $bool);
+
+        return $this;
+    }
+
+    /**
+     * Set total records manually.
+     *
+     * @param int $total
+     * @return $this
+     */
+    public function setTotalRecords($total)
+    {
+        $this->totalRecords = $total;
+
+        return $this;
+    }
+
+    /**
+     * Skip pagination as needed.
+     */
+    public function skipPaging()
+    {
+        $this->skipPaging = true;
+
+        return $this;
+    }
+
+    /**
+     * Check if column is blacklisted.
+     *
+     * @param string $column
+     * @return bool
+     */
+    protected function isBlacklisted($column)
+    {
+        if (in_array($column, $this->columnDef['blacklist'])) {
+            return true;
+        }
+
+        if ($this->columnDef['whitelist'] === '*' || in_array($column, $this->columnDef['whitelist'])) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get column name to be use for filtering and sorting.
+     *
+     * @param integer $index
+     * @param bool $wantsAlias
+     * @return string
+     */
+    protected function getColumnName($index, $wantsAlias = false)
+    {
+        $column = $this->request->columnName($index);
+
+        // DataTables is using make(false)
+        if (is_numeric($column)) {
+            $column = $this->getColumnNameByIndex($index);
+        }
+
+        if (Str::contains(Str::upper($column), ' AS ')) {
+            $column = $this->extractColumnName($column, $wantsAlias);
+        }
+
+        return $column;
+    }
+
+    /**
+     * Get column name by order column index.
+     *
+     * @param int $index
+     * @return mixed
+     */
+    protected function getColumnNameByIndex($index)
+    {
+        $name = isset($this->columns[$index]) && $this->columns[$index] <> '*' ? $this->columns[$index] : $this->getPrimaryKeyName();
+
+        return in_array($name, $this->extraColumns, true) ? $this->getPrimaryKeyName() : $name;
+    }
+
+    /**
+     * If column name could not be resolved then use primary key.
+     *
+     * @return string
+     */
+    protected function getPrimaryKeyName()
+    {
+        if ($this->isEloquent()) {
+            return $this->query->getModel()->getKeyName();
+        }
+
+        return 'id';
+    }
+
+    /**
+     * Check if the engine used was eloquent.
+     *
+     * @return bool
+     */
+    protected function isEloquent()
+    {
+        return $this->query_type === 'eloquent';
+    }
+
+    /**
+     * Get column name from string.
+     *
+     * @param string $str
+     * @param bool $wantsAlias
+     * @return string
+     */
+    protected function extractColumnName($str, $wantsAlias)
+    {
+        $matches = explode(' as ', Str::lower($str));
+
+        if (! empty($matches)) {
+            if ($wantsAlias) {
+                return array_pop($matches);
+            } else {
+                return array_shift($matches);
+            }
+        } elseif (strpos($str, '.')) {
+            $array = explode('.', $str);
+
+            return array_pop($array);
+        }
+
+        return $str;
+    }
+
+    /**
      * Check if the current sql language is based on oracle syntax.
      *
      * @return bool
      */
-    public function isOracleSql()
+    protected function isOracleSql()
     {
-        return Config::get('datatables.oracle_sql', false);
+        return in_array($this->database, ['oracle', 'oci8']);
     }
 }

@@ -5,9 +5,10 @@ namespace Yajra\Datatables\Transformers;
 use Illuminate\Support\Collection;
 
 /**
- * Class DataTransformer
+ * Class DataTransformer.
  *
  * @package Yajra\Datatables\Transformers
+ * @author  Arjay Angeles <aqangeles@gmail.com>
  */
 class DataTransformer
 {
@@ -63,8 +64,12 @@ class DataTransformer
      */
     protected function decodeContent($data)
     {
-        $decoded = html_entity_decode(strip_tags($data), ENT_QUOTES, 'UTF-8');
+        try {
+            $decoded = html_entity_decode(strip_tags($data), ENT_QUOTES, 'UTF-8');
 
-        return str_replace("\xc2\xa0", ' ', $decoded);
+            return str_replace("\xc2\xa0", ' ', $decoded);
+        } catch (\Exception $e) {
+            return $data;
+        }
     }
 }

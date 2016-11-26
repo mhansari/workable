@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Classes\FormatIdentifier;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 /**
  *
@@ -411,6 +412,17 @@ class LaravelExcelWriter {
      */
     protected function _render()
     {
+        //Fix borders for merged cells
+        foreach($this->getAllSheets() as $sheet){
+
+            foreach($sheet->getMergeCells() as $cells){
+
+                $style = $sheet->getStyle(explode(':', $cells)[0]);
+
+                $sheet->duplicateStyle($style, $cells);
+            }
+        }
+
         // There should be enough sheets to continue rendering
         if ($this->excel->getSheetCount() < 0)
             throw new LaravelExcelException('[ERROR] Aborting spreadsheet render: no sheets were created.');
@@ -511,6 +523,7 @@ class LaravelExcelWriter {
             $this->writer->setDelimiter(Config::get('excel.csv.delimiter', ','));
             $this->writer->setEnclosure(Config::get('excel.csv.enclosure', '"'));
             $this->writer->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
+            $this->writer->setUseBOM(Config::get('excel.csv.use_bom', false));
         }
 
         // Set CSV delimiter
@@ -580,8 +593,13 @@ class LaravelExcelWriter {
         $this->storagePath = rtrim($path, '/');
 
         // Make sure the storage path exists
-        if (!$this->filesystem->isWritable($this->storagePath))
+        if (!$this->filesystem->exists($this->storagePath)) {
             $this->filesystem->makeDirectory($this->storagePath, 0777, true);
+        }
+
+        if (!$this->filesystem->isWritable($this->storagePath)) {
+            throw new LaravelExcelException("Permission denied to the storage path");
+        }
     }
 
     /**

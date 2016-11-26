@@ -27,6 +27,11 @@
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">                               
+                            <label for="about_company" class="col-sm-3 control-label">Abous Company</label>
+                            {{Form::textarea('about_company', $ci[0]->about_company,['data-error'=>'Required','id'=>'about_company', 'placeholder'=>'About Company', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            <div class="help-block with-errors error-label"></div>
+                        </div>
+                        <div class="form-group">                               
                             <label for="designation" class="col-sm-3 control-label">Designation</label>
                             {{Form::input('designation', 'designation', $ci[0]->designation,['data-error'=>'Required','id'=>'designation', 'placeholder'=>'Designation', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
@@ -198,7 +203,19 @@ function loadcities(StateId, CityId)
 selectCity($('#stid').val(),$('#ctid').val());
 });
 
-
+ $(document).ready(function() {
+        jQuery('#about_company').summernote({
+             toolbar: [
+                        // [groupName, [list of button]]
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['font', ['strikethrough', 'superscript', 'subscript']],
+                        ['fontsize', ['fontsize']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                       // ['height', ['height']]
+                      ]
+            
+        });
+    });
 </script>
 
 @endsection

@@ -4,9 +4,14 @@ use Pingpong\Modules\Routing\Controller;
 
 class SeekerController extends Controller {
 	
-	public function index()
+	public function dashboard()
 	{
-		return view('seeker::index');
+		return view('seeker::dashboard');
 	}
+	public function myresumes()
+	{
+		return view('seeker::myresumes');
+	}
+
 	
 }

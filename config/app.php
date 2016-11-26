@@ -159,7 +159,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-
+Unisharp\Ckeditor\ServiceProvider::class,
+Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -212,6 +213,7 @@ return [
         'Input'     => Illuminate\Support\Facades\Input::class,
         
 'Image' => Intervention\Image\Facades\Image::class,
+'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

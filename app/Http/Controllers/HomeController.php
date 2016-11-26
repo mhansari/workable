@@ -29,13 +29,13 @@ class HomeController extends Controller
         return view('home');
     }
 
-     public function welcome()
+     public function welcome($country)
     {
         $c = Config::all()->keyBy('k');
         $obj = Categories::where('active',1)->orderBy('name')->lists('name','seo');
         $obj1 = Categories::where('active',1) ->offset(10)->limit(10)->orderBy('name')->lists('name','id');
         $obj2 = Categories::where('active',1)->orderBy('name')->lists('name','id');
 
-        return view('welcome' , compact('obj','obj1','obj2'))->with('config',$c);
+        return view('welcome' , compact('obj','obj1','obj2'))->with('config',$c)->with('country',$country);
     }
 }

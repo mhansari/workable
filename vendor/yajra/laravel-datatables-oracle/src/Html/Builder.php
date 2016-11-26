@@ -8,12 +8,14 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 /**
- * Class Builder
+ * Class Builder.
  *
  * @package Yajra\Datatables\Html
+ * @author  Arjay Angeles <aqangeles@gmail.com>
  */
 class Builder
 {
@@ -66,6 +68,29 @@ class Builder
      * @var array
      */
     protected $attributes = [];
+
+    /**
+     * Lists of valid DataTables Callbacks.
+     *
+     * @link https://datatables.net/reference/option/.
+     * @var array
+     */
+    protected $validCallbacks = [
+        'createdRow',
+        'drawCallback',
+        'footerCallback',
+        'formatNumber',
+        'headerCallback',
+        'infoCallback',
+        'initComplete',
+        'preDrawCallback',
+        'rowCallback',
+        'stateLoadCallback',
+        'stateLoaded',
+        'stateLoadParams',
+        'stateSaveCallback',
+        'stateSaveParams',
+    ];
 
     /**
      * @param Repository $config
@@ -126,30 +151,143 @@ class Builder
     }
 
     /**
-     * Generate datatable js parameters.
+     * Generate DataTables js parameters.
      *
      * @param  array $attributes
      * @return string
      */
     public function parameterize($attributes = [])
     {
-        $parameters       = (new Parameters($attributes))->toArray();
-        $column_functions = [];
+        $parameters = (new Parameters($attributes))->toArray();
 
+        list($ajaxDataFunction, $parameters) = $this->encodeAjaxDataFunction($parameters);
+        list($columnFunctions, $parameters) = $this->encodeColumnFunctions($parameters);
+        list($callbackFunctions, $parameters) = $this->encodeCallbackFunctions($parameters);
+
+        $json = json_encode($parameters);
+
+        $json = $this->decodeAjaxDataFunction($ajaxDataFunction, $json);
+        $json = $this->decodeColumnFunctions($columnFunctions, $json);
+        $json = $this->decodeCallbackFunctions($callbackFunctions, $json);
+
+        return $json;
+    }
+
+    /**
+     * Encode ajax data function param.
+     *
+     * @param array $parameters
+     * @return mixed
+     */
+    protected function encodeAjaxDataFunction($parameters)
+    {
+        $ajaxData = '';
+        if (isset($parameters['ajax']['data'])) {
+            $ajaxData                   = $parameters['ajax']['data'];
+            $parameters['ajax']['data'] = "#ajax_data#";
+        }
+
+        return [$ajaxData, $parameters];
+    }
+
+    /**
+     * Encode columns render function.
+     *
+     * @param array $parameters
+     * @return array
+     */
+    protected function encodeColumnFunctions(array $parameters)
+    {
+        $columnFunctions = [];
         foreach ($parameters['columns'] as $i => $column) {
             unset($parameters['columns'][$i]['exportable']);
             unset($parameters['columns'][$i]['printable']);
+            unset($parameters['columns'][$i]['footer']);
 
             if (isset($column['render'])) {
-                $column_functions[$i]                = $column['render'];
+                $columnFunctions[$i]                 = $column['render'];
                 $parameters['columns'][$i]['render'] = "#column_function.{$i}#";
             }
         }
 
-        $json = json_encode($parameters);
+        return [$columnFunctions, $parameters];
+    }
 
-        foreach ($column_functions as $i => $function) {
+    /**
+     * Encode DataTables callbacks function.
+     *
+     * @param array $parameters
+     * @return array
+     */
+    protected function encodeCallbackFunctions(array $parameters)
+    {
+        $callbackFunctions = [];
+        foreach ($parameters as $key => $callback) {
+            if (in_array($key, $this->validCallbacks)) {
+                $callbackFunctions[$key] = $this->compileCallback($callback);
+                $parameters[$key]        = "#callback_function.{$key}#";
+            }
+        }
+
+        return [$callbackFunctions, $parameters];
+    }
+
+    /**
+     * Compile DataTable callback value.
+     *
+     * @param mixed $callback
+     * @return mixed|string
+     */
+    private function compileCallback($callback)
+    {
+        if (is_callable($callback)) {
+            return value($callback);
+        } elseif ($this->view->exists($callback)) {
+            return $this->view->make($callback)->render();
+        }
+
+        return $callback;
+    }
+
+    /**
+     * Decode ajax data method.
+     *
+     * @param string $function
+     * @param string $json
+     * @return string
+     */
+    protected function decodeAjaxDataFunction($function, $json)
+    {
+        return str_replace("\"#ajax_data#\"", $function, $json);
+    }
+
+    /**
+     * Decode columns render functions.
+     *
+     * @param array $columnFunctions
+     * @param string $json
+     * @return string
+     */
+    protected function decodeColumnFunctions(array $columnFunctions, $json)
+    {
+        foreach ($columnFunctions as $i => $function) {
             $json = str_replace("\"#column_function.{$i}#\"", $function, $json);
+        }
+
+        return $json;
+    }
+
+    /**
+     * Decode DataTables callbacks function.
+     *
+     * @param array $callbackFunctions
+     * @param string $json
+     * @return string
+     */
+    protected function decodeCallbackFunctions(array $callbackFunctions, $json)
+    {
+        foreach ($callbackFunctions as $i => $function) {
+            $json = str_replace("\"#callback_function.{$i}#\"", $function, $json);
         }
 
         return $json;
@@ -165,6 +303,55 @@ class Builder
         return $this->view->make(
             $this->template ?: $this->config->get('datatables.script_template', 'datatables::script')
         )->render();
+    }
+
+    /**
+     * Sets HTML table attribute(s).
+     *
+     * @param string|array $attribute
+     * @param mixed $value
+     * @return $this
+     */
+    public function setTableAttribute($attribute, $value = null)
+    {
+        if (is_array($attribute)) {
+            $this->setTableAttributes($attribute);
+        } else {
+            $this->tableAttributes[$attribute] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sets multiple HTML table attributes at once.
+     *
+     * @param array $attributes
+     * @return $this
+     */
+    public function setTableAttributes(array $attributes)
+    {
+        foreach ($attributes as $attribute => $value) {
+            $this->setTableAttribute($attribute, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Retrieves HTML table attribute value.
+     *
+     * @param string $attribute
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getTableAttribute($attribute)
+    {
+        if (! array_key_exists($attribute, $this->tableAttributes)) {
+            throw new \Exception("Table attribute '{$attribute}' does not exist.");
+        }
+
+        return $this->tableAttributes[$attribute];
     }
 
     /**
@@ -202,17 +389,21 @@ class Builder
     public function columns(array $columns)
     {
         foreach ($columns as $key => $value) {
-            if (is_array($value)) {
-                $attributes = array_merge(['name' => $key, 'data' => $key], $this->setTitle($key, $value));
-            } else {
-                $attributes = [
-                    'name'  => $value,
-                    'data'  => $value,
-                    'title' => $this->getQualifiedTitle($value),
-                ];
-            }
+            if (! is_a($value, Column::class)) {
+                if (is_array($value)) {
+                    $attributes = array_merge(['name' => $key, 'data' => $key], $this->setTitle($key, $value));
+                } else {
+                    $attributes = [
+                        'name'  => $value,
+                        'data'  => $value,
+                        'title' => $this->getQualifiedTitle($value),
+                    ];
+                }
 
-            $this->collection->push(new Column($attributes));
+                $this->collection->push(new Column($attributes));
+            } else {
+                $this->collection->push($value);
+            }
         }
 
         return $this;
@@ -253,19 +444,17 @@ class Builder
      */
     public function addCheckbox(array $attributes = [])
     {
-        $attributes = array_merge(
-            [
-                'defaultContent' => '<input type="checkbox" ' . $this->html->attributes($attributes) . '/>',
-                'title'          => $this->form->checkbox('', '', false, ['id' => 'dataTablesCheckbox']),
-                'data'           => 'checkbox',
-                'name'           => 'checkbox',
-                'orderable'      => false,
-                'searchable'     => false,
-                'exportable'     => false,
-                'printable'      => true,
-                'width'          => '10px',
-            ], $attributes
-        );
+        $attributes = array_merge([
+            'defaultContent' => '<input type="checkbox" ' . $this->html->attributes($attributes) . '/>',
+            'title'          => $this->form->checkbox('', '', false, ['id' => 'dataTablesCheckbox']),
+            'data'           => 'checkbox',
+            'name'           => 'checkbox',
+            'orderable'      => false,
+            'searchable'     => false,
+            'exportable'     => false,
+            'printable'      => true,
+            'width'          => '10px',
+        ], $attributes);
         $this->collection->push(new Column($attributes));
 
         return $this;
@@ -279,19 +468,44 @@ class Builder
      */
     public function addAction(array $attributes = [])
     {
-        $attributes = array_merge(
-            [
-                'defaultContent' => '',
-                'data'           => 'action',
-                'name'           => 'action',
-                'title'          => 'Action',
-                'render'         => null,
-                'orderable'      => false,
-                'searchable'     => false,
-                'exportable'     => false,
-                'printable'      => true,
-            ], $attributes
-        );
+        $attributes = array_merge([
+            'defaultContent' => '',
+            'data'           => 'action',
+            'name'           => 'action',
+            'title'          => 'Action',
+            'render'         => null,
+            'orderable'      => false,
+            'searchable'     => false,
+            'exportable'     => false,
+            'printable'      => true,
+            'footer'         => '',
+        ], $attributes);
+        $this->collection->push(new Column($attributes));
+
+        return $this;
+    }
+
+    /**
+     * Add a index column.
+     *
+     * @param  array $attributes
+     * @return $this
+     */
+    public function addIndex(array $attributes = [])
+    {
+        $indexColumn = Config::get('datatables.index_column', 'DT_Row_Index');
+        $attributes  = array_merge([
+            'defaultContent' => '',
+            'data'           => $indexColumn,
+            'name'           => $indexColumn,
+            'title'          => '',
+            'render'         => null,
+            'orderable'      => false,
+            'searchable'     => false,
+            'exportable'     => false,
+            'printable'      => true,
+            'footer'         => '',
+        ], $attributes);
         $this->collection->push(new Column($attributes));
 
         return $this;
@@ -313,14 +527,59 @@ class Builder
     /**
      * Generate DataTable's table html.
      *
-     * @param  array $attributes
+     * @param array $attributes
+     * @param bool $drawFooter
      * @return string
      */
-    public function table(array $attributes = [])
+    public function table(array $attributes = [], $drawFooter = false)
     {
         $this->tableAttributes = array_merge($this->tableAttributes, $attributes);
 
-        return '<table ' . $this->html->attributes($this->tableAttributes) . '></table>';
+        $th       = $this->compileTableHeaders();
+        $htmlAttr = $this->html->attributes($this->tableAttributes);
+
+        $tableHtml = '<table ' . $htmlAttr . '>';
+        $tableHtml .= '<thead><tr>' . implode('', $th) . '</tr></thead>';
+        if ($drawFooter) {
+            $tf = $this->compileTableFooter();
+            $tableHtml .= '<tfoot><tr>' . implode('', $tf) . '</tr></tfoot>';
+        }
+        $tableHtml .= '</table>';
+
+        return $tableHtml;
+    }
+
+    /**
+     * Compile table headers and to support responsive extension.
+     *
+     * @return array
+     */
+    private function compileTableHeaders()
+    {
+        $th = [];
+        foreach ($this->collection->toArray() as $row) {
+            $thAttr = $this->html->attributes(
+                array_only($row, ['class', 'id', 'width', 'style', 'data-class', 'data-hide'])
+            );
+            $th[]   = '<th ' . $thAttr . '>' . $row['title'] . '</th>';
+        }
+
+        return $th;
+    }
+
+    /**
+     * Compile table footer contents.
+     *
+     * @return array
+     */
+    private function compileTableFooter()
+    {
+        $footer = [];
+        foreach ($this->collection->toArray() as $row) {
+            $footer[] = '<th>' . $row['footer'] . '</th>';
+        }
+
+        return $footer;
     }
 
     /**

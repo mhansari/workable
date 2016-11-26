@@ -6,7 +6,12 @@
         <div class="col-md-6 list-col col-md-offset-3">
            <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Signup - Employer</h4>
+                    <h4>Signup - 
+                        @if($ut == 1)
+                        Employer
+                    @else
+                        Job Seeker
+                    @endif</h4>
                 </div>
                 <div class="panel-body ">
                     @if (Session::has('msg'))

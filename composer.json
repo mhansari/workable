@@ -14,7 +14,12 @@
         "guzzlehttp/guzzle": "~5.3|~6.0",
         "intervention/image": "^2.3",
         "intervention/imagecache": "^2.3",
-        "kartik-v/bootstrap-fileinput": "dev-master"
+        "kartik-v/bootstrap-fileinput": "dev-master",
+        "ckeditor/ckeditor": "^4.5",
+        "unisharp/laravel-ckeditor": "^4.5",
+		 "barryvdh/laravel-dompdf": "^0.7.0",
+        "dompdf/dompdf": "0.7.0 as 0.6.2",
+        "phenx/php-font-lib": "0.4 as 0.2.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

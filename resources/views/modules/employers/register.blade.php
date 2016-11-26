@@ -5,7 +5,13 @@
     <div class="row">
         <div class="col-md-6 list-col col-md-offset-3">
            <div class="panel panel-default">
-                <div class="panel-heading"><h4>Signup - Employer</h4></div>
+                <div class="panel-heading"><h4>Signup - 
+                    @if($ut == 1)
+                        Employer
+                    @else
+                        Job Seeker
+                    @endif
+                </h4></div>
                 <div class="panel-body ">
                     @if (Session::has('msg'))
                     <div class="alert alert-danger">
@@ -123,7 +129,7 @@
                         <div class="col-md-12">
                             By clicking on <b>Submit</b> button you are agreeing to the (TOS).
                         </div>{!! Form::token() !!}
-                        {{ Form::hidden('ut', 1,array('id'=>'ut')) }}
+                        {{ Form::hidden('ut',  $ut,array('id'=>'ut')) }}
                 </div>
                  <div class="col-md-6 col-md-offset-5">
                            <div class="form-group">

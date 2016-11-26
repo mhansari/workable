@@ -13,7 +13,7 @@
         </div>
         <div class="col-md-9 list-col ">
            <div class="panel panel-default">
-                <div class="panel-heading"><h4>Update cover</h4></div>
+                <div class="panel-heading"><h4>Update Cover Image</h4></div>
                 <div class="panel-body ">
                     @if(Session::has('flash_message'))
                         <div class="alert alert-success">
@@ -23,7 +23,7 @@
 
                     {{ Form::open(array('url'=> route('upload.cover'),'files'=>'true','class'=>'form-horizontal','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
                         <div class="cover-employers-alignment" >
-                          <img class="center-block" src="{{ asset($ci[0]->company_cover) }}" />
+                          <img class="img-responsive" src="{{ asset($ci[0]->company_cover) }}" />
                         </div>
                         <br />
                         <div class="form-group">                               
