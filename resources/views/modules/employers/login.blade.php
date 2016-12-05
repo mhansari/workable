@@ -49,6 +49,7 @@
   </div>
                         </div>
                     {{Form::close()}}
+					<a href="redirect">FB Login</a>
                 </div>
             </div>
         </div>

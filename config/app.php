@@ -126,6 +126,7 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
+		 
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -159,6 +160,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+		Laravel\Socialite\SocialiteServiceProvider::class,
 
     ],
 
@@ -212,6 +214,8 @@ return [
         'Input'     => Illuminate\Support\Facades\Input::class,
         
 'Image' => Intervention\Image\Facades\Image::class,
+'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+
 
     ],
 
