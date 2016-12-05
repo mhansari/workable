@@ -15,10 +15,10 @@
 </nav></div>
                 <div class="panel-body ">
                      <?php if($errors->has()): ?>
-                 <?php foreach($errors->all() as $error): ?>
-                    <div class="alert alert-danger"><?php echo e($error); ?></div>
-                <?php endforeach; ?>
-              <?php endif; ?>
+                         <?php foreach($errors->all() as $error): ?>
+                            <div class="alert alert-danger"><?php echo e($error); ?></div>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
                     <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>

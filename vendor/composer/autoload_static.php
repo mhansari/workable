@@ -11,17 +11,17 @@ class ComposerStaticInit8e7d9bcca861ccd68ec2e170390e2f3c
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
-        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
-        'ddf6456f347b6e74ab304530cd7c1964' => __DIR__ . '/..' . '/pingpong/support/helpers.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
+        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        'ddf6456f347b6e74ab304530cd7c1964' => __DIR__ . '/..' . '/pingpong/support/helpers.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
-        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '752af1c2bdb339e8474c3c31b22b7d54' => __DIR__ . '/..' . '/illuminate/html/helpers.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -90,8 +90,10 @@ class ComposerStaticInit8e7d9bcca861ccd68ec2e170390e2f3c
         ),
         'L' => 
         array (
+            'League\\OAuth1\\' => 14,
             'League\\Fractal\\' => 15,
             'League\\Flysystem\\' => 17,
+            'Laravel\\Socialite\\' => 18,
         ),
         'I' => 
         array (
@@ -268,6 +270,10 @@ class ComposerStaticInit8e7d9bcca861ccd68ec2e170390e2f3c
         array (
             0 => __DIR__ . '/../..' . '/modules',
         ),
+        'League\\OAuth1\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/oauth1-client/src',
+        ),
         'League\\Fractal\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/fractal/src',
@@ -275,6 +281,10 @@ class ComposerStaticInit8e7d9bcca861ccd68ec2e170390e2f3c
         'League\\Flysystem\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem/src',
+        ),
+        'Laravel\\Socialite\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravel/socialite/src',
         ),
         'Intervention\\Image\\' => 
         array (
@@ -438,6 +448,7 @@ class ComposerStaticInit8e7d9bcca861ccd68ec2e170390e2f3c
     public static $classMap = array (
         'App\\AdType' => __DIR__ . '/../..' . '/app/AdType.php',
         'App\\AfterExpiryActions' => __DIR__ . '/../..' . '/app/AfterExpiryActions.php',
+        'App\\ApplicationStatus' => __DIR__ . '/../..' . '/app/ApplciationStatus.php',
         'App\\Applied' => __DIR__ . '/../..' . '/app/Applied.php',
         'App\\Benefits' => __DIR__ . '/../..' . '/app/Benefits.php',
         'App\\CareerLevels' => __DIR__ . '/../..' . '/app/CareerLevels.php',
@@ -461,6 +472,7 @@ class ComposerStaticInit8e7d9bcca861ccd68ec2e170390e2f3c
         'App\\Http\\Controllers\\HtmlsController' => __DIR__ . '/../..' . '/app/Http/Controllers/HtmlsController.php',
         'App\\Http\\Controllers\\JobsController' => __DIR__ . '/../..' . '/app/Http/Controllers/JobsController.php',
         'App\\Http\\Controllers\\MessagesController' => __DIR__ . '/../..' . '/app/Http/Controllers/MessagesController.php',
+        'App\\Http\\Controllers\\SocialAuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/SocialAuthController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
@@ -468,6 +480,7 @@ class ComposerStaticInit8e7d9bcca861ccd68ec2e170390e2f3c
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Http\\Requests\\Request' => __DIR__ . '/../..' . '/app/Http/Requests/Request.php',
         'App\\IncorporationType' => __DIR__ . '/../..' . '/app/IncorporationType.php',
+        'App\\JobBenefits' => __DIR__ . '/../..' . '/app/JobBenefits.php',
         'App\\JobCities' => __DIR__ . '/../..' . '/app/JobCities.php',
         'App\\JobType' => __DIR__ . '/../..' . '/app/JobType.php',
         'App\\Jobs' => __DIR__ . '/../..' . '/app/Jobs.php',
@@ -499,10 +512,13 @@ class ComposerStaticInit8e7d9bcca861ccd68ec2e170390e2f3c
         'App\\ResumeSeekerProfile' => __DIR__ . '/../..' . '/app/ResumeSeekerProfile.php',
         'App\\ResumeSkills' => __DIR__ . '/../..' . '/app/ResumeSkills.php',
         'App\\SalaryCurrency' => __DIR__ . '/../..' . '/app/SalaryCurrency.php',
+        'App\\SavedJobs' => __DIR__ . '/../..' . '/app/SavedJobs.php',
         'App\\SecurityQuestion' => __DIR__ . '/../..' . '/app/SecurityQuestion.php',
         'App\\ShiftTimings' => __DIR__ . '/../..' . '/app/ShiftTimings.php',
         'App\\SiteUsers' => __DIR__ . '/../..' . '/app/SiteUsers.php',
         'App\\SkillLevels' => __DIR__ . '/../..' . '/app/SkillLevels.php',
+        'App\\SocialAccount' => __DIR__ . '/../..' . '/app/SocialAccount.php',
+        'App\\SocialAccountService' => __DIR__ . '/../..' . '/app/SocialAccountService.php',
         'App\\States' => __DIR__ . '/../..' . '/app/States.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'Barryvdh\\DomPDF\\Facade' => __DIR__ . '/..' . '/barryvdh/laravel-dompdf/src/Facade.php',
@@ -2240,6 +2256,25 @@ class ComposerStaticInit8e7d9bcca861ccd68ec2e170390e2f3c
         'JakubOnderka\\PhpConsoleColor\\ConsoleColor' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/ConsoleColor.php',
         'JakubOnderka\\PhpConsoleColor\\InvalidStyleException' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/InvalidStyleException.php',
         'JakubOnderka\\PhpConsoleHighlighter\\Highlighter' => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src/JakubOnderka/PhpConsoleHighlighter/Highlighter.php',
+        'Laravel\\Socialite\\AbstractUser' => __DIR__ . '/..' . '/laravel/socialite/src/AbstractUser.php',
+        'Laravel\\Socialite\\Contracts\\Factory' => __DIR__ . '/..' . '/laravel/socialite/src/Contracts/Factory.php',
+        'Laravel\\Socialite\\Contracts\\Provider' => __DIR__ . '/..' . '/laravel/socialite/src/Contracts/Provider.php',
+        'Laravel\\Socialite\\Contracts\\User' => __DIR__ . '/..' . '/laravel/socialite/src/Contracts/User.php',
+        'Laravel\\Socialite\\Facades\\Socialite' => __DIR__ . '/..' . '/laravel/socialite/src/Facades/Socialite.php',
+        'Laravel\\Socialite\\One\\AbstractProvider' => __DIR__ . '/..' . '/laravel/socialite/src/One/AbstractProvider.php',
+        'Laravel\\Socialite\\One\\BitbucketProvider' => __DIR__ . '/..' . '/laravel/socialite/src/One/BitbucketProvider.php',
+        'Laravel\\Socialite\\One\\TwitterProvider' => __DIR__ . '/..' . '/laravel/socialite/src/One/TwitterProvider.php',
+        'Laravel\\Socialite\\One\\User' => __DIR__ . '/..' . '/laravel/socialite/src/One/User.php',
+        'Laravel\\Socialite\\SocialiteManager' => __DIR__ . '/..' . '/laravel/socialite/src/SocialiteManager.php',
+        'Laravel\\Socialite\\SocialiteServiceProvider' => __DIR__ . '/..' . '/laravel/socialite/src/SocialiteServiceProvider.php',
+        'Laravel\\Socialite\\Two\\AbstractProvider' => __DIR__ . '/..' . '/laravel/socialite/src/Two/AbstractProvider.php',
+        'Laravel\\Socialite\\Two\\FacebookProvider' => __DIR__ . '/..' . '/laravel/socialite/src/Two/FacebookProvider.php',
+        'Laravel\\Socialite\\Two\\GithubProvider' => __DIR__ . '/..' . '/laravel/socialite/src/Two/GithubProvider.php',
+        'Laravel\\Socialite\\Two\\GoogleProvider' => __DIR__ . '/..' . '/laravel/socialite/src/Two/GoogleProvider.php',
+        'Laravel\\Socialite\\Two\\InvalidStateException' => __DIR__ . '/..' . '/laravel/socialite/src/Two/InvalidStateException.php',
+        'Laravel\\Socialite\\Two\\LinkedInProvider' => __DIR__ . '/..' . '/laravel/socialite/src/Two/LinkedInProvider.php',
+        'Laravel\\Socialite\\Two\\ProviderInterface' => __DIR__ . '/..' . '/laravel/socialite/src/Two/ProviderInterface.php',
+        'Laravel\\Socialite\\Two\\User' => __DIR__ . '/..' . '/laravel/socialite/src/Two/User.php',
         'League\\Flysystem\\AdapterInterface' => __DIR__ . '/..' . '/league/flysystem/src/AdapterInterface.php',
         'League\\Flysystem\\Adapter\\AbstractAdapter' => __DIR__ . '/..' . '/league/flysystem/src/Adapter/AbstractAdapter.php',
         'League\\Flysystem\\Adapter\\AbstractFtpAdapter' => __DIR__ . '/..' . '/league/flysystem/src/Adapter/AbstractFtpAdapter.php',
@@ -2303,6 +2338,26 @@ class ComposerStaticInit8e7d9bcca861ccd68ec2e170390e2f3c
         'League\\Fractal\\Serializer\\JsonApiSerializer' => __DIR__ . '/..' . '/league/fractal/src/Serializer/JsonApiSerializer.php',
         'League\\Fractal\\Serializer\\SerializerAbstract' => __DIR__ . '/..' . '/league/fractal/src/Serializer/SerializerAbstract.php',
         'League\\Fractal\\TransformerAbstract' => __DIR__ . '/..' . '/league/fractal/src/TransformerAbstract.php',
+        'League\\OAuth1\\Client\\Credentials\\ClientCredentials' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Credentials/ClientCredentials.php',
+        'League\\OAuth1\\Client\\Credentials\\ClientCredentialsInterface' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Credentials/ClientCredentialsInterface.php',
+        'League\\OAuth1\\Client\\Credentials\\Credentials' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Credentials/Credentials.php',
+        'League\\OAuth1\\Client\\Credentials\\CredentialsException' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Credentials/CredentialsException.php',
+        'League\\OAuth1\\Client\\Credentials\\CredentialsInterface' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Credentials/CredentialsInterface.php',
+        'League\\OAuth1\\Client\\Credentials\\TemporaryCredentials' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Credentials/TemporaryCredentials.php',
+        'League\\OAuth1\\Client\\Credentials\\TokenCredentials' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Credentials/TokenCredentials.php',
+        'League\\OAuth1\\Client\\Server\\Bitbucket' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Server/Bitbucket.php',
+        'League\\OAuth1\\Client\\Server\\Magento' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Server/Magento.php',
+        'League\\OAuth1\\Client\\Server\\Server' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Server/Server.php',
+        'League\\OAuth1\\Client\\Server\\Trello' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Server/Trello.php',
+        'League\\OAuth1\\Client\\Server\\Tumblr' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Server/Tumblr.php',
+        'League\\OAuth1\\Client\\Server\\Twitter' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Server/Twitter.php',
+        'League\\OAuth1\\Client\\Server\\User' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Server/User.php',
+        'League\\OAuth1\\Client\\Server\\Uservoice' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Server/Uservoice.php',
+        'League\\OAuth1\\Client\\Server\\Xing' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Server/Xing.php',
+        'League\\OAuth1\\Client\\Signature\\HmacSha1Signature' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Signature/HmacSha1Signature.php',
+        'League\\OAuth1\\Client\\Signature\\PlainTextSignature' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Signature/PlainTextSignature.php',
+        'League\\OAuth1\\Client\\Signature\\Signature' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Signature/Signature.php',
+        'League\\OAuth1\\Client\\Signature\\SignatureInterface' => __DIR__ . '/..' . '/league/oauth1-client/src/Client/Signature/SignatureInterface.php',
         'Maatwebsite\\Excel\\Classes\\Cache' => __DIR__ . '/..' . '/maatwebsite/excel/src/Maatwebsite/Excel/Classes/Cache.php',
         'Maatwebsite\\Excel\\Classes\\FormatIdentifier' => __DIR__ . '/..' . '/maatwebsite/excel/src/Maatwebsite/Excel/Classes/FormatIdentifier.php',
         'Maatwebsite\\Excel\\Classes\\LaravelExcelWorksheet' => __DIR__ . '/..' . '/maatwebsite/excel/src/Maatwebsite/Excel/Classes/LaravelExcelWorksheet.php',
@@ -2423,6 +2478,7 @@ class ComposerStaticInit8e7d9bcca861ccd68ec2e170390e2f3c
         'Modules\\Employers\\Providers\\EmployersServiceProvider' => __DIR__ . '/../..' . '/modules/Employers/Providers/EmployersServiceProvider.php',
         'Modules\\Seeker\\Database\\Seeders\\SeekerDatabaseSeeder' => __DIR__ . '/../..' . '/modules/Seeker/Database/Seeders/SeekerDatabaseSeeder.php',
         'Modules\\Seeker\\Http\\Controllers\\ResumeController' => __DIR__ . '/../..' . '/modules/Seeker/Http/Controllers/ResumeController.php',
+        'Modules\\Seeker\\Http\\Controllers\\SavedJobsController' => __DIR__ . '/../..' . '/modules/Seeker/Http/Controllers/SavedJobsController.php',
         'Modules\\Seeker\\Http\\Controllers\\SeekerController' => __DIR__ . '/../..' . '/modules/Seeker/Http/Controllers/SeekerController.php',
         'Modules\\Seeker\\Providers\\SeekerServiceProvider' => __DIR__ . '/../..' . '/modules/Seeker/Providers/SeekerServiceProvider.php',
         'Monolog\\ErrorHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/ErrorHandler.php',

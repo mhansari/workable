@@ -161,6 +161,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
 Unisharp\Ckeditor\ServiceProvider::class,
 Barryvdh\DomPDF\ServiceProvider::class,
+Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
     /*
@@ -200,8 +201,8 @@ Barryvdh\DomPDF\ServiceProvider::class,
         'Request'   => Illuminate\Support\Facades\Request::class,
         'Response'  => Illuminate\Support\Facades\Response::class,
         'Form' => 'Collective\Html\FormFacade',
-      'Html' => 'Collective\Html\HtmlFacade',
-'Datatables' => Yajra\Datatables\Datatables::class,
+        'Html' => 'Collective\Html\HtmlFacade',
+        'Datatables' => Yajra\Datatables\Datatables::class,
         'Route'     => Illuminate\Support\Facades\Route::class,
         'Schema'    => Illuminate\Support\Facades\Schema::class,
         'Session'   => Illuminate\Support\Facades\Session::class,
@@ -211,9 +212,9 @@ Barryvdh\DomPDF\ServiceProvider::class,
         'View'      => Illuminate\Support\Facades\View::class,
         'Module' => 'Pingpong\Modules\Facades\Module',
         'Input'     => Illuminate\Support\Facades\Input::class,
-        
-'Image' => Intervention\Image\Facades\Image::class,
-'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Image' => Intervention\Image\Facades\Image::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 

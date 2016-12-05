@@ -43,11 +43,19 @@
 
                        {!! Form::token() !!}
                 </div>
-                 <div class="col-md-12 col-md-offset-5">
-                           <div class="form-group">
-    <button type="submit" class="btn btn-primary">Login</button>
-  </div>
-                        </div>
+                <div class="col-md-12 col-md-offset-5">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div style="text-align: -webkit-center; padding:5px">
+                        <a href="redirect/facebook"><img style="    padding: 2px;" class="img-responsive" src="{{asset('/images/fb-login.png')}}" alt="Connect with Facebook" /></a>
+                        <a href="redirect/google"><img style="    padding: 2px;" class="img-responsive" src="{{asset('/images/google-login.png')}}" alt="Connect with Google" /></a>
+                        <a href="redirect/linkedIn"><img style="    padding: 2px;" class="img-responsive" src="{{asset('/images/linkedin-login.png')}}" alt="Connect with LinkedIn" /></a>
+                        <a href="redirect/twitter"><img style="    padding: 2px;" class="img-responsive" src="{{asset('/images/twitter-login.png')}}" alt="Connect with Twitter" /></a>
+                    </div>
+                </div>
                     {{Form::close()}}
                 </div>
             </div>
