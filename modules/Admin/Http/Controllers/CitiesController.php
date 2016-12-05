@@ -63,7 +63,8 @@ $states = States::all()->lists('Name', 'id');
 	}
 public function getByState($sid)
     {
-            $cities = Cities::select('Name','id')->where('StateID', '=', $sid)->orderBy('Name','asc')->get();
+            $id = explode(",",$sid);            
+            $cities = Cities::select('Name','id')->whereIn('StateID', $id)->orderBy('Name','asc')->get();
             return $cities;
     }
 	public function edit($id)

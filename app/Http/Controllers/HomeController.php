@@ -29,6 +29,13 @@ class HomeController extends Controller
         return view('home');
     }
 
+    public function select()
+    {
+    
+        return view('index');
+    }
+
+
      public function welcome($country)
     {
         $c = Config::all()->keyBy('k');

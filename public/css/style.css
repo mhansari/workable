@@ -15,6 +15,28 @@
 {
     font-size: 12px;
 }
+.table-top-padding
+{
+    margin-top: 6px;
+}
+.btn-toolbar-margin
+{
+    margin-right: 2px;
+}
+.btn-toolbar-color
+{
+    background-color: #e7e7e7;
+
+}
+.table-color
+{
+    background-color: #fff;
+
+}
+.btn-toolbar-padding
+{
+    padding: 5px;
+}
 .print-bottom-border
 {
     border-bottom-style: solid;
@@ -243,4 +265,20 @@ dl, ol, ul {
     border-style: solid;
     border-width: 1px;
     border-color: #ccc;
+}
+.benefits-font{
+    font-size: 12px;
+}
+.benefits-checkbox-margin{
+    margin-left: -34px;
+}
+.input-width-salary-min
+{
+    width:17%;
+        margin-right: 10px;
+}
+.input-width-salary-max
+{
+    width:17%;
+    margin-left:10px;
 }

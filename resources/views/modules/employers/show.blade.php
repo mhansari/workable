@@ -82,7 +82,7 @@
                             </li>
                             <li class="col-md-3 list-group-item result text-left "><span class="glyphicon glyphicon-time"></span> {{ \Carbon\Carbon::createFromTimeStamp(strtotime($job->created_at))->diffForHumans() }}</li>
 
-                            <li class="col-md-4 list-group-item result text-right"><button type="button" class="btn btn-primary btn-empty btn-xs">Apply</button> <button type="button" class="btn btn-primary btn-empty btn-xs">Save</button></li>
+                            <li class="col-md-4 list-group-item result text-right"><a href="{{url('seekers/apply/' . $job->id )}}" class="btn btn-primary btn-empty btn-xs">Apply</a> <button type="button" class="btn btn-primary btn-empty btn-xs save" value="{{$job->id}}">Save</button></li>
                             
                         </ul>
                     </div></div>
@@ -162,4 +162,54 @@ init_map();
       google.maps.event.addDomListener(window, 'load', init_map);
       
     </script>
+    <script>
+$('.save').click(function() {
+    $.ajax({
+        url: "{{url('seekers/save-job')}}",
+            data: {
+                "job_id" :$(this).val(),
+                "_token": "{{ csrf_token() }}",
+            },
+            error: function(xhr, status, error) {
+                if(xhr.status == 401)
+                {
+                    window.location="{{ url('account/login') }}";
+                }
+                else
+                {
+                    notify('danger','Error while saving Job, try again !!!');
+                }
+            },
+            success: function(data) {
+                notify('success','Job Saved Successfully');
+            },
+
+        type: 'POST'
+    });
+
+});
+
+function notify(t,m){
+    $.notify({
+            // options
+            message: m 
+        },{
+            // settings
+            type: t,
+            offset: 250,
+            allow_dismiss:false,
+            animate: {
+                enter: 'animated fadeInDown',
+                exit: 'animated fadeOutUp'
+            },
+
+            placement: {
+                from: "top",
+                align: "center"
+            },
+        });
+}
+</script>
+
+<script src="{{asset('js/bootstrap-notify.min.js')}}"></script>
 @endsection

@@ -66,7 +66,7 @@
                         <div class="col-md-12 ">
                             <div class="hor mbc"></div>
                             <h4>Job Description</h4>
-                            {{$j->description}}
+                            {!! $j->description !!}
                         </div>
                     </div>  <br/>
                     <div class="row ">
@@ -122,7 +122,7 @@
                     <div class="row">
                         <div class="col-md-2 col-sm-5 col-xs-5 cell active">Location(s)</div>
                         <div class="col-md-10 col-sm-7 col-xs-7 cell">
-                             {{--*/ $sep = '' /*--}}
+                             {{--*/ $sep = '' /*--}} 
                                 @foreach($j->cities as $c)
                                 
                                     @if($sep != '')
@@ -184,7 +184,14 @@ $('.save').click(function() {
                 "_token": "{{ csrf_token() }}",
             },
             error: function(xhr, status, error) {
-                notify('danger','Error while saving Job, try again !!!');
+                if(xhr.status == 401)
+                {
+                    window.location="{{ url('account/login') }}";
+                }
+                else
+                {
+                    notify('danger','Error while saving Job, try again !!!');
+                }
             },
             success: function(data) {
                 notify('success','Job Saved Successfully');

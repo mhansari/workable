@@ -100,7 +100,14 @@ $('.save').click(function() {
                 "_token": "{{ csrf_token() }}",
             },
             error: function(xhr, status, error) {
-                notify('danger','Error while saving Job, try again !!!');
+                if(xhr.status == 401)
+                {
+                    window.location="{{ url('account/login') }}";
+                }
+                else
+                {
+                    notify('danger','Error while saving Job, try again !!!');
+                }
             },
             success: function(data) {
                 notify('success','Job Saved Successfully');

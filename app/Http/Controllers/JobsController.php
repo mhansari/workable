@@ -22,16 +22,102 @@ use Yajra\Datatables\Datatables;
 use Session;
 class JobsController extends Controller
 {
-    public function postJob()
+
+	public function applications($country, $id)
 	{
-		$adtypes = AdType::select(
-        DB::raw("CONCAT(name, ' - PKR-' ,price, ' for ', duration_unit, ' day(s)') AS name, id")
-    )->lists('name', 'id');
-$depts = Departments::where('employer_id', Auth::user()->id)->lists('name', 'id');
+		$obj = \App\Applied::with(['personal_info','education','experiance'])->where('job_id', '=',$id)->get();
+
+		return view('employers::applications')->with('obj',$obj);
+	}
+	public function savejob(Request $request,$id=0)
+	{
+		DB::beginTransaction();
+		try{
+
+			$job = Jobs::find($id);
+
+			if($job==null)
+				$job = new Jobs();
+			
+			$job->ad_type_id = 4;
+			$job->after_expiry_actions_id= $request->get('after_expiry_actions');
+			$job->career_level_id= $request->get('CareerLevelID');
+			$job->category_id= $request->get('CategoryID');
+			$job->city_ids= implode(",",$request->get('CityID'));
+			$job->country_id= $request->get('CountryID');
+			$job->currency_min= $request->get('salary_min');
+			$job->department_id= $request->get('DepartmentID');
+			$job->description= $request->get('details');
+			$job->email_resume= $request->get('email_resume');
+			$job->experiance_level_id= $request->get('ExperianceLevelID');
+			$job->job_expiry= $request->get('last_date');
+			$job->job_title= $request->get('title');
+			$job->job_type_id= $request->get('type');
+			$job->number_of_positions= $request->get('NoVac');
+			$job->qualifications= $request->get('Qualification');
+			$job->required_skills= $request->get('skills');
+			$job->required_travelling= ($request->get('traveling')==1?1:0);
+			$job->salary_currency_id= $request->get('salary_currency');
+			$job->salary_max= $request->get('salary_max');
+			$job->shift_timings_id= $request->get('shift');
+			$job->job_expiry = date("Y-m-d",strtotime($request->input('last_date')));
+			$job->state_ids= implode(",",$request->get('StateID'));
+			$job->user_id=  Auth::user()->id;
+			$job->active = 1;
+			$job->save();
+			$job_id = $job->id;
+			$cities = $request->get('CityID');
+			$benefits = $request->get('benefits');
+			\App\JobCities::where('job_id', $id)->delete();
+			\App\JobBenefits::where('job_id', $id)->delete();
+			for($i = 0; $i< count($cities); $i++)
+			{
+				$jc = new JobCities();
+				$jc->job_id = $job_id;
+				$jc->city_id = $cities[$i];
+				$jc->save();
+			}
+			for($i = 0; $i< count($benefits); $i++)
+			{
+				$b = new \App\JobBenefits();
+				$b->job_id = $job_id;
+				$b->benefit_id = $benefits[$i];
+				$b->save();
+			}
+			DB::commit();
+			return Redirect::to('employers/my-jobs');
+		}
+		catch(\Exception $e)
+		{
+			DB::rollback();
+			return Redirect::to('employers/post-job')
+        ->withErrors( $e->getMessage() )
+        ->withInput();
+		}
+	}
+	
+    public function postJob(Request $request,$id=0)
+	{
+
+		$job = \App\Jobs::find($id);
+		
+		
+		if($job==null)
+			$job = new Jobs();
+		$depts = Departments::where('employer_id', Auth::user()->id)->lists('name', 'id');
 		$countries = Countries::all()->lists('Name', 'id');
 		$states = array();//States::all()->lists('Name', 'id');
 		$cities = array();//Cities::all()->lists('Name', 'id');
-		return view('employers::post-job',compact('depts','adtypes','countries','states', 'cities'));
+		$user = \App\SiteUsers::find(Auth::user()->id);
+		$categories = \App\Categories::where('active',1)->lists('name','id');
+		$career_level = \App\CareerLevels::where('active',1)->lists('name','id');
+		$experiance_level = \App\ExperianceLevels::where('active',1)->lists('name','id');
+		$type = \App\JobType::where('active',1)->lists('name','id');
+		$shift = \App\ShiftTimings::where('active',1)->lists('name','id');
+		$currency = \App\Currencies::where('active',1)->lists('name','id');
+		$benefits = \App\Benefits::where('active',1)->get();
+		$after_expiry_actions = \App\AfterExpiryActions::where('active',1)->lists('name','id');
+		return view('employers::post-job',compact('after_expiry_actions','benefits','currency','type','shift','career_level','experiance_level','categories','depts','adtypes','countries','states', 'cities'))->with('user',$user)->with('job',$job);
 	}
 
 
@@ -39,7 +125,6 @@ $depts = Departments::where('employer_id', Auth::user()->id)->lists('name', 'id'
 	{
 		$c = Config::all()->keyBy('k');
 		$j = \App\Jobs::select('jobs.*')->with(['categories','adtype','jobtype','cities','companies'])->join('categories', 'categories.id', '=', 'category_id')->where('categories.seo',$seo)->get();		
-
 		$cntry = Countries::where('active',1)->where('seo',$country)->first();
 		$el = ExperianceLevels::where('active',1)->orderBy('name')->lists('name','id');
 		$obj2 = Categories::where('active',1)->orderBy('name')->lists('name','id');
@@ -66,21 +151,22 @@ $depts = Departments::where('employer_id', Auth::user()->id)->lists('name', 'id'
 
 	public function myjobs()
 	{
-		$id=0;
-		$c = Config::all()->keyBy('k');
-		$j = \App\Jobs::with(['benefits','experiance','adtype','jobtype','cities','countries','companies'])->where('id', '=',$id)->first();		
-		return view('employers::myjobs')->with('j',$j)->with('config',$c);
+//		$id=0;
+//		$c = Config::all()->keyBy('k');
+//		$j = \App\Jobs::with(['benefits','experiance','adtype','jobtype','cities','countries','companies'])->where('id', '=',$id)->first();		
+		return view('employers::myjobs');//->with('j',$j)->with('config',$c);
 	}
 	public function myjobsajax()
 	{
+		//echo "hi";
 		//DB::statement(DB::raw('set @rownum=0'));
       //  $adtypes = \App\JobType::select(DB::raw('@rownum := 0 r'))
         //->select(DB::raw('@rownum := @rownum + 1 AS sno'),'job_type.*');
-$j = \App\Jobs::with(['applications','users','benefits','experiance','adtype','jobtype','cities','countries','companies'])->where('user_id', '=',26)->get();		
-    
+$j = \App\Jobs::with(['applications','users','benefits','experiance','adtype','jobtype','cities','countries','companies'])->where('user_id', '=',Auth::user()->id)->orderBy('created_at','asc')->get();		
+    //var_dump($j);
         return Datatables::of($j)->addColumn('Actions',function($model){
         	//print_r($model);
-        return '<a class="fa fa-edit" href="job-type/edit/' . $model->id . '"></a> | <a onclick="return confirm(\'Are you sure you want to delete ' . $model->Name . '\')" class="fa fa-remove" href="job-type/delete/' . $model->id . '"></a> ';
+        return '<a class="fa fa-edit" href="jobs/post-job/' . $model->id . '"></a> | <a onclick="return confirm(\'Are you sure you want to delete ' . $model->Name . '\')" class="fa fa-remove" href="jobs/delete/' . $model->id . '"></a> ';
     })->editColumn('active', '
                   @if($active)
                         Yes
@@ -93,15 +179,32 @@ $j = \App\Jobs::with(['applications','users','benefits','experiance','adtype','j
 	public function apply($jobid)
 	{
 		$obj = \App\Jobs::with(['shift_timings','cities','countries','careerlevel','experiancelevel'])->find($jobid)->first();
-		var_dump($obj->cities);
 		$resumes = \App\Resume::where('user_id', '=',Auth::user()->id)->where('active', '=',1)->lists('title','id');
-		return view('seeker::apply',compact('resumes'))->with('obj',$obj);
+		return view('seeker::apply',compact('resumes'))->with('obj',$obj)->with('jobid',$jobid);
+	}
+
+	public function deleteJob($id)
+	{
+		DB::beginTransaction();
+		try{
+			\App\Jobs::where('id',$id)->delete();
+		
+			DB::commit();
+			return Redirect::to('employers/my-jobs');
+		}
+		catch(\Exception $e)
+		{
+			var_dump($e);
+			DB::rollback();
+			//return Redirect::to('employers/my-jobs');
+		}
+		
 	}
 
 	public function doApply(Request $request)
 	{
+		
 		$obj = \App\Applied::where('user_id','=',Auth::user()->id)->where('job_id','=',$request->get('job_id'))->get();
-		var_dump($obj);
 		if(count($obj)<1)
 		{
 			$obj = new \App\Applied;	
@@ -139,5 +242,41 @@ $j = \App\Jobs::with(['applications','users','benefits','experiance','adtype','j
 		$obj2 = Categories::where('active',1)->orderBy('name')->lists('name','id');
 
 		return view('search', compact('obj2','el'))->with('cntry', $cntry)->with('j',$j)->with('config',$c);
+	}
+
+	public function mySavedJobs()
+	{
+		return view('seeker::mysavedjobs');
+	}
+
+	public function myApplications()
+	{
+		return view('seeker::myapplications');
+	}
+	public function myApplicationsAjax()
+	{
+		$j = \App\Applied::with(['jobs','status'])->where('user_id', '=',Auth::user()->id)->get();		
+	        return Datatables::of($j)->addColumn('Actions',function($model){
+	        return '<a onclick="return confirm(\'Are you sure you want to withdraw application for ' . $model->jobs->job_title . '\')" href="'. asset("delete/" . $model->job_id).'">Withdraw</a> ';
+   		 })->addColumn('Seen',function($model){
+
+
+
+	        return '<span'. ($model->seen ? ' class="fa fa-check"' : "") . '> </span>';
+   		 })->make(true);
+	}
+
+	public function mysavedjobsajax()
+	{
+		//$j = \App\SavedJobs::with(['jobs','companies'])->where('user_id', '=',Auth::user()->id)->get();		
+	    $j = \App\SavedJobs::join('jobs','jobs.id','=', 'saved_jobs.job_id')
+	    					->join('company_info','company_info.user_id','=', 'jobs.user_id')
+	    					->select('jobs.job_title','jobs.id as job_id','company_info.company_name','jobs.created_at')
+	    					->get();
+
+	   // var_dump($j);
+	        return Datatables::of($j)->addColumn('Actions',function($model){
+	        return '<a onclick="return confirm(\'Are you sure you want to delete ' . $model->jobs->job_title . '\')" href="'. asset("delete/" . $model->job_id).'">Delete</a> ';
+   		 })->make(true);
 	}
 }

@@ -8,5 +8,8 @@ use App\Cities;
 class SavedJobs extends Model
 {
 	protected $table = "saved_jobs";
-	
+	public function jobs()
+    {
+        return $this->belongsTo('App\Jobs','job_id');
+    }
 }

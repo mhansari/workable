@@ -13,6 +13,8 @@ DB::enableQueryLog();
 */
 use Illuminate\Support\Facades\Redirect;
 Route::group(['middleware' => 'web'], function () {
+	Route::get('/{country}/account/logout', '\Modules\Employers\Http\Controllers\EmployersController@logout');
+	Route::get('/company/{id}', '\Modules\Employers\Http\Controllers\EmployersController@show');
 	Route::post('/{country}/jobs/search', array('as'=>'search','uses'=>'\App\Http\Controllers\JobsController@search'));
 	Route::get('/', '\App\Http\Controllers\HomeController@select');
 	Route::get('/{country}', '\App\Http\Controllers\HomeController@welcome');
@@ -193,7 +195,7 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('/messages/user_activated', array('as'=>'emp.user_activated' ,'uses'=>'\App\Http\Controllers\MessagesController@user_activated'));
 	Route::get('/messages/invalid_activation_code', array('as'=>'emp.invalid_activation_code' ,'uses'=>'\App\Http\Controllers\MessagesController@invalid_activation_code'));
 	Route::get('/account/home', '\Modules\Employers\Http\Controllers\EmployersController@home');
-	Route::get('/employers/post-job', array('as'=>'emp.post', 'uses'=>'\App\Http\Controllers\JobsController@postJob'));
+	
 
 	//HTMLS
 	Route::get('/htmls/login_html', array('as'=>'emp.login_html' ,'uses'=>'\App\Http\Controllers\HtmlsController@login_html'));
@@ -204,7 +206,15 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('/htmls/department_html', array('as'=>'emp.department_html' ,'uses'=>'\App\Http\Controllers\HtmlsController@department_html'));
 });
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['web','auth']], function () {
+Route::get('/{country}/jobs/applications/{id}', array('as'=>'emp.applications', 'uses'=>'\App\Http\Controllers\JobsController@applications'));	
+Route::get('/employers/jobs/post-job', array('as'=>'emp.post', 'uses'=>'\App\Http\Controllers\JobsController@postJob'));
+Route::get('/employers/jobs/post-job/{id}', array('as'=>'emp.post', 'uses'=>'\App\Http\Controllers\JobsController@postJob'));
+Route::get('/employers/jobs/delete/{id}', array('as'=>'emp.delete', 'uses'=>'\App\Http\Controllers\JobsController@deleteJob'));
+Route::post('/employers/savejob', array('as'=>'emp.savejob', 'uses'=>'\App\Http\Controllers\JobsController@savejob'));
+Route::post('/employers/savejob/{id}', array('as'=>'emp.savejob', 'uses'=>'\App\Http\Controllers\JobsController@savejob'));
+	Route::get('/seekers/my-saved-jobs', array('as'=>'savedjobs','uses'=>'\App\Http\Controllers\JobsController@mySavedJobs'));
+	Route::get('/seekers/my-applications', array('as'=>'applications','uses'=>'\App\Http\Controllers\JobsController@myApplications'));
 	Route::post('/seekers/apply', array('as'=>'apply','uses'=>'\App\Http\Controllers\JobsController@doApply'));
 	Route::get('/seekers/apply/{jobid}','\App\Http\Controllers\JobsController@apply');
 	Route::post('/seekers/save-job', array('as'=>'job.save','uses'=>'\Modules\Seeker\Http\Controllers\SavedJobsController@save'));
@@ -309,7 +319,7 @@ Route::get('/employers/my-jobs','\App\Http\Controllers\JobsController@myjobs');
 
 	//Employers
 	Route::get('/employers', '\Modules\Employers\Http\Controllers\EmployersController@index');
-	Route::get('/company/{id}', '\Modules\Employers\Http\Controllers\EmployersController@show');
+	
 	Route::get('/employers/update_company', '\Modules\Employers\Http\Controllers\CompanyInfoController@updateCompnay');
 	Route::get('/employers/logo', '\Modules\Employers\Http\Controllers\CompanyInfoController@logo');
 	Route::post('/employers/save', array('as'=>'updatecompany' ,'uses'=>'\Modules\Employers\Http\Controllers\CompanyInfoController@save'));
@@ -317,8 +327,9 @@ Route::get('/employers/my-jobs','\App\Http\Controllers\JobsController@myjobs');
 
 	Route::get('/employers/cover', '\Modules\Employers\Http\Controllers\CompanyInfoController@cover');
 	Route::post('/employers/uploadCover', array('as'=>'upload.cover' ,'uses'=>'\Modules\Employers\Http\Controllers\CompanyInfoController@uploadCover'));
-
-
+Route::get('delete/{id}','\Modules\Seeker\Http\Controllers\SavedJobsController@delete');
+//Route::get('/jobs/myjobsajax',array('as'=>'savedajax','uses'=>'\App\Http\Controllers\JobsController@mysavedjobsajax'));
+Route::get('/seekers/myapplicationsajax',array('as'=>'applicationsajax','uses'=>'\App\Http\Controllers\JobsController@myApplicationsAjax'));
 });
 
 

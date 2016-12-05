@@ -16,6 +16,11 @@
   </div>
 </nav></div>
                 <div class="panel-body ">
+                     @if($errors->has())
+                         @foreach ($errors->all() as $error)
+                            <div class="alert alert-danger">{{ $error }}</div>
+                        @endforeach
+                      @endif
                     <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -44,14 +49,14 @@ $(document).ready(function() {
     
   var t =   $('#example').DataTable({
         processing: true,
-        serverSide: true,
+        serverSide: false,
         ajax: '{{ asset("jobs/myjobsajax") }}',
         columns: [
             { data: null, name: 'sno', 'orderable': true, 'searchable': false },
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
                
-                return '<a href="#">'+data.job_title  +'</a>';
+                return '<a href="{{ asset("jobs/") }}/' + data.id + '">'+data.job_title  +'</a>';
             } },
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
@@ -64,7 +69,7 @@ $(document).ready(function() {
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
                
-                return '<a href="#">('+data.applications.length  +')</a>';
+                return '<a href="{{ asset("jobs/applications/") }}/' + data.id + '">('+data.applications.length  +')</a>';
             } },
             { data: 'Actions', name: 'Actions', 'orderable': false, 'searchable': false }
         ]
@@ -75,7 +80,7 @@ t.on( 'order.dt search.dt', function () {
              
             cell.innerHTML = i+1;
         } );
-    } ).fnDraw();
+    } ).draw();
 });
 } );
 </script>

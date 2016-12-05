@@ -55,7 +55,14 @@ class EmployersController extends Controller {
 
 	public function login()
 	{
+	//	echo Auth::check();
 		return view('employers::login')->with('msg','');
+	}
+	public function logout($country)
+	{
+		Auth::logout();
+		Session::flush();
+		return Redirect::to('/'.$country);
 	}
 	public function success()
 	{

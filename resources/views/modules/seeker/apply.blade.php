@@ -230,7 +230,7 @@
                         </div>
                        
                     </div>
-                    <input type="hidden" name="job_id" id="job_id" value="{{$obj->id}}"/>
+                    <input type="hidden" name="job_id" id="job_id" value="{{$jobid}}"/>
                     {!! Form::token() !!}
                     {{Form::close()}}
                 </div>
