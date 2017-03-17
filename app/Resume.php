@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Resume extends Model
 {
-  //  protected $table = "resume";
+  public function applications()
+    {
+    	return $this->hasMany('App\Applied','resume_id','id');
+       // return $this->belongsTo('App\Applied','resume_id');
+    }
 }

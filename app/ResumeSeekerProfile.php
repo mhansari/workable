@@ -12,7 +12,10 @@ class ResumeSeekerProfile extends Model
     {
         return $this->belongsTo('App\MaritalStatus','marital_status_id');
     }
-
+public function getFullNameAttribute()
+{
+    return $this->first_name . " " . $this->last_name;
+}
     public function country()
     {
         return $this->belongsTo('App\Countries','country_id');
@@ -87,5 +90,8 @@ class ResumeSeekerProfile extends Model
     {
         return $this->hasMany('App\ResumeAwards','resume_id','resume_id');
     }
-    
+    public function resume()
+    {
+        return $this->hasMany('App\Resume','id','resume_id');
+    }
 }

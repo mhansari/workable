@@ -9,32 +9,44 @@ use Session;
 use App\Resume;
 use Auth;
 use PDF;
+use Image;
 class ResumeController extends Controller {
 	
-	public function dashboard()
+
+
+	public function viewresume($country,$id)
 	{
-		return view('seeker::dashboard');
+
+		 $resume_id = $id;
+		$sections = \App\ResumeSections::where('active', 1)->get();
+		$profile = \App\ResumeSeekerProfile::with(['awards'=>function($query){$query->orderBy('award_date');},'affilitions','publications','references','education','experiance','projects','languages','skills'])->where('resume_id', $resume_id)->first();
+		return view('view-resume')->with('resume_id',$resume_id)->with('country',$country)->with('sections',$sections)->with('profile',$profile);
 	}
-	public function myresumes()
+
+	public function dashboard($country)
+	{
+		return view('seeker::dashboard')->with('country',$country);
+	}
+	public function myresumes($country)
 	{
 		
-		return view('seeker::myresumes');
+		return view('seeker::myresumes')->with('country',$country);
 	}
-	public function create()
+	public function create($country)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		$sections = \App\ResumeSections::where('active', 1)->get();
-		return view('seeker::create_resume')->with('obj',$obj)->with('sections', $sections);
+		return view('seeker::create_resume')->with('country',$country)->with('obj',$obj)->with('sections', $sections);
 	}
 
-	public function uploadresume()
+	public function uploadresume($country)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		$sections = \App\ResumeSections::where('active', 1)->get();
-		return view('seeker::upload_resume')->with('obj',$obj)->with('sections', $sections);
+		return view('seeker::upload_resume')->with('obj',$obj)->with('sections', $sections)->with('country',$country);
 	}
 
-	public function saveresume(Request $request)
+	public function saveresume(Request $request,$country)
 	{
 
 		if(Input::file())
@@ -50,12 +62,12 @@ class ResumeController extends Controller {
 			$resume->active = true;
 			$resume->save();
 			Session::flash('success', 'Upload successfully'); 
-			return Redirect::to('/seekers/manage/upload-resume');
+			return Redirect::to($country .'/seekers/manage/upload-resume');
            
 		}
 	}
 
-	public function deleteAcademics(Request $request,$resumeid,$id)
+	public function deleteAcademics(Request $request,$country,$resumeid,$id)
 	{
 		$academic = \App\ResumeAcademics::where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->where('id', $id);
 		$res = $academic->delete();
@@ -63,9 +75,9 @@ class ResumeController extends Controller {
 			Session::flash('flash_message', 'Something goes wrong, try again!');
 		else
 			Session::flash('flash_message', 'Successfully Deleted!');
-           	return Redirect::to('seekers/manage/resume-academics/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-academics/'.$resumeid);
 	}
-	public function updateAcademics(Request $request,$resumeid,$id)
+	public function updateAcademics(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -78,19 +90,20 @@ class ResumeController extends Controller {
 		if($academic ==null)
 		{
 			$academic = new \App\ResumeAcademics;
+			$academic->completion_date = date("Y-m-d");
 		}
 
-		return view('seeker::update-academics', compact('countries','states', 'cities','degrees'))->with('obj',$obj)->with('sections', $sections)->with('academic', $academic)->with('id',$id)->with('resumeid',$resumeid);
+		return view('seeker::update-academics', compact('countries','states', 'cities','degrees'))->with('obj',$obj)->with('sections', $sections)->with('country',$country)->with('academic', $academic)->with('id',$id)->with('resumeid',$resumeid);
 	}
-public function resumeAcademics(Request $request,$resumeid)
+public function resumeAcademics(Request $request,$country,$resumeid)
 {
 	$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 	
 	$sections = \App\ResumeSections::where('active', 1)->get();
 	$academic = \App\ResumeAcademics::with(['degreelevel','country','city'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->get();
-	return view('seeker::resume-academics')->with('sections', $sections)->with('academic', $academic)->with('obj',$obj)->with('resumeid',$resumeid);
+	return view('seeker::resume-academics')->with('country',$country)->with('sections', $sections)->with('academic', $academic)->with('obj',$obj)->with('resumeid',$resumeid);
 }
-	public function saveAcademics(Request $request,$resumeid,$id)
+	public function saveAcademics(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -119,11 +132,11 @@ public function resumeAcademics(Request $request,$resumeid)
 		$academic->save();
 
 		Session::flash('flash_message', 'Successfully updated!');
-           	return Redirect::to('seekers/manage/resume-academics/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-academics/'.$resumeid);
 		//return view('seeker::resume-academics', compact('countries','states', 'cities','degrees'))->with('obj',$obj)->with('sections', $sections)->with('academic', $academic)->with('id',$id)->with('resumeid',$resumeid);
 	}
 
-	public function updatePersonalInfo(Request $request,$id)
+	public function updatePersonalInfo(Request $request,$country,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -150,10 +163,10 @@ public function resumeAcademics(Request $request,$resumeid)
 			$profile->gender = $user->gender;
 		}
 
-		return view('seeker::update-personal', compact('experiance','currencies','industries','maritalstatus','countries','states', 'cities'))->with('obj',$obj)->with('sections', $sections)->with('profile', $profile)->with('id',$id);
+		return view('seeker::update-personal', compact('experiance','currencies','industries','maritalstatus','countries','states', 'cities'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('profile', $profile)->with('resumeid',$id);
 	}
 
-	public function savePersonalInfo(Request $request,$id)
+	public function savePersonalInfo(Request $request,$country,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -203,9 +216,22 @@ public function resumeAcademics(Request $request,$resumeid)
 		$profile->blog = $request->input('blog');
 		$profile->website = $request->input('website');
 		$profile->active = 1;
-
+		if(Input::file())
+        {
+            $image = Input::file('logo');
+            $filename  = time() . '.' . $image->getClientOriginalExtension();
+            $path = public_path('pp/' . $filename);
+ 			@unlink(public_path( $profile->pp ));
+        
+                Image::make($image->getRealPath())->resize(150, 150,function($constraint){
+                	$constraint->aspectRatio();
+                	//$constraint->upsize();
+                })->save($path);
+                
+                $profile->pp = 'pp/' . $filename;
+           }
 		$profile->save();
-		return view('seeker::update-personal', compact('experiance','currencies','industries','maritalstatus','countries','states', 'cities'))->with('obj',$obj)->with('sections', $sections)->with('profile', $profile)->with('id',$id);
+		return view('seeker::update-personal', compact('experiance','currencies','industries','maritalstatus','countries','states', 'cities'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('profile', $profile)->with('resumeid',$id);
 		
 	//	var_dump(array_keys($request->all()));
 	}
@@ -213,7 +239,7 @@ public function resumeAcademics(Request $request,$resumeid)
 
 	//Experiance
 
-	public function deleteExperiance(Request $request,$resumeid,$id)
+	public function deleteExperiance(Request $request,$country,$resumeid,$id)
 	{
 		$experiance = \App\ResumeExperiances::where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->where('id', $id);
 		$res = $experiance->delete();
@@ -221,9 +247,9 @@ public function resumeAcademics(Request $request,$resumeid)
 			Session::flash('flash_message', 'Something goes wrong, try again!');
 		else
 			Session::flash('flash_message', 'Successfully Deleted!');
-           	return Redirect::to('seekers/manage/resume-experiances/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-experiances/'.$resumeid);
 	}
-	public function updateExperiance(Request $request,$resumeid,$id)
+	public function updateExperiance(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -235,19 +261,21 @@ public function resumeAcademics(Request $request,$resumeid)
 		if($experiance ==null)
 		{
 			$experiance = new \App\ResumeExperiances;
+			$experiance->start_date = date("Y-m-d");
+			$experiance->end_date = date("Y-m-d");
 		}
 
-		return view('seeker::update-experiance', compact('countries','states', 'cities'))->with('obj',$obj)->with('sections', $sections)->with('experiance', $experiance)->with('id',$id)->with('resumeid',$resumeid);
+		return view('seeker::update-experiance', compact('countries','states', 'cities'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('experiance', $experiance)->with('id',$id)->with('resumeid',$resumeid);
 	}
-	public function resumeExperiances(Request $request,$resumeid)
+	public function resumeExperiances(Request $request,$country,$resumeid)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		
 		$sections = \App\ResumeSections::where('active', 1)->get();
 		$experiance = \App\ResumeExperiances::with(['country','city'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->get();
-		return view('seeker::resume-experiances')->with('sections', $sections)->with('experiance', $experiance)->with('obj',$obj)->with('resumeid',$resumeid);
+		return view('seeker::resume-experiances')->with('country',$country)->with('sections', $sections)->with('experiance', $experiance)->with('obj',$obj)->with('resumeid',$resumeid);
 	}
-	public function saveExperiance(Request $request,$resumeid,$id)
+	public function saveExperiance(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -276,7 +304,7 @@ public function resumeAcademics(Request $request,$resumeid)
 		$experiance->save();
 
 		Session::flash('flash_message', 'Successfully updated!');
-           	return Redirect::to('seekers/manage/resume-experiances/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-experiances/'.$resumeid);
 		//return view('seeker::resume-academics', compact('countries','states', 'cities','degrees'))->with('obj',$obj)->with('sections', $sections)->with('academic', $academic)->with('id',$id)->with('resumeid',$resumeid);
 	}
 
@@ -284,7 +312,7 @@ public function resumeAcademics(Request $request,$resumeid)
 
 	//Projects
 
-		public function deleteProject(Request $request,$resumeid,$id)
+		public function deleteProject(Request $request,$country,$resumeid,$id)
 	{
 		$project = \App\ResumeProjects::where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->where('id', $id);
 		$res = $project->delete();
@@ -292,11 +320,13 @@ public function resumeAcademics(Request $request,$resumeid)
 			Session::flash('flash_message', 'Something goes wrong, try again!');
 		else
 			Session::flash('flash_message', 'Successfully Deleted!');
-           	return Redirect::to('seekers/manage/resume-projects/'.$resumeid);
+           	return Redirect::to($country .'/seekers/manage/resume-projects/'.$resumeid);
 	}
-	public function updateProject(Request $request,$resumeid,$id)
+	public function updateProject(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
+		$exp = \App\ResumeExperiances::where('user_id', Auth::user()->id)->lists('organization', 'id');
+
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		$sections = \App\ResumeSections::where('active', 1)->get();
 		$projecttype = \App\ProjectType::all()->lists('name', 'id');
@@ -305,18 +335,18 @@ public function resumeAcademics(Request $request,$resumeid)
 		{
 			$project = new \App\ResumeProjects;
 		}
-
-		return view('seeker::update-project', compact('projecttype'))->with('obj',$obj)->with('sections', $sections)->with('project', $project)->with('id',$id)->with('resumeid',$resumeid);
+		//$project->current_working=0;;
+		return view('seeker::update-project', compact('projecttype','exp'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('project', $project)->with('id',$id)->with('resumeid',$resumeid);
 	}
-	public function resumeProjects(Request $request,$resumeid)
+	public function resumeProjects(Request $request,$country,$resumeid)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		
 		$sections = \App\ResumeSections::where('active', 1)->get();
 		$project = \App\ResumeProjects::with(['projecttype'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->get();
-		return view('seeker::resume-projects')->with('sections', $sections)->with('project', $project)->with('obj',$obj)->with('resumeid',$resumeid);
+		return view('seeker::resume-projects')->with('country',$country)->with('sections', $sections)->with('project', $project)->with('obj',$obj)->with('resumeid',$resumeid);
 	}
-	public function saveProject(Request $request,$resumeid,$id)
+	public function saveProject(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -333,18 +363,19 @@ public function resumeAcademics(Request $request,$resumeid)
 		$project->position =$request->input('position');
 		$project->title =$request->input('title');
 		$project->project_type_id =$request->input('project_type_id');
+		$project->company_id =$request->input('CompanyId');
 		$project->details = $request->input('details');
 		$project->active = 1;
 		$project->current_working = $request->input('current_work');
 		$project->save();
 
 		Session::flash('flash_message', 'Successfully updated!');
-           	return Redirect::to('seekers/manage/resume-projects/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-projects/'.$resumeid);
 		//return view('seeker::resume-academics', compact('countries','states', 'cities','degrees'))->with('obj',$obj)->with('sections', $sections)->with('academic', $academic)->with('id',$id)->with('resumeid',$resumeid);
 	}
 //Certificates
 
-		public function deleteCertification(Request $request,$resumeid,$id)
+		public function deleteCertification(Request $request,$country,$resumeid,$id)
 	{
 		$certificate = \App\ResumeCertifications::where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->where('id', $id);
 		$res = $certificate->delete();
@@ -352,9 +383,9 @@ public function resumeAcademics(Request $request,$resumeid)
 			Session::flash('flash_message', 'Something goes wrong, try again!');
 		else
 			Session::flash('flash_message', 'Successfully Deleted!');
-           	return Redirect::to('seekers/manage/resume-certifications/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-certifications/'.$resumeid);
 	}
-	public function updateCertification(Request $request,$resumeid,$id)
+	public function updateCertification(Request $request,$country, $resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -368,17 +399,17 @@ public function resumeAcademics(Request $request,$resumeid)
 			$certificate = new \App\ResumeCertifications;
 		}
 
-		return view('seeker::update-certificate',compact('countries','states','cities'))->with('obj',$obj)->with('sections', $sections)->with('certificate', $certificate)->with('id',$id)->with('resumeid',$resumeid);
+		return view('seeker::update-certificate',compact('countries','states','cities'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('certificate', $certificate)->with('id',$id)->with('resumeid',$resumeid);
 	}
-	public function ResumeCertifications(Request $request,$resumeid)
+	public function ResumeCertifications(Request $request,$country,$resumeid)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		
 		$sections = \App\ResumeSections::where('active', 1)->get();
 		$certificate = \App\ResumeCertifications::with(['country','city'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->get();
-		return view('seeker::resume-certifications')->with('sections', $sections)->with('certifications', $certificate)->with('obj',$obj)->with('resumeid',$resumeid);
+		return view('seeker::resume-certifications')->with('country',$country)->with('sections', $sections)->with('certifications', $certificate)->with('obj',$obj)->with('resumeid',$resumeid);
 	}
-	public function saveCertification(Request $request,$resumeid,$id)
+	public function saveCertification(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -405,14 +436,14 @@ public function resumeAcademics(Request $request,$resumeid)
 		$certificate->save();
 
 		Session::flash('flash_message', 'Successfully updated!');
-           	return Redirect::to('seekers/manage/resume-certifications/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-certifications/'.$resumeid);
 		//return view('seeker::resume-academics', compact('countries','states', 'cities','degrees'))->with('obj',$obj)->with('sections', $sections)->with('academic', $academic)->with('id',$id)->with('resumeid',$resumeid);
 	}
 
 
 	//Awards
 
-	public function deleteAward(Request $request,$resumeid,$id)
+	public function deleteAward(Request $request,$country,$resumeid,$id)
 	{
 		$award = \App\ResumeAwards::where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->where('id', $id);
 		$res = $award->delete();
@@ -420,9 +451,9 @@ public function resumeAcademics(Request $request,$resumeid)
 			Session::flash('flash_message', 'Something goes wrong, try again!');
 		else
 			Session::flash('flash_message', 'Successfully Deleted!');
-           	return Redirect::to('seekers/manage/resume-awards/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-awards/'.$resumeid);
 	}
-	public function updateAward(Request $request,$resumeid,$id)
+	public function updateAward(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -434,17 +465,17 @@ public function resumeAcademics(Request $request,$resumeid)
 			$award = new \App\ResumeAwards;
 		}
 
-		return view('seeker::update-award',compact('portfolio_award_types'))->with('obj',$obj)->with('sections', $sections)->with('award', $award)->with('id',$id)->with('resumeid',$resumeid);
+		return view('seeker::update-award',compact('portfolio_award_types'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('award', $award)->with('id',$id)->with('resumeid',$resumeid);
 	}
-	public function ResumeAwards(Request $request,$resumeid)
+	public function ResumeAwards(Request $request,$country,$resumeid)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		
 		$sections = \App\ResumeSections::where('active', 1)->get();
 		$award = \App\ResumeAwards::with(['portfolio_award_types'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->get();
-		return view('seeker::resume-awards')->with('sections', $sections)->with('awards', $award)->with('obj',$obj)->with('resumeid',$resumeid);
+		return view('seeker::resume-awards')->with('country',$country)->with('sections', $sections)->with('awards', $award)->with('obj',$obj)->with('resumeid',$resumeid);
 	}
-	public function saveAward(Request $request,$resumeid,$id)
+	public function saveAward(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -465,7 +496,7 @@ public function resumeAcademics(Request $request,$resumeid)
 		$award->save();
 
 		Session::flash('flash_message', 'Successfully updated!');
-           	return Redirect::to('seekers/manage/resume-awards/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-awards/'.$resumeid);
 		//return view('seeker::resume-academics', compact('countries','states', 'cities','degrees'))->with('obj',$obj)->with('sections', $sections)->with('award', $award)->with('id',$id)->with('resumeid',$resumeid);
 	}
 
@@ -474,7 +505,7 @@ public function resumeAcademics(Request $request,$resumeid)
 
 	//Portfolios
 
-	public function deletePortfolio(Request $request,$resumeid,$id)
+	public function deletePortfolio(Request $request,$country,$resumeid,$id)
 	{
 		$portfolio = \App\ResumePortfolios::where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->where('id', $id);
 		$res = $portfolio->delete();
@@ -482,9 +513,9 @@ public function resumeAcademics(Request $request,$resumeid)
 			Session::flash('flash_message', 'Something goes wrong, try again!');
 		else
 			Session::flash('flash_message', 'Successfully Deleted!');
-           	return Redirect::to('seekers/manage/resume-portfolios/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-portfolios/'.$resumeid);
 	}
-	public function updatePortfolio(Request $request,$resumeid,$id)
+	public function updatePortfolio(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -496,17 +527,17 @@ public function resumeAcademics(Request $request,$resumeid)
 			$portfolio = new \App\ResumePortfolios;
 		}
 
-		return view('seeker::update-portfolio',compact('portfolio_award_types'))->with('obj',$obj)->with('sections', $sections)->with('portfolio', $portfolio)->with('id',$id)->with('resumeid',$resumeid);
+		return view('seeker::update-portfolio',compact('portfolio_award_types'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('portfolio', $portfolio)->with('id',$id)->with('resumeid',$resumeid);
 	}
-	public function ResumePortfolios(Request $request,$resumeid)
+	public function ResumePortfolios(Request $request,$country,$resumeid)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		
 		$sections = \App\ResumeSections::where('active', 1)->get();
 		$portfolio = \App\ResumePortfolios::with(['portfolio_award_types'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->get();
-		return view('seeker::resume-portfolios')->with('sections', $sections)->with('portfolios', $portfolio)->with('obj',$obj)->with('resumeid',$resumeid);
+		return view('seeker::resume-portfolios')->with('country',$country)->with('sections', $sections)->with('portfolios', $portfolio)->with('obj',$obj)->with('resumeid',$resumeid);
 	}
-	public function savePortfolio(Request $request,$resumeid,$id)
+	public function savePortfolio(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -528,13 +559,13 @@ public function resumeAcademics(Request $request,$resumeid)
 		$portfolio->save();
 
 		Session::flash('flash_message', 'Successfully updated!');
-           	return Redirect::to('seekers/manage/resume-portfolios/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-portfolios/'.$resumeid);
 		//return view('seeker::resume-academics', compact('countries','states', 'cities','degrees'))->with('obj',$obj)->with('sections', $sections)->with('portfolio', $portfolio)->with('id',$id)->with('resumeid',$resumeid);
 	}	
 
 	//affiliation
 
-	public function deleteAffiliation(Request $request,$resumeid,$id)
+	public function deleteAffiliation(Request $request,$country,$resumeid,$id)
 	{
 		$affiliation = \App\ResumeAffiliations::where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->where('id', $id);
 		$res = $affiliation->delete();
@@ -542,9 +573,9 @@ public function resumeAcademics(Request $request,$resumeid)
 			Session::flash('flash_message', 'Something goes wrong, try again!');
 		else
 			Session::flash('flash_message', 'Successfully Deleted!');
-           	return Redirect::to('seekers/manage/resume-affiliations/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-affiliations/'.$resumeid);
 	}
-	public function updateAffiliation(Request $request,$resumeid,$id)
+	public function updateAffiliation(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -558,18 +589,18 @@ public function resumeAcademics(Request $request,$resumeid)
 			$affiliation = new \App\ResumeAffiliations;
 		}
 
-		return view('seeker::update-affiliation', compact('countries','states', 'cities'))->with('obj',$obj)->with('sections', $sections)->with('affiliation', $affiliation)->with('id',$id)->with('resumeid',$resumeid);
+		return view('seeker::update-affiliation', compact('countries','states', 'cities'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('affiliation', $affiliation)->with('id',$id)->with('resumeid',$resumeid);
 	}
-	public function resumeAffiliations(Request $request,$resumeid)
+	public function resumeAffiliations(Request $request,$country,$resumeid)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		
 		$sections = \App\ResumeSections::where('active', 1)->get();
 		$affiliation = \App\ResumeAffiliations::with(['country','city'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->get();
 	//	var_dump($affiliation[0]->city);
-		return view('seeker::resume-affiliations')->with('sections', $sections)->with('affiliation', $affiliation)->with('obj',$obj)->with('resumeid',$resumeid);
+		return view('seeker::resume-affiliations')->with('country',$country)->with('sections', $sections)->with('affiliation', $affiliation)->with('obj',$obj)->with('resumeid',$resumeid);
 	}
-	public function saveAffiliation(Request $request,$resumeid,$id)
+	public function saveAffiliation(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -597,14 +628,23 @@ public function resumeAcademics(Request $request,$resumeid)
 		$affiliation->save();
 
 		Session::flash('flash_message', 'Successfully updated!');
-           	return Redirect::to('seekers/manage/resume-affiliations/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-affiliations/'.$resumeid);
 		//return view('seeker::resume-academics', compact('countries','states', 'cities','degrees'))->with('obj',$obj)->with('sections', $sections)->with('academic', $academic)->with('id',$id)->with('resumeid',$resumeid);
 	}	
-
+public function delete($country,$resumeid)
+	{
+		$r = \App\Resume::find($resumeid);
+		$res = $r->delete();
+		if($res< 1)
+			Session::flash('flash_message', 'Something goes wrong, try again!');
+		else
+			Session::flash('flash_message', 'Successfully Deleted!');
+           	return Redirect::to($country . '/seekers/my-resumes');
+	}
 
 	//publication
 
-	public function deletePublication(Request $request,$resumeid,$id)
+	public function deletePublication(Request $request,$country,$resumeid,$id)
 	{
 		$publication = \App\ResumePublications::where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->where('id', $id);
 		$res = $publication->delete();
@@ -612,9 +652,9 @@ public function resumeAcademics(Request $request,$resumeid)
 			Session::flash('flash_message', 'Something goes wrong, try again!');
 		else
 			Session::flash('flash_message', 'Successfully Deleted!');
-           	return Redirect::to('seekers/manage/resume-publications/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-publications/'.$resumeid);
 	}
-	public function updatePublication(Request $request,$resumeid,$id)
+	public function updatePublication(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -629,17 +669,17 @@ public function resumeAcademics(Request $request,$resumeid)
 			$publication = new \App\ResumePublications;
 		}
 
-		return view('seeker::update-publication', compact('publicationtypes','countries','states', 'cities'))->with('obj',$obj)->with('sections', $sections)->with('publication', $publication)->with('id',$id)->with('resumeid',$resumeid);
+		return view('seeker::update-publication', compact('publicationtypes','countries','states', 'cities'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('publication', $publication)->with('id',$id)->with('resumeid',$resumeid);
 	}
-	public function resumePublications(Request $request,$resumeid)
+	public function resumePublications(Request $request,$country,$resumeid)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		
 		$sections = \App\ResumeSections::where('active', 1)->get();
 		$publication = \App\ResumePublications::with(['country','city'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->get();
-		return view('seeker::resume-publications')->with('sections', $sections)->with('publication', $publication)->with('obj',$obj)->with('resumeid',$resumeid);
+		return view('seeker::resume-publications')->with('country',$country)->with('sections', $sections)->with('publication', $publication)->with('obj',$obj)->with('resumeid',$resumeid);
 	}
-	public function savePublication(Request $request,$resumeid,$id)
+	public function savePublication(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -668,13 +708,13 @@ public function resumeAcademics(Request $request,$resumeid)
 		$publication->save();
 
 		Session::flash('flash_message', 'Successfully updated!');
-           	return Redirect::to('seekers/manage/resume-publications/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-publications/'.$resumeid);
 		//return view('seeker::resume-academics', compact('countries','states', 'cities','degrees'))->with('obj',$obj)->with('sections', $sections)->with('academic', $academic)->with('id',$id)->with('resumeid',$resumeid);
 	}	
 
 	//reference
 
-	public function deleteReference(Request $request,$resumeid,$id)
+	public function deleteReference(Request $request,$country,$resumeid,$id)
 	{
 		$reference = \App\ResumeReferences::where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->where('id', $id);
 		$res = $reference->delete();
@@ -682,9 +722,9 @@ public function resumeAcademics(Request $request,$resumeid)
 			Session::flash('flash_message', 'Something goes wrong, try again!');
 		else
 			Session::flash('flash_message', 'Successfully Deleted!');
-           	return Redirect::to('seekers/manage/resume-references/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-references/'.$resumeid);
 	}
-	public function updateReference(Request $request,$resumeid,$id)
+	public function updateReference(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -699,17 +739,17 @@ public function resumeAcademics(Request $request,$resumeid)
 			$reference = new \App\ResumeReferences;
 		}
 
-		return view('seeker::update-reference', compact('referencetypes','countries','states', 'cities'))->with('obj',$obj)->with('sections', $sections)->with('reference', $reference)->with('id',$id)->with('resumeid',$resumeid);
+		return view('seeker::update-reference', compact('referencetypes','countries','states', 'cities'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('reference', $reference)->with('id',$id)->with('resumeid',$resumeid);
 	}
-	public function resumeReferences(Request $request,$resumeid)
+	public function resumeReferences(Request $request,$country,$resumeid)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		
 		$sections = \App\ResumeSections::where('active', 1)->get();
 		$reference = \App\ResumeReferences::with(['country','city'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->get();
-		return view('seeker::resume-references')->with('sections', $sections)->with('reference', $reference)->with('obj',$obj)->with('resumeid',$resumeid);
+		return view('seeker::resume-references')->with('country',$country)->with('sections', $sections)->with('reference', $reference)->with('obj',$obj)->with('resumeid',$resumeid);
 	}
-	public function saveReference(Request $request,$resumeid,$id)
+	public function saveReference(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -740,14 +780,14 @@ public function resumeAcademics(Request $request,$resumeid)
 		$reference->save();
 
 		Session::flash('flash_message', 'Successfully updated!');
-           	return Redirect::to('seekers/manage/resume-references/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-references/'.$resumeid);
 		//return view('seeker::resume-academics', compact('countries','states', 'cities','degrees'))->with('obj',$obj)->with('sections', $sections)->with('academic', $academic)->with('id',$id)->with('resumeid',$resumeid);
 	}	
 
 
 		//skill
 
-	public function deleteSkill(Request $request,$resumeid,$id)
+	public function deleteSkill(Request $request,$country,$resumeid,$id)
 	{
 		$skill = \App\ResumeSkills::where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->where('id', $id);
 		$res = $skill->delete();
@@ -755,9 +795,9 @@ public function resumeAcademics(Request $request,$resumeid)
 			Session::flash('flash_message', 'Something goes wrong, try again!');
 		else
 			Session::flash('flash_message', 'Successfully Deleted!');
-           	return Redirect::to('seekers/manage/resume-skills/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-skills/'.$resumeid);
 	}
-	public function updateSkill(Request $request,$resumeid,$id)
+	public function updateSkill(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -770,17 +810,17 @@ public function resumeAcademics(Request $request,$resumeid)
 			$skill = new \App\ResumeSkills;
 		}
 
-		return view('seeker::update-skill', compact('skilllevels'))->with('obj',$obj)->with('sections', $sections)->with('skill', $skill)->with('id',$id)->with('resumeid',$resumeid);
+		return view('seeker::update-skill', compact('skilllevels'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('skill', $skill)->with('id',$id)->with('resumeid',$resumeid);
 	}
-	public function resumeSkills(Request $request,$resumeid)
+	public function resumeSkills(Request $request,$country,$resumeid)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		
 		$sections = \App\ResumeSections::where('active', 1)->get();
 		$skill = \App\ResumeSkills::with(['skilllevel'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->get();
-		return view('seeker::resume-skills')->with('sections', $sections)->with('skill', $skill)->with('obj',$obj)->with('resumeid',$resumeid);
+		return view('seeker::resume-skills')->with('country',$country)->with('sections', $sections)->with('skill', $skill)->with('obj',$obj)->with('resumeid',$resumeid);
 	}
-	public function saveSkill(Request $request,$resumeid,$id)
+	public function saveSkill(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -802,12 +842,12 @@ public function resumeAcademics(Request $request,$resumeid)
 		$skill->save();
 
 		Session::flash('flash_message', 'Successfully updated!');
-           	return Redirect::to('seekers/manage/resume-skills/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-skills/'.$resumeid);
 	}
 
 		//language
 
-	public function deleteLanguage(Request $request,$resumeid,$id)
+	public function deleteLanguage(Request $request,$country,$resumeid,$id)
 	{
 		$language = \App\ResumeLanguages::where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->where('id', $id);
 		$res = $language->delete();
@@ -815,9 +855,9 @@ public function resumeAcademics(Request $request,$resumeid)
 			Session::flash('flash_message', 'Something goes wrong, try again!');
 		else
 			Session::flash('flash_message', 'Successfully Deleted!');
-           	return Redirect::to('seekers/manage/resume-languages/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-languages/'.$resumeid);
 	}
-	public function updateLanguage(Request $request,$resumeid,$id)
+	public function updateLanguage(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -830,17 +870,17 @@ public function resumeAcademics(Request $request,$resumeid)
 			$language = new \App\ResumeLanguages;
 		}
 
-		return view('seeker::update-language', compact('languages','proficiencylevels'))->with('obj',$obj)->with('sections', $sections)->with('language', $language)->with('id',$id)->with('resumeid',$resumeid);
+		return view('seeker::update-language', compact('languages','proficiencylevels'))->with('country',$country)->with('obj',$obj)->with('sections', $sections)->with('language', $language)->with('id',$id)->with('resumeid',$resumeid);
 	}
-	public function resumeLanguages(Request $request,$resumeid)
+	public function resumeLanguages(Request $request,$country,$resumeid)
 	{
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
 		
 		$sections = \App\ResumeSections::where('active', 1)->get();
 		$language = \App\ResumeLanguages::with(['language','proficiencylevel'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->get();
-		return view('seeker::resume-languages')->with('sections', $sections)->with('language', $language)->with('obj',$obj)->with('resumeid',$resumeid);
+		return view('seeker::resume-languages')->with('country',$country)->with('sections', $sections)->with('language', $language)->with('obj',$obj)->with('resumeid',$resumeid);
 	}
-	public function saveLanguage(Request $request,$resumeid,$id)
+	public function saveLanguage(Request $request,$country,$resumeid,$id)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -862,10 +902,10 @@ public function resumeAcademics(Request $request,$resumeid)
 		$language->save();
 
 		Session::flash('flash_message', 'Successfully updated!');
-           	return Redirect::to('seekers/manage/resume-languages/'.$resumeid);
+           	return Redirect::to($country . '/seekers/manage/resume-languages/'.$resumeid);
 	}
 
-	public function resumeView($resumeid)
+	public function resumeView($country, $resumeid)
 	{
 		$user = \App\SiteUsers::find(Auth::user()->id);
 		$obj = \App\Resume::where('user_id', Auth::user()->id)->orderBy('created_at','desc')->get();
@@ -877,13 +917,22 @@ public function resumeAcademics(Request $request,$resumeid)
 			Session::flash('flash_message', 'Please complete your resume.');
 			return Redirect::to('seekers/manage/update-personal-information/' . $resumeid);
 		}
-		return view('seeker::view-resume')->with('sections',$sections)->with('obj',$obj)->with('profile',$profile);
+	
+		return view('seeker::view-resume')->with('country',$country)->with('sections',$sections)->with('obj',$obj)->with('profile',$profile);
 	}
 
-	public function resumePrint($resumeid)
+	public function resumePrint($country, $resumeid)
 	{
 		$profile = \App\ResumeSeekerProfile::with(['maritalstatus','awards','affilitions','publications','references','education','experiance','projects','languages','skills'])->where('user_id', Auth::user()->id)->where('resume_id', $resumeid)->first();
-		$v= view('seeker::print-resume')->with('profile',$profile);
+		$v= view('seeker::print-resume')->with('country',$country)->with('profile',$profile);
+		$pdf = PDF::loadHTML($v)->setPaper('a4', 'portrait')->setWarnings(false);
+		return $pdf->download(str_replace(' ', '_', $profile->first_name).'_'.str_replace(' ','_', $profile->last_name).'.pdf');
+	}
+
+	public function resumePrintEmployer($country, $resumeid)
+	{
+		$profile = \App\ResumeSeekerProfile::with(['maritalstatus','awards','affilitions','publications','references','education','experiance','projects','languages','skills'])->where('resume_id', $resumeid)->first();
+		$v= view('seeker::print-resume')->with('country',$country)->with('profile',$profile);
 		$pdf = PDF::loadHTML($v)->setPaper('a4', 'portrait')->setWarnings(false);
 		return $pdf->download(str_replace(' ', '_', $profile->first_name).'_'.str_replace(' ','_', $profile->last_name).'.pdf');
 	}

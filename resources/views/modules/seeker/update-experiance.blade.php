@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">
@@ -21,7 +22,7 @@
                         </div>
                     @endif
 
-                   {{ Form::open(array('class'=>'form-vertical','url'=> route('experiance.save', array('id' => $id,'resumeid'=>$resumeid)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
+                   {{ Form::open(array('class'=>'form-vertical','url'=> route('experiance.save', array('country'=>$country,'id' => $id,'resumeid'=>$resumeid)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
                     <div class="form-group">
                         <label for="job_title" class="col-sm-3 control-label">Job Title</label>
                         {{Form::input('text', 'job_title', $experiance->job_title,['data-error'=>'Required','id'=>'job_title', 'placeholder'=>'Job Title', 'required'=>'required', 'class'=>'input-width form-control'])}}
@@ -39,7 +40,7 @@
                     </div>
                     <div class="form-group">
                         <label for="StateID" class="col-sm-3 control-label">State/Province</label>
-                        {!! Form::select('StateID', $states, $experiance->state_id, ['' => '','data-error'=>'Required', 'id'=>'StateID','class'=>'input-width form-control','placeholder'=>'Select State/Province','required'=>'required']) !!}
+                        {!! Form::select('StateID', $states, $experiance->state_id, ['data-error'=>'Required', 'id'=>'StateID','class'=>'input-width form-control','placeholder'=>'Select State/Province','required'=>'required']) !!}
                         <div class="help-block with-errors"></div>
                     </div>
                     <div class="form-group">
@@ -67,7 +68,7 @@
                     </div>        
                     <div class="form-group">
                         <label for="current_work" class="col-sm-3 control-label">Currently Working?</label>
-                        {{Form::checkbox('current_work',$experiance->current_working,['id'=>'current_work','class'=>'input-width form-control'])}}
+                        {{Form::checkbox('current_work',1,$experiance->current_working,['id'=>'current_work'])}}
                         <div class="help-block with-errors"></div>
                     </div>                                     
                     <div class="form-group"> 
@@ -108,9 +109,9 @@ function loadStates(CountryId, StateId)
    if(CountryId >0 && CountryId != ""){
        $.get("{{asset('/admin/states/getbycountry/')}}/" + CountryId, function(data){
             $('#StateID').empty();
-            $('#StateID').append('<option>Please select State/Province</option>');
+            $('#StateID').append('<option value>Please select State/Province</option>');
             $('#CityID').empty();
-            $('#CityID').append('<option>Please select City</option>');
+            $('#CityID').append('<option value>Please select City</option>');
             $.each(data, function(index, countryObj){
                 console.log(countryObj.Name);
                 $('#StateID').append('<option value="'+ countryObj.id+'">'+ countryObj.Name + '</option>');
@@ -123,9 +124,9 @@ function loadStates(CountryId, StateId)
     else
     {
         $('#StateID').empty();
-        $('#StateID').append('<option>Please select State/Province</option>');
+        $('#StateID').append('<option value>Please select State/Province</option>');
         $('#CityID').empty();
-        $('#CityID').append('<option>Please select City</option>');
+        $('#CityID').append('<option value>Please select City</option>');
     }
 }
 function loadcities(StateId, CityId)
@@ -133,7 +134,7 @@ function loadcities(StateId, CityId)
     if(StateId >0 && StateId != ""){
         $.get("{{asset('/admin/cities/getbystate/')}}/" + StateId, function(data){
             $('#CityID').empty();
-            $('#CityID').append('<option>Please select City</option>');
+            $('#CityID').append('<option value>Please select City</option>');
             $.each(data, function(index, stateObj){
                 $('#CityID').append('<option value="'+ stateObj.id+'">'+ stateObj.Name + '</option>');
             });
@@ -146,7 +147,7 @@ function loadcities(StateId, CityId)
     else
     {
         $('#CityID').empty();
-        $('#CityID').append('<option>Please select City</option>');
+        $('#CityID').append('<option value>Please select City</option>');
     }    
 }
         $('#CountryID').on('change', function(e){

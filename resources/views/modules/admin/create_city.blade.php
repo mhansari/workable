@@ -118,7 +118,7 @@ $('#CountryID').on('change', function(e){
                 //success data
                $('#StateID').empty();
 
-               $('#StateID').append('<option>Please select State/Province</option>');
+               $('#StateID').append('<option value>Please select State/Province</option>');
 
 
                $.each(data, function(index, countryObj){
@@ -132,7 +132,7 @@ $('#CountryID').on('change', function(e){
         else
         {
             $('#StateID').empty();
-            $('#StateID').append('<option>Please select State/Province</option>');
+            $('#StateID').append('<option value>Please select State/Province</option>');
         }
 
 

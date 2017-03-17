@@ -146,10 +146,10 @@ $( document ).ready(function() {
 			                //success data
 			               $('#StateID').empty();
 
-			               $('#StateID').append('<option>Please select State/Province</option>');
+			               $('#StateID').append('<option value>Please select State/Province</option>');
 
  $('#CityID').empty();
-			            $('#CityID').append('<option>Please select City</option>');
+			            $('#CityID').append('<option value>Please select City</option>');
 			               $.each(data, function(index, countryObj){
 			                    console.log(countryObj.Name);
 			                   $('#StateID').append('<option value="'+ countryObj.id+'">'+ countryObj.Name + '</option>');
@@ -161,9 +161,9 @@ $( document ).ready(function() {
 			        else
 			        {
 			            $('#StateID').empty();
-			            $('#StateID').append('<option>Please select State/Province</option>');
+			            $('#StateID').append('<option value>Please select State/Province</option>');
 			            $('#CityID').empty();
-			            $('#CityID').append('<option>Please select City</option>');
+			            $('#CityID').append('<option value>Please select City</option>');
 			        }
 
 
@@ -180,7 +180,7 @@ $( document ).ready(function() {
 			                  //success data
 			               $('#CityID').empty();
 
-			               $('#CityID').append('<option>Please select City</option>');
+			               $('#CityID').append('<option value>Please select City</option>');
 
 
 			               $.each(data, function(index, stateObj){
@@ -194,7 +194,7 @@ $( document ).ready(function() {
 			        else
 			        {
 			            $('#CityID').empty();
-			            $('#CityID').append('<option>Please select City</option>');
+			            $('#CityID').append('<option value>Please select City</option>');
 			        }
 
 
@@ -207,7 +207,7 @@ $( document ).ready(function() {
 			                  //success data
 			               $('#CityID').empty();
 
-			               $('#CityID').append('<option>Please select City</option>');
+			               $('#CityID').append('<option value>Please select City</option>');
 
 
 			               $.each(data, function(index, stateObj){

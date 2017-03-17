@@ -7,14 +7,14 @@
     </div>
     <div class="col-md-2 text-center">
         <div class="img-thumbnail">
-            <a href="{{asset('/company/' . $company->user_id)}}">
+            <a href="{{asset($country . '/company/' . $company->user_id)}}">
             <div class="thumb " style="width:150px;height:150px;line-height:inherit;background-color:transparent;font-size:75px;">
             <span class="helper"></span><img class="img" style="max-width:auto" src="{{ asset($company->company_logo) }}"></div>
             </a>
         </div> 
     </div>
     <div class="col-md-10 col-sm-9 text-center-xs">
-        <h2 class="company_name"><a href="{{asset('/company/' . $company->user_id)}}">{{$company->company_name}}, {{$company->city->Name }}, {{$company->country->Name}}</a></h2>
+        <h2 class="company_name"><a href="{{asset($country . '/company/' . $company->user_id)}}">{{$company->company_name}}, {{$company->city['name'] }}, {{$company->country['name']}}</a></h2>
         <br>
         <div class="row">
             <div class="col-md-8">
@@ -44,7 +44,7 @@
                     <div id="menu1" class="tab-pane fade">
                         @foreach($latest as $job)
                     <div class="panel panel-default"><div class="panel-body ">
-                         <ul class="list-group box">
+                         <ul class="list-group box-search">
                             <li class="col-md-10 list-group-item result "><a href="{{asset('/jobs/' . $job->id)}}"><strong>{{ $job->job_title }}</strong></a></li>
                             <li class="col-md-2 list-group-item result text-right">
                                     @if(floor((time() - strtotime($job->created_at)) /  (60 * 60 * 24))<=$config['SHOW_NEW_OLD_DAYS']->v)
@@ -53,21 +53,21 @@
                                 </li>
                             <li class="col-md-3 list-group-item result result-border">
                                 <div class="text-muted">Job Type</div>
-                                <a href="/jobs/pakistan/full-time/" title="{{ $job->jobtype->name }} Jobs in {{$job->countries->Name}}">{{ $job->jobtype->name }}</a>
+                                <a href="/jobs/pakistan/full-time/" title="{{ $job->jobtype['name'] }} Jobs in {{$job->countries['name']}}">{{ $job->jobtype['name'] }}</a>
                             </li>
                             <li class="col-md-3 list-group-item result result-border">
                                 <div class="text-muted">Shift</div>
-                                <a href="/jobs/pakistan/full-time/" title="{{ $job->shift->name }} Jobs in {{$job->countries->Name}}">{{ $job->shift->name }}</a>
+                                <a href="/jobs/pakistan/full-time/" title="{{ $job->shift['name'] }} Jobs in {{$job->countries['name']}}">{{ $job->shift['name'] }}</a>
                             </li>
                             <li class="col-md-3 list-group-item result result-border">
                                 <div class="text-muted">Experiance</div>
-                                <a href="/jobs/pakistan/full-time/" title="{{ $job->experiance->name }} Jobs in {{$job->countries->Name}}">{{ $job->experiance->name }}</a>
+                                <a href="/jobs/pakistan/full-time/" title="{{ $job->experiance['name'] }} Jobs in {{$job->countries['name']}}">{{ $job->experiance['name'] }}</a>
                             </li>
                             <li class="col-md-3 list-group-item result">
                                 <div class="text-muted">Salary</div>
                                 {{ $job->currency_min }} - {{ $job->salary_max }}
                             </li>
-                            <li class="col-md-12 list-group-item result">{{ strlen($job->description)>255?substr($job->description,0,255) . "..." : $job->description  }}</li>
+                            <li class="col-md-12 list-group-item result">{!! strlen($job->description)>255?substr($job->description,0,255) . "..." : $job->description  !!}</li>
                             <li class="col-md-5 list-group-item result"><span class="glyphicon glyphicon-map-marker"></span>    
                             {{--*/ $sep = '' /*--}}
                             @foreach($job->cities as $c)
@@ -75,14 +75,14 @@
                                 @if($sep != '')
                                     {{--*/ $sep = $sep . ', ' /*--}}
                                 @endif
-                                {{--*/ $sep = $sep . $c->Name /*--}}
+                                {{--*/ $sep = $sep . $c['name'] /*--}}
                             
                             @endforeach
-                            {{ $sep }} - {{$job->countries->Name}}
+                            {{ $sep }} - {{$job->countries['name']}}
                             </li>
                             <li class="col-md-3 list-group-item result text-left "><span class="glyphicon glyphicon-time"></span> {{ \Carbon\Carbon::createFromTimeStamp(strtotime($job->created_at))->diffForHumans() }}</li>
 
-                            <li class="col-md-4 list-group-item result text-right"><a href="{{url('seekers/apply/' . $job->id )}}" class="btn btn-primary btn-empty btn-xs">Apply</a> <button type="button" class="btn btn-primary btn-empty btn-xs save" value="{{$job->id}}">Save</button></li>
+                            <li class="col-md-4 list-group-item result text-right"><a href="{{url($country . '/seekers/apply/' . $job->id )}}" class="btn btn-primary btn-empty btn-xs">Apply</a> <button type="button" class="btn btn-primary btn-empty btn-xs save" value="{{$job->id}}">Save</button></li>
                             
                         </ul>
                     </div></div>
@@ -104,12 +104,12 @@
                     <h4>Company Overview</h4>
                 </div>
                 <div class="panel-body ">
-                    <div class="mb5"><strong>Industry: </strong> <br/>{{$company->categories->name}}</div>
-                    <div class="mb5"><strong>Business Entity: </strong> <br/>{{$company->inctype->name}}</div>
+                    <div class="mb5"><strong>Industry: </strong> <br/>{{$company->categories['name']}}</div>
+                    <div class="mb5"><strong>Business Entity: </strong> <br/>{{$company->inctype['name']}}</div>
                     <div class="mb5"><strong>Established In: </strong> <br/>{{ date('m-d-Y',strtotime($company->established_in))}}</div>
                     <div class="mb5"><strong>No. of Employees: </strong> <br/>{{ $company->total_employees}}</div>
                     <div class="mb5">
-                        <strong>Location: </strong> <br/><a class="inverse" href="/companies/{{$company->country->Name}}/{{$company->city->seo}}/">{{$company->city->Name}}</a>, {{$company->state->Name}}, <a class="inverse" href="/companies/{{$company->country->seo}}/" title="Companies in {{ $company->country->Name}}">{{ $company->country->Name}}</a>
+                        <strong>Location: </strong> <br/><a class="inverse" href="/companies/{{$company->country['name']}}/{{$company->city->seo}}/">{{$company->city['name']}}</a>, {{$company->state['name']}}, <a class="inverse" href="/companies/{{$company->country->seo}}/" title="Companies in {{ $company->country['name']}}">{{ $company->country['name']}}</a>
                     </div>
                 </div>
             </div>
@@ -165,7 +165,7 @@ init_map();
     <script>
 $('.save').click(function() {
     $.ajax({
-        url: "{{url('seekers/save-job')}}",
+        url: "{{url($country . '/seekers/save-job')}}",
             data: {
                 "job_id" :$(this).val(),
                 "_token": "{{ csrf_token() }}",
@@ -173,7 +173,7 @@ $('.save').click(function() {
             error: function(xhr, status, error) {
                 if(xhr.status == 401)
                 {
-                    window.location="{{ url('account/login') }}";
+                    window.location="{{ url($country . '/account/login') }}";
                 }
                 else
                 {
@@ -181,7 +181,10 @@ $('.save').click(function() {
                 }
             },
             success: function(data) {
-                notify('success','Job Saved Successfully');
+                if(data==-1)
+                    notify('success','You already saved this Job.');
+                else
+                    notify('success','Job Saved Successfully');
             },
 
         type: 'POST'

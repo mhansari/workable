@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">
@@ -20,7 +21,7 @@
                             {{ Session::get('flash_message') }}
                         </div>
                     @endif
-                    {{ Form::open(array('url'=> route('uploadresume'),'class'=>'form-horizontal','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form','files'=>'true'))}}
+                    {{ Form::open(array('url'=> route('uploadresume',array('country'=>$country)),'class'=>'form-horizontal','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form','files'=>'true'))}}
                         <div class="form-group">                               
                             <label for="company_name" class="col-sm-3 control-label">Resume Title</label>
                             {{Form::input('title', 'title', '',['data-error'=>'Required','id'=>'title', 'placeholder'=>'Resume Title', 'required'=>'required', 'class'=>'input-width form-control'])}}
@@ -65,9 +66,9 @@ function loadStates(CountryId, StateId)
    if(CountryId >0 && CountryId != ""){
        $.get('../admin/states/getbycountry/' + CountryId, function(data){
             $('#StateID').empty();
-            $('#StateID').append('<option>Please select State/Province</option>');
+            $('#StateID').append('<option value>Please select State/Province</option>');
             $('#CityID').empty();
-            $('#CityID').append('<option>Please select City</option>');
+            $('#CityID').append('<option value>Please select City</option>');
             $.each(data, function(index, countryObj){
                 console.log(countryObj.Name);
                 $('#StateID').append('<option value="'+ countryObj.id+'">'+ countryObj.Name + '</option>');
@@ -79,9 +80,9 @@ function loadStates(CountryId, StateId)
     else
     {
         $('#StateID').empty();
-        $('#StateID').append('<option>Please select State/Province</option>');
+        $('#StateID').append('<option value>Please select State/Province</option>');
         $('#CityID').empty();
-        $('#CityID').append('<option>Please select City</option>');
+        $('#CityID').append('<option value>Please select City</option>');
     }
 }
 function loadcities(StateId, CityId)
@@ -89,7 +90,7 @@ function loadcities(StateId, CityId)
     if(StateId >0 && StateId != ""){
         $.get('../admin/cities/getbystate/' + StateId, function(data){
             $('#CityID').empty();
-            $('#CityID').append('<option>Please select City</option>');
+            $('#CityID').append('<option value>Please select City</option>');
             $.each(data, function(index, stateObj){
                 $('#CityID').append('<option value="'+ stateObj.id+'">'+ stateObj.Name + '</option>');
             });
@@ -99,7 +100,7 @@ function loadcities(StateId, CityId)
     else
     {
         $('#CityID').empty();
-        $('#CityID').append('<option>Please select City</option>');
+        $('#CityID').append('<option value>Please select City</option>');
     }    
 }
         $('#CountryID').on('change', function(e){

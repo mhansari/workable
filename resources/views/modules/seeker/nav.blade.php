@@ -20,14 +20,14 @@
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Resume Manager
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="{{ asset('seekers/manage/upload-resume') }}">Create Resume</a></li>
-          <li><a href="{{ asset('seekers/my-resumes') }}">My Resumes</a></li>
+          <li><a href="{{ asset($country . '/seekers/manage/upload-resume') }}">Create Resume</a></li>
+          <li><a href="{{ asset($country . '/seekers/my-resumes') }}">My Resumes</a></li>
         
           
         </ul>
       </li>
-        <li><a href="{{ asset('seekers/my-applications') }}">My Applications</a></li> 
-        <li><a href="{{ asset('seekers/my-saved-jobs') }}">My Saved Jobs</a></li> 
+        <li><a href="{{ asset($country . '/seekers/my-applications') }}">My Applications</a></li> 
+        <li><a href="{{ asset($country . '/seekers/my-saved-jobs') }}">My Saved Jobs</a></li> 
       </ul>
 
     </div>

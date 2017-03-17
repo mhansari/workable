@@ -1,5 +1,6 @@
 <?php $__env->startSection('content'); ?>
 <div class="container">
+    <?php echo $__env->make('seeker::dashboard-links',array('country'=>$country), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
     <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">
@@ -30,6 +31,12 @@
                 </div>
 <div class="panel-body ">
         <table width="100%">
+               <tr style="width:100%; padding:3px;text-align:center" class="print-padding">
+                <td>
+                    <img src="<?php echo e(URL::asset($profile->pp)); ?>">
+                   
+                </td>
+            </tr>
             <tr style="width:100%; padding:3px;text-align:center" class="print-padding print-bottom-border">
                 <td>
                     <h2><?php echo e($profile->first_name); ?> <?php echo e($profile->last_name); ?></h2>
@@ -161,7 +168,7 @@
                 <tr>
                     <td style="width:12%; padding:3px"></td>
                     <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        <i>As <?php echo e($e->position); ?> - <?php echo e($e->organization); ?> <?php echo e($e->city->Name); ?>, <?php echo e($e->country->Name); ?></i>
+                        <i>As <?php echo e($e->position); ?> - <?php echo e($e->experiances->organization); ?> <?php echo e($e->experiances->city->Name); ?>, <?php echo e($e->experiances->country->Name); ?></i>
                     </td>
                 </tr>
                 <tr>

@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">
@@ -21,7 +22,7 @@
                         </div>
                     @endif
 
-                   {{ Form::open(array('class'=>'form-vertical','url'=> route('publication.save', array('id' => $id,'resumeid'=>$resumeid)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
+                   {{ Form::open(array('class'=>'form-vertical','url'=> route('publication.save', array('country'=>$country,'id' => $id,'resumeid'=>$resumeid)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
                     <div class="form-group">
                         <label for="publication_type" class="col-sm-3 control-label">Publication Type</label>
                         {!! Form::select('publication_type', $publicationtypes, $publication->publication_type_id, ['data-error'=>'Required', 'id'=>'publication_type','class'=>'input-width form-control','placeholder'=>'Select Publication Type','required'=>'required']) !!}

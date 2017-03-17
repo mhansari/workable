@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">
@@ -21,7 +22,7 @@
                         </div>
                     @endif
 
-                    {{ Form::open(array('url'=> route('upload.logo'),'files'=>'true','class'=>'form-horizontal','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
+                    {{ Form::open(array('url'=> route('upload.logo',array('country'=>$country)),'files'=>'true','class'=>'form-horizontal','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
                         <div class="logo-employers-alignment" >
                           <img class="center-block" src="{{ asset($ci[0]->company_logo) }}" />
                         </div>

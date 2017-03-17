@@ -1,11 +1,12 @@
 <?php $__env->startSection('content'); ?>
 <div class="container">
+    <?php echo $__env->make('seeker::dashboard-links',array('country'=>$country), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
     <div class="row">
         <div class="col-md-9 list-col ">
            <div class="panel panel-default">
                 <div class="panel-heading"><h4>Apply for the post of <?php echo e($obj->job_title); ?></h4></div>
                 <div class="panel-body ">
-                    <?php echo e(Form::open(array('class'=>'form-vertical','url'=> route('apply'),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))); ?>
+                    <?php echo e(Form::open(array('class'=>'form-vertical','url'=> route('apply',array('country'=>$country, 'jobid'=>$jobid)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))); ?>
 
                     <div class="form-group">
                         <div class="col-md-12"> 

@@ -25,7 +25,7 @@ use App\IncorporationType;
 use Image;
 class CompanyInfoController extends Controller {
 	
-	public function updateCompnay()
+	public function updateCompnay($country)
 	{
 		$countries = Countries::where('active',1)->orderBy('name')->lists('Name', 'id');
 		$categories = Categories::where('active',1)->orderBy('name')->lists('name','id');
@@ -33,7 +33,7 @@ class CompanyInfoController extends Controller {
 		$states = array();//States::all()->lists('Name', 'id');
 		$cities = array();//Cities::all()->lists('Name', 'id');
 		$ci = CompanyInfo::where('user_id',Auth::user()->id)->get();
-		return view('employers::update_company_info', compact('countries','states', 'cities','categories','inc'))->with('ci',$ci);
+		return view('employers::update_company_info', compact('countries','states', 'cities','categories','inc'))->with('ci',$ci)->with('country',$country);
 	}
 	public function save(Request $request)
 	{
@@ -91,13 +91,13 @@ public function cover()
            }
 	}
 
-	public function logo()
+	public function logo($country)
 	{
 		$ci = CompanyInfo::where('user_id',Auth::user()->id)->get();
-		return view('employers::upload_logo')->with('ci',$ci);
+		return view('employers::upload_logo')->with('ci',$ci)->with('country',$country);
 	}
 
-	public function uploadLogo(Request $request)
+	public function uploadLogo(Request $request,$country)
 	{
 		if(Input::file())
         {
@@ -115,7 +115,7 @@ public function cover()
                 $obj->company_logo = 'logos/' . $filename;
                 $obj->save();
                 Session::flash('flash_message', 'Logo Updated!');
-			    return Redirect::to('employers/logo');
+			    return Redirect::to($country . '/employers/logo');
            }
 	}
 }

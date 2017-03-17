@@ -35,6 +35,14 @@ font-size: 12.5px;
   </div>
     <div class="container">
         <table width="100%">
+         @if($profile->pp != '')
+             <tr style="width:100%; padding:3px;text-align:center" class="print-padding">
+                <td>
+                    <img src="{{ URL::asset($profile->pp) }}" class="img-circle">
+                   
+                </td>
+            </tr>
+        @endif
             <tr style="width:100%; padding:3px;text-align:center" class="print-padding print-bottom-border">
                 <td>
                     <h2>{{$profile->first_name}} {{$profile->last_name}}</h2>
@@ -160,7 +168,7 @@ font-size: 12.5px;
                 <tr>
                     <td style="width:12%; padding:3px"></td>
                     <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        <i>As {{$e->position}} - {{$e->organization}} {{$e->city->Name}}, {{$e->country->Name}}</i>
+                        <i>As {{$e->position}} - {{$e->experiances->organization}} {{$e->experiances->city->Name}}, {{$e->experiances->country->Name}}</i>
                     </td>
                 </tr>
                 <tr>

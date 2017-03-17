@@ -13,7 +13,7 @@
                     @endif
                     <div class="col-md-3 text-center">
                         <div class="img-thumbnail">
-                            <a href="{{asset('/company/' . $j->user_id)}}">
+                            <a href="{{asset($country . '/company/' . $j->user_id)}}">
                                 <div class="thumb " style="width:150px;height:150px;line-height:inherit;background-color:transparent;font-size:75px;">
                                     <img style="max-width:auto;align-items:" class="img" src="{{ asset($j->companies->company_logo) }}">
                                 </div>
@@ -28,7 +28,7 @@
                             <div class="col-md-4 pow1">
                                 <div class="col-md-6">
 
-                                    <a href="{{url('seekers/apply/' . $j->id )}}"  class="btn btn-primary btn-empty btn-lg">Apply</a> 
+                                    <a href="{{url($country . '/seekers/apply/' . $j->id )}}"  class="btn btn-primary btn-empty btn-lg">Apply</a> 
                                 </div>
                                  <div class="col-md-6">
                                     <button type="button" class="save btn btn-primary btn-empty btn-lg" value="{{$j->id}}">Save</button>
@@ -44,15 +44,15 @@
                         <ul class="list-unstyled list-columns mt5 row pow">
                             <li class="col-md-3 col-xs-6 result result-border">
                                 <div class="text-muted">Job Type</div>
-                                <a href="{{asset('jobs/'.$config['DEFAULT_COUNTRY']->v .'/' . $j->jobtype->seo )}}" title="{{ $j->jobtype->name }} Jobs in Pakistan">{{ $j->jobtype->name }}</a>
+                                <a href="{{asset($country . '/jobs/job-type/' . $j->jobtype['seo'] )}}" title="{{ $j->jobtype['name'] }} Jobs in Pakistan">{{ $j->jobtype['name'] }}</a>
                             </li>
                             <li class="col-md-3 col-xs-6 result result-border">
                                 <div class="text-muted">Shift</div>
-                                <a href="{{asset('jobs/'.$config['DEFAULT_COUNTRY']->v .'/' . $j->shift->seo )}}" title="{{ $j->shift->name }} Jobs in Pakistan">{{ $j->shift->name }}</a>
+                                <a href="{{asset($country . '/jobs/shift/' . $j->shift['seo'] )}}" title="{{ $j->shift['name'] }} Jobs in Pakistan">{{ $j->shift['name'] }}</a>
                             </li>
                             <li class="col-md-3 col-xs-6 result result-border">
                                 <div class="text-muted">Experiance</div>
-                                <a href="{{asset('jobs/'.$config['DEFAULT_COUNTRY']->v .'/' . $j->experiance->seo )}}" title="{{ $j->experiance->name }} Jobs in Pakistan">{{ $j->experiance->name }}</a>
+                                <a href="{{asset($country . '/jobs/experiance/' . $j->experiance['seo'] )}}" title="{{ $j->experiance['name'] }} Jobs in Pakistan">{{ $j->experiance['name'] }}</a>
                             </li>
                             <li class="col-md-3 col-xs-6 result">
                                 <div class="text-muted">Salary</div>
@@ -96,7 +96,7 @@
                     <div class="row">
                         <div class="col-md-2 col-sm-5 col-xs-5 cell active">Category</div>
                         <div class="col-md-4 col-sm-7 col-xs-7 cell">
-                            <a href="{{asset('/jobs/'.$config['DEFAULT_COUNTRY']->v .'/' . $j->categories->seo )}}" title="{{$j->categories->name}} Jobs in Pakistan">{{$j->categories->name}}</a>
+                            <a href="{{asset($country .'/jobs/category/' . $j->categories['seo'] )}}" title="{{$j->categories['name']}} Jobs in Pakistan">{{$j->categories['name']}}</a>
                         </div>
                         <div class="col-md-2 col-sm-5 col-xs-5 cell active"><span class="hidden-xs">Requires</span> Traveling</div>
                         <div class="col-md-4 col-sm-7 col-xs-7 cell">{{ ($j->required_travelling?'Yes':'No') }}</div>
@@ -104,7 +104,7 @@
                     <div class="row">
                         <div class="col-md-2 col-sm-5 col-xs-5 cell active">Career <span class="hidden-xs">Level</span></div>
                         <div class="col-md-4 col-sm-7 col-xs-7 cell">
-                            <a href="{{asset('jobs/'.$config['DEFAULT_COUNTRY']->v .'/' . $j->experiance->seo )}}" title="{{$j->experiance->name}} Jobs in Pakistan">{{$j->experiance->name}}</a>
+                            <a href="{{asset($country . '/jobs/experiance/'. $j->experiance['seo'] )}}" title="{{$j->experiance['name']}} Jobs in Pakistan">{{$j->experiance['name']}}</a>
                         </div>
                         <div class="col-md-2 col-sm-5 col-xs-5 cell active">Qualification</div>
                         <div class="col-md-4 col-sm-7 col-xs-7 cell">{{$j->qualifications}}</div>
@@ -129,7 +129,7 @@
                                         {{--*/ $sep = $sep . '<span>,</span> ' /*--}}
                                         
                                     @endif
-                                    {{--*/ $sep =  $sep . '<a href="'. asset('/jobs/'.$config['DEFAULT_COUNTRY']->v). '/'. $c->seo . '">' . $c->Name. '</a>' /*--}}
+                                    {{--*/ $sep =  $sep . '<a href="'. asset('/'. $country .'/jobs/'). '/city/'. $c->seo . '">' . $c->Name. '</a>' /*--}}
                                   
                                 
                                 @endforeach
@@ -161,7 +161,7 @@
                         <div class="col-md-12">
                             <h4>{{$j->companies->company_name}}</h4>
                             <h5>{{$j->companies->city->Name}}, {{$j->companies->country->Name}}</h5>
-                            {!!strlen($j->companies->about_company)>255?substr($j->companies->about_company,0,255) . '<br/><a href="'.asset('/company/' . $j->user_id).'">[more]</a>' : $job->description  !!}
+                            {!!strlen($j->companies->about_company)>255?substr($j->companies->about_company,0,255) . '<br/><a href="'.asset($country .'/company/' . $j->user_id).'">[more]</a>' : $job->description  !!}
                         </div>
                     </div>
 
@@ -178,7 +178,7 @@
 <script>
 $('.save').click(function() {
     $.ajax({
-        url: "{{url('seekers/save-job')}}",
+        url: "{{url($country . '/seekers/save-job')}}",
             data: {
                 "job_id" :$(this).val(),
                 "_token": "{{ csrf_token() }}",
@@ -186,7 +186,7 @@ $('.save').click(function() {
             error: function(xhr, status, error) {
                 if(xhr.status == 401)
                 {
-                    window.location="{{ url('account/login') }}";
+                    window.location="{{ url($country . '/account/login') }}";
                 }
                 else
                 {
@@ -194,7 +194,10 @@ $('.save').click(function() {
                 }
             },
             success: function(data) {
-                notify('success','Job Saved Successfully');
+                if(data==-1)
+                    notify('success','You already saved this Job.');
+                else
+                    notify('success','Job Saved Successfully');
             },
 
         type: 'POST'

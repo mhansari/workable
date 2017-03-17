@@ -1,46 +1,34 @@
 <?php $__env->startSection('content'); ?>
 <div class="container">
-    <div class="col-md-12 text-center">
-		<ul class="nav nav-pills">
-		  <li><a href="<?php echo e(asset('seekers/dashboard')); ?>">Job Seekers</a></li>
-		  <li class="active"><a href="<?php echo e(asset('employers/dashboard')); ?>">Employers</a></li>
-		</ul>
-    </div>
+<?php echo $__env->make('seeker::dashboard-links',array('country'=>$country), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
     <div class="row">
         <div class="col-md-12 list-col ">
-           <div class="panel panel-default">
-                <div class="panel-heading">
-      <?php echo $__env->make('employers::nav', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-  </div>
-</nav></div>
-                <div class="panel-body ">
-                     <?php if($errors->has()): ?>
-                         <?php foreach($errors->all() as $error): ?>
-                            <div class="alert alert-danger"><?php echo e($error); ?></div>
-                        <?php endforeach; ?>
-                      <?php endif; ?>
-                    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Job Title</th>
-                <th>Posted By</th>
-                <th>Date Posted</th>
-                <th>Job Type</th>
-                <th>Status</th>
-                <th>Applications</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+          <?php echo $__env->make('employers::nav',array('country'=>$country), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+            <div class="panel-body">
+                 <?php if($errors->has()): ?>
+                     <?php foreach($errors->all() as $error): ?>
+                        <div class="alert alert-danger"><?php echo e($error); ?></div>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Job Title</th>
+                            <th>Posted By</th>
+                            <th>Date Posted</th>
+                            <th>Job Type</th>
+                            <th>Status</th>
+                            <th>Applications</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
         
-    </table>
-                </div>
+                </table>
             </div>
         </div>
-         
     </div>
 </div>
-
 <script>
 $(document).ready(function() {
     $(function() {
@@ -54,7 +42,7 @@ $(document).ready(function() {
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
                
-                return '<a href="<?php echo e(asset("jobs/")); ?>/' + data.id + '">'+data.job_title  +'</a>';
+                return '<a href="<?php echo e(asset($country . "/jobs/")); ?>/' + data.id + '">'+data.job_title  +'</a>';
             } },
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
@@ -66,8 +54,13 @@ $(document).ready(function() {
             { data: 'active', name: 'status' },
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
-               
-                return '<a href="<?php echo e(asset("jobs/applications/")); ?>/' + data.id + '">('+data.applications.length  +')</a>';
+                if(data.applications.length>0){
+                    return '<a href="<?php echo e(asset($country ."/jobs/applications/")); ?>/' + data.id + '/applied">('+data.applications.length  +')</a>';
+                }
+                else
+                {
+                    return '('+data.applications.length  +')';
+                }
             } },
             { data: 'Actions', name: 'Actions', 'orderable': false, 'searchable': false }
         ]

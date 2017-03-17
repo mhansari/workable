@@ -5,14 +5,14 @@
     </div>
     <div class="col-md-2 text-center">
         <div class="img-thumbnail">
-            <a href="<?php echo e(asset('/company/' . $company->user_id)); ?>">
+            <a href="<?php echo e(asset($country . '/company/' . $company->user_id)); ?>">
             <div class="thumb " style="width:150px;height:150px;line-height:inherit;background-color:transparent;font-size:75px;">
             <span class="helper"></span><img class="img" style="max-width:auto" src="<?php echo e(asset($company->company_logo)); ?>"></div>
             </a>
         </div> 
     </div>
     <div class="col-md-10 col-sm-9 text-center-xs">
-        <h2 class="company_name"><a href="<?php echo e(asset('/company/' . $company->user_id)); ?>"><?php echo e($company->company_name); ?>, <?php echo e($company->city->Name); ?>, <?php echo e($company->country->Name); ?></a></h2>
+        <h2 class="company_name"><a href="<?php echo e(asset($country . '/company/' . $company->user_id)); ?>"><?php echo e($company->company_name); ?>, <?php echo e($company->city['name']); ?>, <?php echo e($company->country['name']); ?></a></h2>
         <br>
         <div class="row">
             <div class="col-md-8">
@@ -43,7 +43,7 @@
                     <div id="menu1" class="tab-pane fade">
                         <?php foreach($latest as $job): ?>
                     <div class="panel panel-default"><div class="panel-body ">
-                         <ul class="list-group box">
+                         <ul class="list-group box-search">
                             <li class="col-md-10 list-group-item result "><a href="<?php echo e(asset('/jobs/' . $job->id)); ?>"><strong><?php echo e($job->job_title); ?></strong></a></li>
                             <li class="col-md-2 list-group-item result text-right">
                                     <?php if(floor((time() - strtotime($job->created_at)) /  (60 * 60 * 24))<=$config['SHOW_NEW_OLD_DAYS']->v): ?>
@@ -52,22 +52,22 @@
                                 </li>
                             <li class="col-md-3 list-group-item result result-border">
                                 <div class="text-muted">Job Type</div>
-                                <a href="/jobs/pakistan/full-time/" title="<?php echo e($job->jobtype->name); ?> Jobs in <?php echo e($job->countries->Name); ?>"><?php echo e($job->jobtype->name); ?></a>
+                                <a href="/jobs/pakistan/full-time/" title="<?php echo e($job->jobtype['name']); ?> Jobs in <?php echo e($job->countries['name']); ?>"><?php echo e($job->jobtype['name']); ?></a>
                             </li>
                             <li class="col-md-3 list-group-item result result-border">
                                 <div class="text-muted">Shift</div>
-                                <a href="/jobs/pakistan/full-time/" title="<?php echo e($job->shift->name); ?> Jobs in <?php echo e($job->countries->Name); ?>"><?php echo e($job->shift->name); ?></a>
+                                <a href="/jobs/pakistan/full-time/" title="<?php echo e($job->shift['name']); ?> Jobs in <?php echo e($job->countries['name']); ?>"><?php echo e($job->shift['name']); ?></a>
                             </li>
                             <li class="col-md-3 list-group-item result result-border">
                                 <div class="text-muted">Experiance</div>
-                                <a href="/jobs/pakistan/full-time/" title="<?php echo e($job->experiance->name); ?> Jobs in <?php echo e($job->countries->Name); ?>"><?php echo e($job->experiance->name); ?></a>
+                                <a href="/jobs/pakistan/full-time/" title="<?php echo e($job->experiance['name']); ?> Jobs in <?php echo e($job->countries['name']); ?>"><?php echo e($job->experiance['name']); ?></a>
                             </li>
                             <li class="col-md-3 list-group-item result">
                                 <div class="text-muted">Salary</div>
                                 <?php echo e($job->currency_min); ?> - <?php echo e($job->salary_max); ?>
 
                             </li>
-                            <li class="col-md-12 list-group-item result"><?php echo e(strlen($job->description)>255?substr($job->description,0,255) . "..." : $job->description); ?></li>
+                            <li class="col-md-12 list-group-item result"><?php echo strlen($job->description)>255?substr($job->description,0,255) . "..." : $job->description; ?></li>
                             <li class="col-md-5 list-group-item result"><span class="glyphicon glyphicon-map-marker"></span>    
                             <?php /**/ $sep = '' /**/ ?>
                             <?php foreach($job->cities as $c): ?>
@@ -75,15 +75,15 @@
                                 <?php if($sep != ''): ?>
                                     <?php /**/ $sep = $sep . ', ' /**/ ?>
                                 <?php endif; ?>
-                                <?php /**/ $sep = $sep . $c->Name /**/ ?>
+                                <?php /**/ $sep = $sep . $c['name'] /**/ ?>
                             
                             <?php endforeach; ?>
-                            <?php echo e($sep); ?> - <?php echo e($job->countries->Name); ?>
+                            <?php echo e($sep); ?> - <?php echo e($job->countries['name']); ?>
 
                             </li>
                             <li class="col-md-3 list-group-item result text-left "><span class="glyphicon glyphicon-time"></span> <?php echo e(\Carbon\Carbon::createFromTimeStamp(strtotime($job->created_at))->diffForHumans()); ?></li>
 
-                            <li class="col-md-4 list-group-item result text-right"><a href="<?php echo e(url('seekers/apply/' . $job->id )); ?>" class="btn btn-primary btn-empty btn-xs">Apply</a> <button type="button" class="btn btn-primary btn-empty btn-xs save" value="<?php echo e($job->id); ?>">Save</button></li>
+                            <li class="col-md-4 list-group-item result text-right"><a href="<?php echo e(url($country . '/seekers/apply/' . $job->id )); ?>" class="btn btn-primary btn-empty btn-xs">Apply</a> <button type="button" class="btn btn-primary btn-empty btn-xs save" value="<?php echo e($job->id); ?>">Save</button></li>
                             
                         </ul>
                     </div></div>
@@ -105,12 +105,12 @@
                     <h4>Company Overview</h4>
                 </div>
                 <div class="panel-body ">
-                    <div class="mb5"><strong>Industry: </strong> <br/><?php echo e($company->categories->name); ?></div>
-                    <div class="mb5"><strong>Business Entity: </strong> <br/><?php echo e($company->inctype->name); ?></div>
+                    <div class="mb5"><strong>Industry: </strong> <br/><?php echo e($company->categories['name']); ?></div>
+                    <div class="mb5"><strong>Business Entity: </strong> <br/><?php echo e($company->inctype['name']); ?></div>
                     <div class="mb5"><strong>Established In: </strong> <br/><?php echo e(date('m-d-Y',strtotime($company->established_in))); ?></div>
                     <div class="mb5"><strong>No. of Employees: </strong> <br/><?php echo e($company->total_employees); ?></div>
                     <div class="mb5">
-                        <strong>Location: </strong> <br/><a class="inverse" href="/companies/<?php echo e($company->country->Name); ?>/<?php echo e($company->city->seo); ?>/"><?php echo e($company->city->Name); ?></a>, <?php echo e($company->state->Name); ?>, <a class="inverse" href="/companies/<?php echo e($company->country->seo); ?>/" title="Companies in <?php echo e($company->country->Name); ?>"><?php echo e($company->country->Name); ?></a>
+                        <strong>Location: </strong> <br/><a class="inverse" href="/companies/<?php echo e($company->country['name']); ?>/<?php echo e($company->city->seo); ?>/"><?php echo e($company->city['name']); ?></a>, <?php echo e($company->state['name']); ?>, <a class="inverse" href="/companies/<?php echo e($company->country->seo); ?>/" title="Companies in <?php echo e($company->country['name']); ?>"><?php echo e($company->country['name']); ?></a>
                     </div>
                 </div>
             </div>
@@ -166,7 +166,7 @@ init_map();
     <script>
 $('.save').click(function() {
     $.ajax({
-        url: "<?php echo e(url('seekers/save-job')); ?>",
+        url: "<?php echo e(url($country . '/seekers/save-job')); ?>",
             data: {
                 "job_id" :$(this).val(),
                 "_token": "<?php echo e(csrf_token()); ?>",
@@ -174,7 +174,7 @@ $('.save').click(function() {
             error: function(xhr, status, error) {
                 if(xhr.status == 401)
                 {
-                    window.location="<?php echo e(url('account/login')); ?>";
+                    window.location="<?php echo e(url($country . '/account/login')); ?>";
                 }
                 else
                 {
@@ -182,7 +182,10 @@ $('.save').click(function() {
                 }
             },
             success: function(data) {
-                notify('success','Job Saved Successfully');
+                if(data==-1)
+                    notify('success','You already saved this Job.');
+                else
+                    notify('success','Job Saved Successfully');
             },
 
         type: 'POST'

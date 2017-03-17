@@ -2,47 +2,35 @@
 
 @section('content')
 <div class="container">
-    <div class="col-md-12 text-center">
-		<ul class="nav nav-pills">
-		  <li><a href="{{ asset('seekers/dashboard') }}">Job Seekers</a></li>
-		  <li class="active"><a href="{{ asset('employers/dashboard') }}">Employers</a></li>
-		</ul>
-    </div>
+@include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-12 list-col ">
-           <div class="panel panel-default">
-                <div class="panel-heading">
-      @include('employers::nav')
-  </div>
-</nav></div>
-                <div class="panel-body ">
-                     @if($errors->has())
-                         @foreach ($errors->all() as $error)
-                            <div class="alert alert-danger">{{ $error }}</div>
-                        @endforeach
-                      @endif
-                    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Job Title</th>
-                <th>Posted By</th>
-                <th>Date Posted</th>
-                <th>Job Type</th>
-                <th>Status</th>
-                <th>Applications</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+          @include('employers::nav',array('country'=>$country))
+            <div class="panel-body">
+                 @if($errors->has())
+                     @foreach ($errors->all() as $error)
+                        <div class="alert alert-danger">{{ $error }}</div>
+                    @endforeach
+                  @endif
+                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Job Title</th>
+                            <th>Posted By</th>
+                            <th>Date Posted</th>
+                            <th>Job Type</th>
+                            <th>Status</th>
+                            <th>Applications</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
         
-    </table>
-                </div>
+                </table>
             </div>
         </div>
-         
     </div>
 </div>
-
 <script>
 $(document).ready(function() {
     $(function() {
@@ -56,7 +44,7 @@ $(document).ready(function() {
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
                
-                return '<a href="{{ asset("jobs/") }}/' + data.id + '">'+data.job_title  +'</a>';
+                return '<a href="{{ asset($country . "/jobs/") }}/' + data.id + '">'+data.job_title  +'</a>';
             } },
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
@@ -68,8 +56,13 @@ $(document).ready(function() {
             { data: 'active', name: 'status' },
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
-               
-                return '<a href="{{ asset("jobs/applications/") }}/' + data.id + '">('+data.applications.length  +')</a>';
+                if(data.applications.length>0){
+                    return '<a href="{{ asset($country ."/jobs/applications/") }}/' + data.id + '/applied">('+data.applications.length  +')</a>';
+                }
+                else
+                {
+                    return '('+data.applications.length  +')';
+                }
             } },
             { data: 'Actions', name: 'Actions', 'orderable': false, 'searchable': false }
         ]

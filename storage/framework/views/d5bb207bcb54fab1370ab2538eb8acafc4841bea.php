@@ -2,8 +2,8 @@
 <div class="container">
     <div class="col-md-12 text-center">
 		<ul class="nav nav-pills">
-		  <li><a href="<?php echo e(asset('seekers/dashboard')); ?>">Job Seekers</a></li>
-		  <li><a href="<?php echo e(asset('employers/dashboard')); ?>">Employers</a></li>
+		  <li><a href="<?php echo e(asset($country . '/seekers/dashboard')); ?>">Job Seekers</a></li>
+		  <li><a href="<?php echo e(asset($country . '/employers/dashboard')); ?>">Employers</a></li>
 		</ul>
     </div>
     <div class="row">

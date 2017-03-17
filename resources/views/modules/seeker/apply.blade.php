@@ -2,12 +2,13 @@
 
 @section('content')
 <div class="container">
+    @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-9 list-col ">
            <div class="panel panel-default">
                 <div class="panel-heading"><h4>Apply for the post of {{$obj->job_title}}</h4></div>
                 <div class="panel-body ">
-                    {{ Form::open(array('class'=>'form-vertical','url'=> route('apply'),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
+                    {{ Form::open(array('class'=>'form-vertical','url'=> route('apply',array('country'=>$country, 'jobid'=>$jobid)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
                     <div class="form-group">
                         <div class="col-md-12"> 
                             <div class="row">

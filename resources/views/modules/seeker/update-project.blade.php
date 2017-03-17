@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">
@@ -21,7 +22,7 @@
                         </div>
                     @endif
 
-                   {{ Form::open(array('class'=>'form-vertical','url'=> route('project.save', array('id' => $id,'resumeid'=>$resumeid)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
+                   {{ Form::open(array('class'=>'form-vertical','url'=> route('project.save', array('country'=>$country,'id' => $id,'resumeid'=>$resumeid)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
                     <div class="form-group">
                         <label for="title" class="col-sm-3 control-label">Title</label>
                         {{Form::input('text', 'title', $project->title,['data-error'=>'Required','id'=>'title', 'placeholder'=>'Title', 'required'=>'required', 'class'=>'input-width form-control'])}}
@@ -37,6 +38,12 @@
                         {!! Form::select('project_type_id', $projecttype, $project->project_type_id, ['data-error'=>'Required', 'id'=>'project_type_id','class'=>'input-width form-control','placeholder'=>'Select Project Type','required'=>'required']) !!}
                         <div class="help-block with-errors"></div>
                     </div>
+                    <div class="form-group">
+                        <label for="CountryID" class="col-sm-3 control-label">Company</label>
+                        {!! Form::select('CompanyId', $exp, $project->company_id, ['data-error'=>'Required', 'id'=>'CompanyId','class'=>'input-width form-control','placeholder'=>'Select Company','required'=>'required']) !!}
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="start_date" class="col-sm-3 control-label">Start Date</label>
                         @if($id==0)
@@ -57,7 +64,7 @@
                     </div>        
                     <div class="form-group">
                         <label for="current_work" class="col-sm-3 control-label">Currently Working?</label>
-                        {{Form::checkbox('current_work',$project->current_working,['id'=>'current_work','class'=>'input-width form-control'])}}
+                        {{Form::checkbox('current_work',1,$project->current_working,['id'=>'current_work'])}}
                         <div class="help-block with-errors"></div>
                     </div>                                     
                     <div class="form-group"> 
@@ -85,16 +92,7 @@
 <script type="text/javascript">
  jQuery( document ).ready(function( $ ) {
 
-     $("#cnic").mask("99999-9999999-9"); 
-     CKEDITOR.replace( 'details' , {
-        width:450,
-    toolbar: [
-    
-    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
-    { name: 'paragraph', groups: [ 'list', 'indent' ], items: [ 'NumberedList', 'BulletedList'] },
-    { name: 'clipboard', groups: [ 'undo' ], items: ['Undo', 'Redo' ] }
-]
-});
+   
     $('input[name="start_date"]').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true
@@ -105,5 +103,79 @@ $('input[name="end_date"]').daterangepicker({
         showDropdowns: true
     }); 
 });
-</script>
+function selectState(CountryID, StateId)
+{
+   return loadStates(CountryID,StateId);
+  
+}
+function selectCity(StateId,CityId)
+{
+    loadcities(StateId, CityId)
+  
+}
+function loadStates(CountryId, StateId)
+{
+   if(CountryId >0 && CountryId != ""){
+       $.get("{{asset('/admin/states/getbycountry/')}}/" + CountryId, function(data){
+            $('#StateID').empty();
+            $('#StateID').append('<option value>Please select State/Province</option>');
+            $('#CityID').empty();
+            $('#CityID').append('<option value>Please select City</option>');
+            $.each(data, function(index, countryObj){
+                console.log(countryObj.Name);
+                $('#StateID').append('<option value="'+ countryObj.id+'">'+ countryObj.Name + '</option>');
+            });    
+            //$("#StateID").multiselect('rebuild');
+            $('#StateID > [value="'+StateId+'"]').attr("selected", "true");
+            return  StateId;
+       });
+    }
+    else
+    {
+        $('#StateID').empty();
+        $('#StateID').append('<option value>Please select State/Province</option>');
+        $('#CityID').empty();
+        $('#CityID').append('<option value>Please select City</option>');
+    }
+}
+function loadcities(StateId, CityId)
+{
+    if(StateId >0 && StateId != ""){
+        $.get("{{asset('/admin/cities/getbystate/')}}/" + StateId, function(data){
+            $('#CityID').empty();
+            $('#CityID').append('<option value>Please select City</option>');
+            $.each(data, function(index, stateObj){
+                $('#CityID').append('<option value="'+ stateObj.id+'">'+ stateObj.Name + '</option>');
+            });
+    console.log(data[0].Name);
+    console.log(data[0].Name);
+    console.log(data[0].Name);
+            $('#CityID > [value="'+CityId+'"]').attr("selected", "true");
+        });
+    }
+    else
+    {
+        $('#CityID').empty();
+        $('#CityID').append('<option value>Please select City</option>');
+    }    
+}
+        $('#CountryID').on('change', function(e){
+            var CountryId = e.target.value;
+            loadStates(CountryId,0);
+        });
+
+        $('#StateID').on('change', function(e){
+            var StateId = e.target.value;
+            loadcities(StateId, 0);
+        });
+        CKEDITOR.replace( 'details' , {
+        width:450,
+    toolbar: [
+    
+    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+    { name: 'paragraph', groups: [ 'list', 'indent' ], items: [ 'NumberedList', 'BulletedList'] },
+    { name: 'clipboard', groups: [ 'undo' ], items: ['Undo', 'Redo' ] }
+]
+});
+             </script>
 @endsection

@@ -19,12 +19,18 @@
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">Jobs
               <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="{{ asset('employers/my-jobs') }}">My Jobs</a></li>
-              <li><a href="#">Post Job</a></li>
+              <li><a href="{{ asset($country . '/employers/my-jobs') }}">My Jobs</a></li>
+              <li><a href="{{ asset($country . '/employers/jobs/post-job') }}">Post Job</a></li>
             </ul>
           
-            <li><a href="#">Page 2</a></li> 
-            <li><a href="#">Page 3</a></li> 
+            <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Interviews
+              <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="{{ asset($country .'/employers/vanues') }}">Vanues</a></li>
+              <li><a href="#">Add new Vanue</a></li>
+            </ul></li> 
+            <li><a href="{{ asset($country .'/employers/messages') }}">Inbox <span class="badge">{{\App\Conversation::newMsgCount(26)}}</span></a></li> 
+            <li><a href="{{route('update.company',array('country'=>$country))}}">Update Company</a></li> 
           </ul>
         </div>
       </div>

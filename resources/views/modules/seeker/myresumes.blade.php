@@ -2,30 +2,31 @@
 
 @section('content')
 <div class="container">
-    <div class="col-md-12 text-center">
-		<ul class="nav nav-pills">
-		  <li class="active"><a href="{{ asset('seekers/dashboard') }}">Job Seekers</a></li>
-		  <li><a href="{{ asset('employers/dashboard') }}">Employers</a></li>
-		</ul>
-    </div>
+@include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-12 list-col ">
            <div class="panel panel-default">
                 <div class="panel-heading">
                
-      @include('seeker::nav')
+      @include('seeker::nav',array('country'=>$country))
   </div>
 </nav></div>
+
                 <div class="panel-body ">
+                     @if(Session::has('flash_message'))
+                        <div class="alert alert-success">
+                            {{ Session::get('flash_message') }}
+                        </div>
+                    @endif
                     <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Job Title</th>
-                <th>Posted By</th>
-                <th>Date Posted</th>
-                <th>Job Type</th>
-                <th>Status</th>
+                <th>Title</th>
+                
+                <th>Date Created</th>
+               
+
                 <th>Applications</th>
                 <th>Action</th>
             </tr>
@@ -45,27 +46,24 @@ $(document).ready(function() {
     
   var t =   $('#example').DataTable({
         processing: true,
-        serverSide: true,
-        ajax: '{{ asset("jobs/myjobsajax") }}',
+        serverSide: false,
+        ajax: '{{ route("resumeajax",array("country"=>$country)) }}',
         columns: [
             { data: null, name: 'sno', 'orderable': true, 'searchable': false },
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
                
-                return '<a href="#">'+data.job_title  +'</a>';
+                return data.title;
             } },
-            { data: null, render: function ( data, type, row ) {
-                // Combine the first and last names into a single table field
-                
-                return data.users.first_name+' '+data.users.last_name;
-            } },
+           
             { data: 'created_at', name: 'date_posted' },
-            { data: 'adtype.name', name: 'Job Type' },
-            { data: 'active', name: 'status' },
+
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
-               
-                return '<a href="#">('+data.applications.length  +')</a>';
+                if(data.applications.length>0)
+                    return '<a href="{{asset( $country . '/seekers/my-application-on-jobs')}}/'+data.id+'">('+data.applications.length +')</a>';
+                else
+                    return '('+data.applications.length +')';
             } },
             { data: 'Actions', name: 'Actions', 'orderable': false, 'searchable': false }
         ]

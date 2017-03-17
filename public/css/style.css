@@ -2,14 +2,122 @@
 {
     height: 41px;
 }
+html,body{
+    height: 100%
 
-.upload-margin
+}
+.appointment-cell-alignment
 {
+        text-align: center;
+    
+}
+.appointment-cell-vertical-alignment
+{
+    vertical-align: middle !important;
+}
+#footer{
+    background-color: #e7e7e7;
+    bottom: 0;
+    height: 50px;
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+#body {
+    padding-bottom: 20px;
+}
+#holder {
+    min-height: 100%;
+    position:relative;
+}
+.upload-margin
+{ 
     margin-left:-15px;
 }
 .print-padding-list
 {
     padding-left: 31px;
+}
+.search-ul-padding
+{
+    padding: 0px;
+}
+.search-exp-text-box
+{
+    width:75px;
+}
+.search-li-padding-right
+{
+    padding-right: 0px;
+}
+.search-li-padding-left
+{
+    padding-left: 2px;
+}
+.box-search {
+    
+}
+.box {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #E0E0E0;
+    -webkit-border-radius: 3px!important;
+    -moz-border-radius: 3px!important;
+    border-radius: 3px!important;
+    margin: 0 -10px 10px;
+}
+img {
+    border: 0;
+}
+.mt0 {
+    margin-top: 0!important;
+}
+.media, .media-body {
+    overflow: hidden;
+    zoom: 1;
+}
+.thumb-latest .helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle !important;
+}
+.thumb-latest {
+    text-align: center;
+    display: flex;
+    align-items: baseline;
+}
+.thumb-latest img {
+       background: 0 0;
+    vertical-align: middle;
+    max-width: 100%;
+    max-height: 100%;
+
+}
+.thumb-latest-profile img {
+       background: 0 0;
+    vertical-align: middle;
+    max-width: 100%;
+    max-height: 100%;
+    border-width: 1px;
+    border-color: #ddd;
+    border-collapse: collapse;
+    border-style: solid;
+}
+img {
+    border: 0;
+}
+.no-border-latest-jobs {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 0px solid #ddd !important;
+}
+.regions-font
+{
+    font-size: small;
+    font-weight: bold;
 }
 .print-date-size
 {
@@ -116,6 +224,9 @@
     border-width: 1px;
     border-color: #ddd;
 }
+.text-sm{
+    font-size:11px;
+}
 .cover-employers-alignment{
 
        margin-left: auto;
@@ -212,7 +323,7 @@ dl, ol, ul {
 }
 .thumb
 {
-        width: 150px;
+    width: 150px;
     height: 150px;
     display: flex;
     /* margin-left: auto; */
@@ -281,4 +392,22 @@ dl, ol, ul {
 {
     width:17%;
     margin-left:10px;
+}
+
+.multiselect-container > li > a { white-space: normal; }
+.multiselect-container > li > a > label{
+    white-space: normal !important;
+}
+.dropdown-menu {
+max-height: 500px;
+overflow-y: auto;
+overflow-x: hidden;
+}
+.status-menu-item-padding{
+        padding-bottom: 5px;
+}
+
+.status-menu-padding{
+        padding-left: 0px;
+        padding-right: 0px;
 }

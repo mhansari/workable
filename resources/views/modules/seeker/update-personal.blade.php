@@ -3,6 +3,7 @@
 
 @section('content')
 <div class="container">
+    @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">
@@ -22,7 +23,7 @@
                         </div>
                     @endif
 
-                   {{ Form::open(array('class'=>'form-vertical','url'=> route('resumeprofile.save', array('id' => $id)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
+                   {{ Form::open(array('class'=>'form-vertical','url'=> route('resumeprofile.save', array('id' => $resumeid,'country'=>$country)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form','files'=>'true'))}}
                     <div class="form-group">
                         <label for="firstname" class="col-sm-3 control-label">First Name</label>
                         {{Form::input('text', 'firstname', $profile->first_name,['data-error'=>'Required','id'=>'firstname', 'placeholder'=>'First Name', 'required'=>'required', 'class'=>'input-width  form-control'])}}
@@ -149,30 +150,37 @@
                     </div> 
                     <div class="form-group">
                         <label for="twitter" class="col-sm-3 control-label">Twitter</label>
-                        {{Form::input('text', 'twitter', $profile->twitter,['data-error'=>'Required','id'=>'twitter', 'placeholder'=>'Twitter', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                        {{Form::input('text', 'twitter', $profile->twitter,['id'=>'twitter', 'placeholder'=>'Twitter', 'class'=>'input-width form-control'])}}
                         <div class="help-block with-errors"></div>
                     </div> 
                     <div class="form-group">
                         <label for="linkedin" class="col-sm-3 control-label">Linked In</label>
-                        {{Form::input('text', 'linkedin', $profile->linkedin,['data-error'=>'Required','id'=>'linkedin', 'placeholder'=>'Linked In', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                        {{Form::input('text', 'linkedin', $profile->linkedin,['id'=>'linkedin', 'placeholder'=>'Linked In',  'class'=>'input-width form-control'])}}
                         <div class="help-block with-errors"></div>
                     </div> 
                     <div class="form-group">
                         <label for="blog" class="col-sm-3 control-label">Blog</label>
-                        {{Form::input('text', 'blog', $profile->blog,['data-error'=>'Required','id'=>'blog', 'placeholder'=>'http://', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                        {{Form::input('text', 'blog', $profile->blog,['id'=>'blog', 'placeholder'=>'http://', 'class'=>'input-width form-control'])}}
                         <div class="help-block with-errors"></div>
                     </div> 
                     <div class="form-group">
                         <label for="website" class="col-sm-3 control-label">Website</label>
-                        {{Form::input('text', 'website', $profile->website,['data-error'=>'Required','id'=>'website', 'placeholder'=>'http://', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                        {{Form::input('text', 'website', $profile->website,['id'=>'website', 'placeholder'=>'http://', 'class'=>'input-width form-control'])}}
                         <div class="help-block with-errors"></div>
                     </div> 
-<input type="hidden" value="{{$id}}" name="resume_id" id="resume_id" />
-{!! Form::token() !!}
-
-                           <div class="form-group">
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </div>
+                    <div class="form-group">                               
+                        <label for="logo" class="col-md-3 control-label">Select Picture</label>
+                        <div class="col-md-9" style=" padding-left: inherit;">
+                            {{Form::file('logo', ['data-show-remove'=>'false','data-show-upload'=>'false','data-allowed-file-extensions'=>'["png", "gif","jpeg","jpg"]','data-show-preview'=>'false','data-validate'=>'true','data-error'=>'Required', 'placeholder'=>'Select Logo', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                        </div>
+                        <div class="help-block with-errors error-label col-md-3"></div>
+                    </div>
+                    <input type="hidden" value="{{$resumeid}}" name="resume_id" id="resume_id" />
+                    {!! Form::token() !!}
+                    <br/><br/>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
 
                     {{Form::close()}}
                 </div>
@@ -197,9 +205,9 @@ function loadStates(CountryId, StateId)
    if(CountryId >0 && CountryId != ""){
        $.get("{{asset('/admin/states/getbycountry/')}}/" + CountryId, function(data){
             $('#StateID').empty();
-            $('#StateID').append('<option>Please select State/Province</option>');
+            $('#StateID').append('<option value>Please select State/Province</option>');
             $('#CityID').empty();
-            $('#CityID').append('<option>Please select City</option>');
+            $('#CityID').append('<option value>Please select City</option>');
             $.each(data, function(index, countryObj){
                 console.log(countryObj.Name);
                 $('#StateID').append('<option value="'+ countryObj.id+'">'+ countryObj.Name + '</option>');
@@ -211,9 +219,9 @@ function loadStates(CountryId, StateId)
     else
     {
         $('#StateID').empty();
-        $('#StateID').append('<option>Please select State/Province</option>');
+        $('#StateID').append('<option value>Please select State/Province</option>');
         $('#CityID').empty();
-        $('#CityID').append('<option>Please select City</option>');
+        $('#CityID').append('<option value>Please select City</option>');
     }
 }
 function loadcities(StateId, CityId)
@@ -221,7 +229,7 @@ function loadcities(StateId, CityId)
     if(StateId >0 && StateId != ""){
         $.get("{{asset('/admin/cities/getbystate/')}}/" + StateId, function(data){
             $('#CityID').empty();
-            $('#CityID').append('<option>Please select City</option>');
+            $('#CityID').append('<option value>Please select City</option>');
             $.each(data, function(index, stateObj){
                 $('#CityID').append('<option value="'+ stateObj.id+'">'+ stateObj.Name + '</option>');
             });
@@ -231,7 +239,7 @@ function loadcities(StateId, CityId)
     else
     {
         $('#CityID').empty();
-        $('#CityID').append('<option>Please select City</option>');
+        $('#CityID').append('<option value>Please select City</option>');
     }    
 }
         $('#CountryID').on('change', function(e){

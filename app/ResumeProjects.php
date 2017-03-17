@@ -11,16 +11,9 @@ class ResumeProjects extends Model
     {
         return $this->belongsTo('App\ProjectType','project_type_id');
     }
-   public function country()
+   public function experiances()
     {
-        return $this->belongsTo('App\Countries','country_id');
+        return $this->belongsTo('App\ResumeExperiances','company_id');
     }
-    public function state()
-    {
-        return $this->belongsTo('App\States','state_id');
-    }
-    public function city()
-    {
-        return $this->belongsTo('App\Cities','city_id');
-    }
+    
 }

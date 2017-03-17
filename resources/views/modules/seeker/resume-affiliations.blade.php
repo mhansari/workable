@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+  @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">

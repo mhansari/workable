@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">
@@ -21,7 +22,7 @@
                         </div>
                     @endif
 
-                   {{ Form::open(array('class'=>'form-vertical','url'=> route('skill.save', array('id' => $id,'resumeid'=>$resumeid)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
+                   {{ Form::open(array('class'=>'form-vertical','url'=> route('skill.save', array('country'=>$country,'id' => $id,'resumeid'=>$resumeid)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
                     <div class="form-group">
                         <label for="name" class="col-sm-3 control-label">Name</label>
                         {{Form::input('text', 'name', $skill->name,['data-error'=>'Required','id'=>'name', 'placeholder'=>'Skill', 'required'=>'required', 'class'=>'input-width form-control'])}}

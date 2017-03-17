@@ -2,17 +2,12 @@
 
 @section('content')
 <div class="container">
-  <div class="col-md-12 text-center">
-    <ul class="nav nav-pills">
-      <li><a href="{{ asset('seekers/dashboard') }}">Job Seekers</a></li>
-      <li class="active"><a href="{{ asset('employers/dashboard') }}">Employers</a></li>
-    </ul>
-  </div>
+@include('seeker::dashboard-links',array('country'=>$country))
   <div class="row">
     <div class="col-md-12 list-col ">
       <div class="panel panel-default">
         <div class="panel-heading">
-            @include('employers::nav')
+            @include('employers::nav', array('country'=>$country))
         </div>
         
           <div class="panel-body ">
@@ -26,7 +21,7 @@
                     <div class="alert alert-danger">{{ $error }}</div>
                 @endforeach
               @endif
-              {{ Form::open(array('url'=> route('emp.savejob',array('id'=>$job->id)) ,'class'=>'form-vertical','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
+              {{ Form::open(array('url'=> route('emp.savejob',array('country'=>$country,'id'=>$job->id)) ,'class'=>'form-vertical','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
             <div class="col-md-10 col-md-offet-1">
               <div class="form-group">
                 <label for="title" class="col-sm-3 control-label">Title</label>

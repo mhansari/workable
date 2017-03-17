@@ -2,26 +2,20 @@
 
 @section('content')
 <div class="container">
-    <div class="col-md-12 text-center">
-		<ul class="nav nav-pills">
-		  <li class="active"><a href="{{ asset('seekers/dashboard') }}">Job Seekers</a></li>
-		  <li ><a href="{{ asset('employers/dashboard') }}">Employers</a></li>
-		</ul>
-    </div>
+@include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-12 list-col ">
-           <div class="panel panel-default">
-                <div class="panel-heading">
-      @include('seeker::nav')
-  </div>
-</nav></div>
-                <div class="panel-body ">
-                    
-                </div>
-            </div>
+      @include('seeker::nav',array('country'=>$country))
         </div>
-         
     </div>
+<div class="row">
+        <div class="col-md-12 list-col ">
+dfgdfg
+        </div>
+
+    </div>
+
+
 </div>
 
 

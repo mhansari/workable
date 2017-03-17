@@ -22,4 +22,5 @@ return array(
     'Doctrine\\Common\\Collections\\' => array($vendorDir . '/doctrine/collections/lib'),
     'Doctrine\\Common\\Annotations\\' => array($vendorDir . '/doctrine/annotations/lib'),
     'Cron' => array($vendorDir . '/mtdowling/cron-expression/src'),
+    'Aivo\\Highchart' => array($vendorDir . '/mauro-moreno/laravel-highcharts/src', $vendorDir . '/mauro-moreno/laravel-highcharts/api'),
 );

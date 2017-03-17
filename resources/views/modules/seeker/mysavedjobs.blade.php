@@ -2,18 +2,13 @@
 
 @section('content')
 <div class="container">
-    <div class="col-md-12 text-center">
-		<ul class="nav nav-pills">
-		  <li class="active"><a href="{{ asset('seekers/dashboard') }}">Job Seekers</a></li>
-		  <li><a href="{{ asset('employers/dashboard') }}">Employers</a></li>
-		</ul>
-    </div>
+@include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-12 list-col ">
            <div class="panel panel-default">
                 <div class="panel-heading">
                
-      @include('seeker::nav')
+      @include('seeker::nav',array('country'=>$country))
   </div>
 </nav></div>
                 <div class="panel-body ">
@@ -46,13 +41,13 @@ $(document).ready(function() {
   var t =   $('#example').DataTable({
         processing: true,
         serverSide: false,
-        ajax: "{{ route('savedajax') }}",
+        ajax: "{{ route('savedjobsajax', array('country'=>$country)) }}",
         columns: [
             { data: null, name: 'sno', 'orderable': true, 'searchable': false },
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
                
-                return '<a href="{{asset("jobs/")}}/' +data.job_id+'">'+data.job_title  +'</a>';
+                return '<a href="{{asset($country . "/jobs/")}}/' +data.job_id+'">'+data.job_title  +'</a>';
             } },
             { data: null, render: function ( data, type, row ) {
                 return data.company_name;

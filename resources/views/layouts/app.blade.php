@@ -60,25 +60,23 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ url('/home') }}">Home</a></li>
+                        <!--li><a href="{{ url('/home') }}">Home</a></li-->
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                            <li><a href="{{ asset($country . '/account/create') }}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                            <li><a href="{{asset($country . '/account/login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     <span class="glyphicon glyphicon-cog"></span> Manage
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="update_company"><i class="glyphicon glyphicon-pencil"></i>  Update Company</a></li>
-                                    <li><a href="update_company"><i class="glyphicon glyphicon-pencil"></i>  Update Cover Image</a></li>
-                                    <li><a href="logo"><i class="glyphicon glyphicon-pencil"></i>  Update Logo</a></li>
+                                    
                                     <li><a href="update_company"><i class="glyphicon glyphicon-pencil"></i>  Change Password</a></li>
-                                    <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>  Logout</a></li>
+                                    <li><a href="{{ url($country . '/account/logout') }}"><i class="fa fa-btn fa-sign-out"></i>  Logout</a></li>
                                 </ul>
                             </li>
                         @endif
@@ -86,8 +84,16 @@
                 </div>
             </div>
         </nav>
+        <div id="holder">
+        <div id="body">
     @yield('content')
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</div>
+
+    <div id="footer">
+        @include('layouts.footer')
+    </div> 
+</div>
+       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
@@ -97,6 +103,5 @@
     <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
-    
     </body>
 </html>

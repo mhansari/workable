@@ -1,4 +1,4 @@
-<?php namespace Modules\Seeker\Providers;
+<?php namespace Modules\seeker\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

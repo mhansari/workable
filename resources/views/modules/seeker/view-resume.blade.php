@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">
@@ -32,6 +33,12 @@
                 </div>
 <div class="panel-body ">
         <table width="100%">
+               <tr style="width:100%; padding:3px;text-align:center" class="print-padding">
+                <td>
+                    <img src="{{ URL::asset($profile->pp) }}">
+                   
+                </td>
+            </tr>
             <tr style="width:100%; padding:3px;text-align:center" class="print-padding print-bottom-border">
                 <td>
                     <h2>{{$profile->first_name}} {{$profile->last_name}}</h2>
@@ -157,7 +164,7 @@
                 <tr>
                     <td style="width:12%; padding:3px"></td>
                     <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        <i>As {{$e->position}} - {{$e->organization}} {{$e->city->Name}}, {{$e->country->Name}}</i>
+                        <i>As {{$e->position}} - {{$e->experiances->organization}} {{$e->experiances->city->Name}}, {{$e->experiances->country->Name}}</i>
                     </td>
                 </tr>
                 <tr>

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-use App\Countries;
+use App\Countries; 
 use App\States;
 use App\Cities;
 use App\SecurityQuestion;
@@ -33,30 +33,31 @@ class EmployersController extends Controller {
 
 		return view('employers::index', compact('countries','states', 'cities','questions'));
 	}
-	public function home()
+	public function home($country)
 	{
 		$user = SiteUsers::find(Auth::user()->id);
-		return view('employers::home')->with('user', $user);
+		return view('employers::home')->with('user', $user)->with('country',$country);
 	}
-	public function dashboard()
+	public function dashboard($country)
 	{
 		$user = SiteUsers::find(Auth::user()->id);
-		return view('employers::dashboard')->with('user', $user);
+		
+		return view('employers::dashboard')->with('user', $user)->with('country',$country);
 	}
-	public function register($id)
+	public function register($country,$id=0)
 	{
 		$countries = Countries::all()->lists('Name', 'id');
 		$questions = SecurityQuestion::all()->lists('Name', 'id');
 		$states = array();//States::all()->lists('Name', 'id');
 		$cities = array();//Cities::all()->lists('Name', 'id');
 
-		return view('employers::register', compact('countries','states', 'cities','questions'))->with('msg','')->with('ut',$id);
+		return view('employers::register', compact('countries','states', 'cities','questions'))->with('msg','')->with('ut',$id)->with('country',$country);
 	}
 
-	public function login()
+	public function login($country)
 	{
 	//	echo Auth::check();
-		return view('employers::login')->with('msg','');
+		return view('employers::login')->with('msg','')->with('country',$country);
 	}
 	public function logout($country)
 	{
@@ -102,7 +103,7 @@ class EmployersController extends Controller {
 					$user->question_id = $request->input('QuestionID');
 					$user->answer = $request->input('security_answer');
 					$user->newsletter = ($request->input('newsletter')==''?'0':'1');
-					$user->user_type = $request->input('ut');
+					//$user->user_type = $request->input('ut');
 					$code = str_random(10);
 					$user->code = $code;
 					$user->suspended = '0';
@@ -121,7 +122,7 @@ class EmployersController extends Controller {
 		
 	}
 
-	public function dologin(Request $request)
+	public function dologin(Request $request,$country)
 	{
 		//print_r($request);
 		$data = array(
@@ -146,7 +147,7 @@ class EmployersController extends Controller {
           		//return response()->json(['error' => 'Your account has suspended, contact support for more information']);
           	}
         //  	if($user->user_type==1){
-          		return Redirect::to('account/home');
+          		return Redirect::to($country . '/account/home');
           //	}
           	//else{
           		//return Redirect::to('seeker/home');
@@ -195,14 +196,14 @@ class EmployersController extends Controller {
 		}
 	}
 
-	public function show($id)
+	public function show($country,$id)
 	{
 		$c = App\Config::all()->keyBy('k');
 		$company = CompanyInfo::with(['city','country','categories','inctype','jobs'])->find($id);
 		//$latest = $company->jobs()->orderBy('created_at', 'desc')->get();
 		$latest = App\Jobs::where('user_id',$id)->where('active',1)->orderBy('created_at', 'desc')->limit(30)->get();
 
-		return view('employers::show')->with('company',$company)->with('latest',$latest)->with('config',$c);;
+		return view('employers::show')->with('company',$company)->with('latest',$latest)->with('config',$c)->with('country',$country);
 	}
 	
 }

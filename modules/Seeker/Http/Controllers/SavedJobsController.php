@@ -17,18 +17,22 @@ class SavedJobsController extends Controller {
 		if($obj ==null)
 		{
 			$obj = new \App\SavedJobs;
+			$obj->user_id=Auth::user()->id;
+			$obj->job_id=$request->get('job_id');
+			$obj->save();
+			echo $request->get('job_id');
 		}
-		$obj->user_id=Auth::user()->id;
-		$obj->job_id=$request->get('job_id');
-		$obj->save();
-		echo $request->get('job_id');
+		else{
+			echo -1;
+		}
+		
 	}
 
-	public function delete($id)
+	public function delete($country, $id)
 	{
-		$obj = \App\SavedJobs::where('user_id', Auth::user()->id)->where('job_id', $id);
+		$obj = \App\SavedJobs::where('user_id', Auth::user()->id)->where('id', $id);
 		$obj->delete();
 
-		return Redirect::to('seekers/my-saved-jobs');
+		return Redirect::to($country . '/seekers/my-saved-jobs');
 	}
 }

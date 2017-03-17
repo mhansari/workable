@@ -1,17 +1,12 @@
 <?php $__env->startSection('content'); ?>
 <div class="container">
-    <div class="col-md-12 text-center">
-		<ul class="nav nav-pills">
-		  <li class="active"><a href="<?php echo e(asset('seekers/dashboard')); ?>">Job Seekers</a></li>
-		  <li><a href="<?php echo e(asset('employers/dashboard')); ?>">Employers</a></li>
-		</ul>
-    </div>
+<?php echo $__env->make('seeker::dashboard-links',array('country'=>$country), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
     <div class="row">
         <div class="col-md-12 list-col ">
            <div class="panel panel-default">
                 <div class="panel-heading">
                
-      <?php echo $__env->make('seeker::nav', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+      <?php echo $__env->make('seeker::nav',array('country'=>$country), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
   </div>
 </nav></div>
                 <div class="panel-body ">
@@ -44,13 +39,13 @@ $(document).ready(function() {
   var t =   $('#example').DataTable({
         processing: true,
         serverSide: false,
-        ajax: "<?php echo e(route('savedajax')); ?>",
+        ajax: "<?php echo e(route('savedjobsajax', array('country'=>$country))); ?>",
         columns: [
             { data: null, name: 'sno', 'orderable': true, 'searchable': false },
             { data: null, render: function ( data, type, row ) {
                 // Combine the first and last names into a single table field
                
-                return '<a href="<?php echo e(asset("jobs/")); ?>/' +data.job_id+'">'+data.job_title  +'</a>';
+                return '<a href="<?php echo e(asset($country . "/jobs/")); ?>/' +data.job_id+'">'+data.job_title  +'</a>';
             } },
             { data: null, render: function ( data, type, row ) {
                 return data.company_name;
