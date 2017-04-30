@@ -2,18 +2,21 @@
 
 use Pingpong\Modules\Routing\Controller;
 use Auth;
+use DB;
 use Yajra\Datatables\Datatables;
 class SeekerController extends Controller {
 	
 	public function dashboard($country)
 	{
-		return view('seeker::dashboard')->with('country',$country);
+
+		$interviews = \App\Interview::with(['jobs','vanue'])->where('applicant_id','=',Auth::user()->id)->get();
+		return view('seeker::dashboard')->with('country',$country)->with('interviews',$interviews);
 	}
 	public function myresumes($country)
 	{
 		return view('seeker::myresumes')->with('country',$country);
 	}
-public function myResumeAjax()
+    public function myResumeAjax()
 	{
 		$j = \App\Resume::with(['applications'])->where('user_id', '=',Auth::user()->id)->get();	
 		return Datatables::of($j)->addColumn('Actions',function($model){

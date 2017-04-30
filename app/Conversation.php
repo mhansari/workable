@@ -15,9 +15,14 @@ class Conversation extends Model
 		return $count;
 	}
 
-	public function to()
+	public function childs()
    {
-        return $this->hasMany('App\User', 'id', 'to');
+        return $this->hasMany('App\Conversation', 'parent_id', 'id');
+    }
+
+	public function sender()
+   {
+        return $this->hasOne('App\User', 'id', 'to');
     }
 
     public function from()

@@ -32,7 +32,17 @@ class ConversationController extends Controller
 
   public function inbox($country)
   {
-    $to = \App\Conversation::with(['to'])->where('from',Auth::user()->id)->orderBy('updated_at','desc')->get();
-   return view('messages')->with('country',$country)->with('to',$to);
+    $to = \App\Conversation::with(['sender'])->where('from',Auth::user()->id)->where('parent_id',0)->orderBy('updated_at','desc')->get();
+$obj = \App\Conversation::where('parent_id', '=', 0)->where('id', '=', $to[0]->id)->get();
+ 
+  return view('messages')->with('obj',$obj)->with('country',$country)->with('to',$to);
   }
+
+  public function thread($country, $id)
+  {
+    $obj = \App\Conversation::where('parent_id', '=', 0)->where('id', '=', $id)->get();
+    return view('messages')->with('obj',$obj)->with('country',$country);
+  }
+
+
 }

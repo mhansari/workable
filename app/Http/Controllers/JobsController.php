@@ -20,9 +20,25 @@ use App\Config;
 use App\JobCities;
 use Yajra\Datatables\Datatables;
 use Session;
+use Applied;
 class JobsController extends Controller
 {
+	public function applicantsajax()
+	{
 
+		$sql = 'select a.resume_id, a.created_at, a.id as application_id,j.job_title, j.id as job_id, r.first_name, r.last_name, r.user_id from applied as a inner join (select user_id, first_name, last_name , resume_id from resume_seeker_profile) as r on r.resume_id = a.resume_id inner join (select user_id,id, job_title from jobs) as j on j.id = a.job_id where j.user_id =' . Auth::user()->id ;
+
+
+
+
+$j =DB::table(DB::raw("($sql) as p"))->get();
+
+$j = collect($j);
+
+
+       return Datatables::of($j)
+        ->make(true);
+	}
 	public function applications($country, $id, $status)
 	{	
 		$where_status = \App\ApplicationStatus::where('name', '=',$status)->first();
@@ -36,7 +52,7 @@ class JobsController extends Controller
 			$candidates += array($obj[$i]->id => $obj[$i]->personal_info[0]->first_name);
 		}
 
-		$status = \App\ApplicationStatus::with('applications')->where('active', '=',1)->get();
+		$status = \App\ApplicationStatus::with(['applications'])->where('active', '=',1)->get();
 		$status_ddl = \App\ApplicationStatus::where('active', '=',1)->lists('name','id');
 		$degree = \App\DegreeLevels::where('active', 1)->lists('name','id');
 		$currencies = \App\Currencies::where('active', 1)->lists('name', 'id');
@@ -396,6 +412,7 @@ $j = \App\Jobs::with(['applications','users','benefits','experiance','adtype','j
 	    $j = \App\SavedJobs::join('jobs','jobs.id','=', 'saved_jobs.job_id')
 	    					->join('company_info','company_info.user_id','=', 'jobs.user_id')
 	    					->select('saved_jobs.id','jobs.job_title','jobs.id as job_id','company_info.company_name','jobs.created_at')
+	    					->where('saved_jobs.user_id','=', Auth::user()->id)
 	    					->get();
 
 	  //  var_dump($j);

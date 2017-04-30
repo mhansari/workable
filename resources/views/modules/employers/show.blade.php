@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.app1')
 
 @section('content')
-<div class="container">
+<div class="">
     <div class="photo-cover" id="cover" >
         <img src="{{ asset($company->company_cover) }}" class="img-responsive" />
     </div>
@@ -45,23 +45,26 @@
                         @foreach($latest as $job)
                     <div class="panel panel-default"><div class="panel-body ">
                          <ul class="list-group box-search">
-                            <li class="col-md-10 list-group-item result "><a href="{{asset('/jobs/' . $job->id)}}"><strong>{{ $job->job_title }}</strong></a></li>
+                            <li class="col-md-10 list-group-item result "><a href="{{ asset($country .'/jobs/' . $job->id) }}"><strong>{{ $job->job_title }}</strong></a></li>
                             <li class="col-md-2 list-group-item result text-right">
                                     @if(floor((time() - strtotime($job->created_at)) /  (60 * 60 * 24))<=$config['SHOW_NEW_OLD_DAYS']->v)
                                         <span class="label label-default">New</span>
                                     @endif
                                 </li>
+                            <li class="col-md-12 list-group-item result">
+                                <a href="{{asset($country .'/company/'.$job->user_id)}}" title="Full-Time Jobs in Pakistan">{{$job->companies->company_name}}</a>
+                            </li>
                             <li class="col-md-3 list-group-item result result-border">
                                 <div class="text-muted">Job Type</div>
-                                <a href="/jobs/pakistan/full-time/" title="{{ $job->jobtype['name'] }} Jobs in {{$job->countries['name']}}">{{ $job->jobtype['name'] }}</a>
+                                <a href="{{asset($country .'/jobs/job-type/'. $job->jobtype['seo'] )}}" title="{{$job->jobtype['name'] }} Jobs in Pakistan">{{ $job->jobtype['name'] }}</a>
                             </li>
                             <li class="col-md-3 list-group-item result result-border">
                                 <div class="text-muted">Shift</div>
-                                <a href="/jobs/pakistan/full-time/" title="{{ $job->shift['name'] }} Jobs in {{$job->countries['name']}}">{{ $job->shift['name'] }}</a>
+                                <a href="{{asset($country .'/jobs/shift/'. $job->shift['seo'] )}}" title="{{ $job->shift['name'] }} Jobs in Pakistan">{{ $job->shift['name'] }}</a>
                             </li>
                             <li class="col-md-3 list-group-item result result-border">
                                 <div class="text-muted">Experiance</div>
-                                <a href="/jobs/pakistan/full-time/" title="{{ $job->experiance['name'] }} Jobs in {{$job->countries['name']}}">{{ $job->experiance['name'] }}</a>
+                                <a href="{{asset($country .'/jobs/experiance/'. $job->experiance['seo'] )}}" title="{{ $job->experiance['name'] }} Jobs in Pakistan">{{ $job->experiance['name'] }}</a>
                             </li>
                             <li class="col-md-3 list-group-item result">
                                 <div class="text-muted">Salary</div>

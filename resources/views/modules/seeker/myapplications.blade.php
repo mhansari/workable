@@ -1,16 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="">
 @include('seeker::dashboard-links',array('country'=>$country))
+<div class="row">
+        <div class="col-md-12 list-col ">
+            @include('seeker::nav',array('country'=>$country))
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12 list-col ">
            <div class="panel panel-default">
                 <div class="panel-heading">
                
-      @include('seeker::nav',array('country'=>$country))
+      <h4>My Applications</h4>
   </div>
-</nav></div>
+
                 <div class="panel-body ">
                     <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>

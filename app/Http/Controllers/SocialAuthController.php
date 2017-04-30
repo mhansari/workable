@@ -10,12 +10,12 @@ use Socialite;
 use App\SocialAccountService;
 class SocialAuthController extends Controller
 {
-    public function redirect($provider)
+    public function redirect($country,$provider)
 	{
 		return Socialite::driver($provider)->redirect();
 	}
 
-    public function callback(SocialAccountService $service, $provider)
+    public function callback(SocialAccountService $service,$country, $provider)
     {
       
         $user = $service->createOrGetUser(Socialite::driver($provider));

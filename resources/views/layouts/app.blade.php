@@ -13,7 +13,7 @@
         <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
         {{-- <link href="{{ URL::asset('css/app.css') }}" rel="stylesheet"> --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-         <script
+        <script
           src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
           integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
           crossorigin="anonymous"></script>
@@ -29,6 +29,8 @@
         <link href="{{ asset('css/bootstrap-treeview.min.css')}}" rel="stylesheet">
         <script src="{{ asset('js/bootstrap-treeview.min.js')}}"></script>
         <script src="{{asset('/vendor/unisharp/laravel-ckeditor/ckeditor.js')}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js"></script>
+        <link href="{{ URL::asset('css/tabs.css') }}" rel="stylesheet">
         <style>
             body {
             font-family: 'Lato';
@@ -60,7 +62,8 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <!--li><a href="{{ url('/home') }}">Home</a></li-->
+                        <li class="{{ strpos(\Route::getCurrentRoute()->getPath(),'seekers')?'active c':''}}"><a href="{{ asset($country . '/seekers/dashboard') }}">Job Seekers</a></li>
+                        <li  class="{{ strpos(\Route::getCurrentRoute()->getPath(),'employers')?'active c':''}}"><a href="{{ asset($country . '/employers/dashboard') }}">Employers</a></li>
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
@@ -84,16 +87,26 @@
                 </div>
             </div>
         </nav>
-        <div id="holder">
-        <div id="body">
-    @yield('content')
-</div>
 
-    <div id="footer">
-        @include('layouts.footer')
-    </div> 
-</div>
-       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <div id="holder">
+            <div id="body">
+                <div class="container">
+                    <div class="row">                 
+                        <div class="col-md-10">
+                            @yield('content')
+                        </div>                
+                        <div class="col-md-2">
+                            google
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="footer">
+                @include('layouts.footer')
+            </div> 
+        </div>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>

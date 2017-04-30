@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="">
     <div class="row">
-        <div class="col-md-2 list-col">
+     <div class="col-md-12">
+        <div class="col-md-3 list-col">
            <div class="panel panel-default">
                 <div class="panel-heading">Search</div>
                 <div class="panel-body search-ul-padding">
@@ -12,15 +13,15 @@
                         <li class="col-sm-12 list-group-item form-list">{!! Form::select('category_id', $obj2, null, ['id'=>'category_id','class'=>'form-control','placeholder'=>'Category']) !!}</li>
                         <li class="col-sm-12 list-group-item form-list">{!! Form::select('experiance_id', $el, null, ['id'=>'experiance_id','class'=>'form-control','placeholder'=>'Experiance']) !!}</li>
                         
-                        <li class="col-sm-6 list-group-item form-list form-sm search-li-padding-right">{!! Form::input('text','MinS', null, ['id'=>'MinS','class'=>'form-control search-exp-text-box','placeholder'=>'Min Sal']) !!}</li>
-                        <li class="col-sm-6 list-group-item form-list form-sm search-li-padding-left">{!! Form::input('text','MaxS',  null, ['id'=>'MaxS','class'=>'form-control search-exp-text-box','placeholder'=>'Max Sal']) !!}</li>                       
+                        <li class="col-sm-6 list-group-item form-list form-sm search-li-padding-right">{!! Form::input('text','MinS', null, ['id'=>'MinS','class'=>'form-control col-md-6','placeholder'=>'Min Salary']) !!}</li>
+                        <li class="col-sm-6 list-group-item form-list form-sm search-li-padding-left">{!! Form::input('text','MaxS',  null, ['id'=>'MaxS','class'=>'form-control col-md-6','placeholder'=>'Max Salary']) !!}</li>                       
                         <li class="col-sm-12 list-group-item form-list text-center"><button type="submit" id="submit" class="btn btn-primary">Search</button></li>
                     </ul>
                     {!! Form::close() !!}
                 </div>
             </div>
         </div> 
-         <div class="col-md-7 list-col">
+         <div class="col-md-9 list-col">
            <div class="panel panel-default">
                 <div class="panel-heading"><h4>Search Jobs in {{ $cntry->Name }} </h4></div>
                 <div class="panel-body ">
@@ -84,13 +85,6 @@
                 </div>
             </div>
         </div>
-         <div class="col-md-3 list-col">
-           <div class="panel panel-default">
-     
-                <div class="panel-body">
-                 
-                </div>
-            </div>
         </div>
     </div>
 </div>

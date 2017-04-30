@@ -162,6 +162,7 @@ return [
 Unisharp\Ckeditor\ServiceProvider::class,
 Barryvdh\DomPDF\ServiceProvider::class,
 Laravel\Socialite\SocialiteServiceProvider::class,
+Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
     ],
 
     /*
@@ -215,6 +216,7 @@ Laravel\Socialite\SocialiteServiceProvider::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        
 
     ],
 

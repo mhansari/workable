@@ -35,6 +35,34 @@ class CompanyInfoController extends Controller {
 		$ci = CompanyInfo::where('user_id',Auth::user()->id)->get();
 		return view('employers::update_company_info', compact('countries','states', 'cities','categories','inc'))->with('ci',$ci)->with('country',$country);
 	}
+
+	public function changePassword($country)
+	{
+		$countries = Countries::where('active',1)->orderBy('name')->lists('Name', 'id');
+		$categories = Categories::where('active',1)->orderBy('name')->lists('name','id');
+		$inc = IncorporationType::where('active',1)->orderBy('name')->lists('name','id');
+		$states = array();//States::all()->lists('Name', 'id');
+		$cities = array();//Cities::all()->lists('Name', 'id');
+		$ci = CompanyInfo::where('user_id',Auth::user()->id)->get();
+		return view('employers::change_password', compact('countries','states', 'cities','categories','inc'))->with('ci',$ci)->with('country',$country);
+	}
+
+	public function updatePassword($country,Request $req)
+	{
+		$obj = \App\User::find(Auth::user()->id);
+		
+		if(!Hash::check($req->input('opwd'), $obj->password)){
+			Session::flash('flash_message', 'Invalid Old Password');
+	    	return redirect()->back();
+    	}
+    	else
+    	{
+    		$obj->password = Hash::make($req->input('cpwd'));
+    		$obj->save();
+    		Session::flash('flash_message', 'Password successfully changed.');
+	    	return redirect()->back();
+    	}
+	}
 	public function save(Request $request)
 	{
 		$obj = CompanyInfo::find(Auth::user()->id);

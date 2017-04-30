@@ -1,13 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="">
 @include('seeker::dashboard-links',array('country'=>$country))
+<div class="row">
+    <div class="col-md-12 list-col ">
+        @include('employers::nav', array('country'=>$country))
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-12 list-col ">
       <div class="panel panel-default">
         <div class="panel-heading">
-            @include('employers::nav', array('country'=>$country))
+          <h4>Post Job</h4>
         </div>
         
           <div class="panel-body ">
@@ -172,7 +177,7 @@ function loadStates(CountryId, StateId)
   var s = (StateId+'').split(",");
 
    if(CountryId >0 && CountryId != ""){
-       $.get("{{asset('/admin/states/getbycountry/')}}/" + CountryId, function(data){
+       $.get("{{asset($country . '/admin/states/getbycountry/')}}/" + CountryId, function(data){
             $('#StateID').empty();
             $('#StateID').append('<option value>Please select State/Province</option>');
             $('#CityID').empty();
@@ -201,7 +206,7 @@ function loadCities(StateId, CityId)
 {
 
   var s = (CityId+'').split(",");
-  $.get("{{asset('/admin/cities/getbystate/')}}/" + StateId, function(data){
+  $.get("{{asset($country . '/admin/cities/getbystate/')}}/" + StateId, function(data){
     $.each(data, function(index, stateObj){
       //alert(stateObj.Name);
       $('#CityID').append('<option value="'+ stateObj.id+'">'+ stateObj.Name + '</option>');
@@ -243,7 +248,7 @@ loadCities("{{$job->state_ids}}","{{$job->city_ids}}");
     enableCaseInsensitiveFiltering:true,
         onChange : function(option, checked) {
             if($(option).val() >0 && $(option).val() != "" && checked){
-              $.get("{{asset('/admin/cities/getbystate/')}}/" + $(option).val(), function(data){
+              $.get("{{asset($country . '/admin/cities/getbystate/')}}/" + $(option).val(), function(data){
                  $.each(data, function(index, stateObj){
                      $('#CityID').append('<option value="'+ stateObj.id+'">'+ stateObj.Name + '</option>');
                  });
@@ -251,7 +256,7 @@ loadCities("{{$job->state_ids}}","{{$job->city_ids}}");
               });
             }
             if($(option).val() >0 && $(option).val() != "" && (!checked)){
-              $.get("{{asset('/admin/cities/getbystate/')}}/" + $(option).val(), function(data){
+              $.get("{{asset($country . '/admin/cities/getbystate/')}}/" + $(option).val(), function(data){
                  $.each(data, function(index, stateObj){
                       $("#CityID option[value='"+ stateObj.id+ "']").remove();
                  });

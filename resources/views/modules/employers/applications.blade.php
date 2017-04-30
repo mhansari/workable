@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="">
 @include('seeker::dashboard-links',array('country'=>$country))
   <div class="row">
     <div class="col-md-12 list-col ">
@@ -13,7 +13,7 @@
       <div class="panel panel-default">
         <div class="panel-body status-menu-padding">
           @foreach($status as $s)
-          <div class="col-md-9 status-menu-item-padding">
+          <div class="col-md-8 status-menu-item-padding">
           <a href="{{strtolower($s->name)}}">{{$s->name}}</a>
           <br />
           </div>
@@ -23,10 +23,14 @@
           @endforeach
         </div>
       </div>
+  
+     
+      
     </div>
-    <div class="col-md-8">
+    <div class="col-md-10">
       <div class="panel panel-default">
           <div class="panel-heading">
+
             <h4>
              Applications for {{$job_title->job_title}}
             </h4>
@@ -42,6 +46,11 @@
           <div class="alert alert-danger">{{ $error }}</div>
         @endforeach
       @endif
+
+
+
+
+
       @if($obj->count()<=0)
 No records returned.
       @else
@@ -55,13 +64,80 @@ No records returned.
             <button type="button" value="5" class="btn btn-primary btn-sm btn-toolbar-margin">Offered</button>
             <button type="button" value="6" class="btn btn-primary btn-sm btn-toolbar-margin">Hired</button>
             <button type="button" value="7" class="btn btn-primary btn-sm btn-toolbar-margin">Junk</button>
-            <button type="button" value="msg" class="btn btn-primary btn-sm btn-toolbar-margin">Message</button>
+            <!--button type="button" value="msg" class="btn btn-primary btn-sm btn-toolbar-margin">Message</button-->
             <!--button type="button" value="interview" class="btn btn-primary btn-sm btn-toolbar-margin" id="interview">Interview</button-->
+            <a href="javascript:;" class="fil" id="filter2">Filter</a>
           </div>
         </div>
         <br/>
         <br/> 
         <center>
+
+         <div class="panel panel-default fi" id="f" style="display:none">
+          <div class="panel-body status-menu-padding">
+
+          {{ Form::open(array('url'=> route('schedule-interview',array('country'=>$country,'id'=>$id)) ,'class'=>'form-vertical','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
+         
+          <div class="col-md-6 status-menu-item-padding">
+            {{Form::input('text', 'keywords', '',['id'=>'keywords', 'placeholder'=>'Keywords', 'class'=>'form-control'])}}
+          </div>
+          <div class="col-md-6 status-menu-item-padding">  
+            {{Form::input('text', 'name', '',['id'=>'name', 'placeholder'=>'Name',  'class'=>'form-control'])}}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">  
+            {!! Form::select('ddl_degree', $degree, null, ['id'=>'ddl_degree','class'=>'form-control','placeholder'=>'Degree']) !!}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">
+            {{Form::input('text', 'institute', '',['id'=>'institute', 'placeholder'=>'Institute','class'=>'form-control'])}}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">
+            {{Form::input('text', 'jobtitle', '',['id'=>'jobtitle', 'placeholder'=>'Job Title','class'=>'form-control'])}}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">
+            {{Form::input('text', 'org', '',['id'=>'org', 'placeholder'=>'Organization','class'=>'form-control'])}}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">
+            {{Form::input('text', 'salary_min', '',['id'=>'salary_min', 'placeholder'=>'Salary Min','class'=>'form-control'])}}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">
+            {{Form::input('text', 'salary_max', '',['id'=>'salary_max', 'placeholder'=>'Salary Max','class'=>'form-control'])}}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">
+            {!! Form::select('ddl_currency', $currencies, null, ['id'=>'ddl_currency','class'=>'form-control','placeholder'=>'Currency']) !!}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">  
+            {!! Form::select('gender', array('M'=>'Male','F'=>'Female'), null, ['id'=>'gender','class'=>'form-control','placeholder'=>'Gender']) !!}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">
+            {{Form::input('text', 'exp_min', '',['id'=>'exp_min', 'placeholder'=>'Experiance Min','class'=>'form-control'])}}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">
+            {{Form::input('text', 'exp_max', '',['id'=>'exp_max', 'placeholder'=>'Experiance Max','class'=>'form-control'])}}
+          </div>
+          <div class="col-md-6 status-menu-item-padding">  
+            {!! Form::select('marital_status', $maritalstatus, null, ['id'=>'marital_status','class'=>'form-control','placeholder'=>'Marital Status']) !!}
+            </div>
+          <div class="col-md-3 status-menu-item-padding">
+            {{Form::input('text', 'skills', '',['id'=>'skills', 'placeholder'=>'Skills','class'=>'form-control'])}}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">  
+            {{Form::input('text', 'age_min', '',['id'=>'age_min', 'placeholder'=>'Age Min','class'=>'form-control'])}}
+          </div>
+          <div class="col-md-3 status-menu-item-padding">
+            {{Form::input('text', 'age_max', '',['id'=>'age_max', 'placeholder'=>'Age Max','class'=>'form-control'])}}
+          </div>
+          
+          
+             <div class="col-md-3 status-menu-item-padding">
+            {!! Form::select('ddl_status', $status_ddl, null, ['data-error'=>'Required', 'id'=>'ddl_status','class'=>'form-control','placeholder'=>'Status']) !!}
+          </div>
+ <div class="col-md-12 status-menu-item-padding text-center">  
+            <button type="button" value="7" class="btn btn-primary btn-sm btn-toolbar-margin">Filter</button>
+        </div>
+          {!! Form::token() !!} 
+          {{Form::close()}}
+         </div>
+        </div>
         {{ Form::open(array('class'=>'form-vertical','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
           <div class="col-md-12" style="display:none" id="msg">
             <div class="form-group col-md-6 col-md-offset-3">
@@ -175,73 +251,7 @@ No records returned.
     </div>
       </div>
     </div>
-    <div class="col-md-2">
-      <div class="panel panel-default">
-          <div class="panel-body status-menu-padding">
-
-          {{ Form::open(array('url'=> route('schedule-interview',array('country'=>$country,'id'=>$id)) ,'class'=>'form-vertical','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
-          <div class="col-md-12 status-menu-item-padding">
-            {!! Form::select('ddl_status', $status_ddl, null, ['data-error'=>'Required', 'id'=>'ddl_status','class'=>'form-control','placeholder'=>'Status']) !!}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {{Form::input('text', 'keywords', '',['id'=>'keywords', 'placeholder'=>'Keywords', 'class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">  
-            {{Form::input('text', 'name', '',['id'=>'name', 'placeholder'=>'Name',  'class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">  
-            {!! Form::select('ddl_degree', $degree, null, ['id'=>'ddl_degree','class'=>'form-control','placeholder'=>'Degree']) !!}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {{Form::input('text', 'degree', '',['id'=>'degree', 'placeholder'=>'Degree','class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {{Form::input('text', 'institute', '',['id'=>'institute', 'placeholder'=>'Institute','class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {{Form::input('text', 'jobtitle', '',['id'=>'jobtitle', 'placeholder'=>'Job Title','class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {{Form::input('text', 'org', '',['id'=>'org', 'placeholder'=>'Organization','class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {{Form::input('text', 'salary_min', '',['id'=>'salary_min', 'placeholder'=>'Salary Min','class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {{Form::input('text', 'salary_max', '',['id'=>'salary_max', 'placeholder'=>'Salary Max','class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {!! Form::select('ddl_currency', $currencies, null, ['id'=>'ddl_currency','class'=>'form-control','placeholder'=>'Currency']) !!}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {{Form::input('text', 'exp_min', '',['id'=>'exp_min', 'placeholder'=>'Experiance Min','class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {{Form::input('text', 'exp_max', '',['id'=>'exp_max', 'placeholder'=>'Experiance Max','class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {{Form::input('text', 'skills', '',['id'=>'skills', 'placeholder'=>'Skills','class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">  
-            {{Form::input('text', 'age_min', '',['id'=>'age_min', 'placeholder'=>'Age Min','class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">
-            {{Form::input('text', 'age_max', '',['id'=>'age_max', 'placeholder'=>'Age Max','class'=>'form-control'])}}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">  
-            {!! Form::select('gender', array('M'=>'Male','F'=>'Female'), null, ['id'=>'gender','class'=>'form-control','placeholder'=>'Gender']) !!}
-          </div>
-          <div class="col-md-12 status-menu-item-padding">  
-            {!! Form::select('marital_status', $maritalstatus, null, ['id'=>'marital_status','class'=>'form-control','placeholder'=>'Marital Status']) !!}
-            </div>
- <div class="col-md-12 status-menu-item-padding text-center">  
-            <button type="button" value="7" class="btn btn-primary btn-sm btn-toolbar-margin">Filter</button>
-        </div>
-          {!! Form::token() !!} 
-          {{Form::close()}}
-         </div>
-        </div>
-      </div>
+    
   </div>
 </div>
 <script>
@@ -266,7 +276,9 @@ $("#select_all").change(function(){  //"select all" change
     });
     $('#candidates').multiselect('refresh'); 
 });
-
+$('.fil').click(function(){
+    $( "#f" ).slideToggle( "slow");
+});
 $('.btn-toolbar-margin').click(function() {
 
   if(this.value == 2)
@@ -325,16 +337,7 @@ $('.btn-toolbar-margin').click(function() {
     ajax(jsonString,this.value,$(this).text());
   }
 
-  else if(this.value == 'msg')
-  {
-
-    $( "#msg" ).slideToggle( "slow", function() {
-      // Animation complete.
-    });
-    $( "#int" ).hide();
-   // $('#suc').hide();
-    $('#candidates').multiselect('rebuild'); 
-  }
+  
   else if(this.value == 'interview')
   {
 $( "#msg" ).hide();

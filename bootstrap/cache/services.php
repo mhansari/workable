@@ -34,6 +34,7 @@
     30 => 'Unisharp\\Ckeditor\\ServiceProvider',
     31 => 'Barryvdh\\DomPDF\\ServiceProvider',
     32 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+    33 => 'Fx3costa\\LaravelChartJs\\Providers\\ChartjsServiceProvider',
   ),
   'eager' => 
   array (
@@ -56,6 +57,7 @@
     16 => 'Intervention\\Image\\ImageServiceProvider',
     17 => 'Unisharp\\Ckeditor\\ServiceProvider',
     18 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    19 => 'Fx3costa\\LaravelChartJs\\Providers\\ChartjsServiceProvider',
   ),
   'deferred' => 
   array (

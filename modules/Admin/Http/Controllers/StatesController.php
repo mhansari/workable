@@ -19,10 +19,10 @@ class StatesController extends Controller {
 		return view('admin::states');
 	}
 
-	public function getByCountry($cid)
+	public function getByCountry($country='pk',$cid)
 	{
-			$states = States::select('Name','id')->where('CountryID', '=', $cid)->orderBy('Name','asc')->get();
-			return $states;
+		$states = \App\States::select('Name','id')->where('CountryID', '=', $cid)->orderBy('Name','asc')->get();
+		return $states;
 	}
 	public function allStates()
     {

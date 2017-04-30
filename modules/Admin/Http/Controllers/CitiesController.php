@@ -61,7 +61,7 @@ $states = States::all()->lists('Name', 'id');
 
        return view('admin::create_city', compact('countries'),compact('states'));
 	}
-public function getByState($sid)
+public function getByState($country ='pk',$sid)
     {
             $id = explode(",",$sid);            
             $cities = Cities::select('Name','id')->whereIn('StateID', $id)->orderBy('Name','asc')->get();

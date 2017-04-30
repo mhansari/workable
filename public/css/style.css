@@ -6,10 +6,25 @@ html,body{
     height: 100%
 
 }
+.navbar-nav>.active>.c>a, .navbar-default .navbar-nav>.active>.c>a:focus, .navbar-default .navbar-nav>.active>c>a:hover {
+    color: #ec8000;
+    background-color: #f7e5cf;
+}
 .appointment-cell-alignment
 {
         text-align: center;
     
+}
+.tab-bg{
+    background-color: #ec8000 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+.text-success {
+    color: #009688!important;
+}
+.text-warning {
+    color: #ff9800!important;
 }
 .appointment-cell-vertical-alignment
 {
@@ -411,3 +426,18 @@ overflow-x: hidden;
         padding-left: 0px;
         padding-right: 0px;
 }
+
+.time-font-small
+{
+    font-size: xx-small;
+
+}
+.conversation-msg{
+    width: 100%;
+    height: 100px !important;
+}
+
+.form-msg{
+    background-color: #fff;
+}
+

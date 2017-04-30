@@ -1,18 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="">
     @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
-        <div class="col-md-3 list-col ">
-           <div class="panel panel-default">
-                <div class="panel-heading"><h4>Settings</h4></div>
-                <div class="panel-body ">
-                    @include('employers::left_nav')
-                </div>
-            </div>
-        </div>
-        <div class="col-md-9 list-col ">
+        
+        <div class="col-md-12 list-col ">
+        @include('employers::nav',array('country'=>$country))
            <div class="panel panel-default">
                 <div class="panel-heading"><h4>Update Cover Image</h4></div>
                 <div class="panel-body ">

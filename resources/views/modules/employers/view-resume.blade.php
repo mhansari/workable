@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="">
     @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
        
-        <div class="col-md-9 list-col ">
+        <div class="col-md-12 list-col ">
+        @include('employers::nav',array('country'=>$country))
            <div class="panel panel-default">
                 <div class="panel-heading">
                     <table style="width:100%">
@@ -425,14 +426,6 @@
          </div>
 
 </div>
-<div class="col-md-3 list-col ">
-           <div class="panel panel-default">
-                <div class="panel-body ">
-                    Google Ads.
-                </div>
-            </div>
-        </div>
- </div>
 
 </div>
 <script>

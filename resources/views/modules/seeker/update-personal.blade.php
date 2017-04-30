@@ -2,8 +2,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="">
     @include('seeker::dashboard-links',array('country'=>$country))
+    <div class="row">
+        <div class="col-md-12 list-col ">
+            @include('seeker::nav',array('country'=>$country))
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">
@@ -168,13 +173,7 @@
                         {{Form::input('text', 'website', $profile->website,['id'=>'website', 'placeholder'=>'http://', 'class'=>'input-width form-control'])}}
                         <div class="help-block with-errors"></div>
                     </div> 
-                    <div class="form-group">                               
-                        <label for="logo" class="col-md-3 control-label">Select Picture</label>
-                        <div class="col-md-9" style=" padding-left: inherit;">
-                            {{Form::file('logo', ['data-show-remove'=>'false','data-show-upload'=>'false','data-allowed-file-extensions'=>'["png", "gif","jpeg","jpg"]','data-show-preview'=>'false','data-validate'=>'true','data-error'=>'Required', 'placeholder'=>'Select Logo', 'required'=>'required', 'class'=>'input-width form-control'])}}
-                        </div>
-                        <div class="help-block with-errors error-label col-md-3"></div>
-                    </div>
+                   
                     <input type="hidden" value="{{$resumeid}}" name="resume_id" id="resume_id" />
                     {!! Form::token() !!}
                     <br/><br/>

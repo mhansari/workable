@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
 @section('content')
-<div class="container">
+<div class="">
     <div class="row">
-        <div class="col-md-6 list-col col-md-offset-3">
+        <div class="col-md-12">
            <div class="panel panel-default">
                 <div class="panel-heading"><h4>Login
                 </h4></div>
@@ -16,9 +16,6 @@
                     
                    {{ Form::open(array('url'=> route('emp.dologin',array('country'=>$country)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
                     <div class="col-md-12">
- 
-                       
-                <div class="col-md-12">
                         <div class="col-md-12">
                             <div class="form-group">
                                
@@ -59,8 +56,7 @@
                     {{Form::close()}}
                 </div>
             </div>
-        </div>
-         
+        </div>         
     </div>
 </div>
 

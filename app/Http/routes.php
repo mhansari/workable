@@ -13,8 +13,10 @@ DB::enableQueryLog();
 */
 use Illuminate\Support\Facades\Redirect;
 Route::group(['middleware' => 'web'], function () {
-	Route::get('/account/redirect/{provider}', '\App\Http\Controllers\SocialAuthController@redirect');
-	Route::get('/account/callback/{provider}', '\App\Http\Controllers\SocialAuthController@callback');
+Route::get('/{country}/jobs/applicantsajax','\App\Http\Controllers\JobsController@applicantsajax');
+
+	Route::get('/{country}/account/redirect/{provider}', '\App\Http\Controllers\SocialAuthController@redirect');
+	Route::get('/{country}/account/callback/{provider}', '\App\Http\Controllers\SocialAuthController@callback');
 	Route::get('/{country}/account/logout', '\Modules\Employers\Http\Controllers\EmployersController@logout');
 	Route::get('/{country}/company/{id}', '\Modules\Employers\Http\Controllers\EmployersController@show');
 	Route::post('/{country}/jobs/search', array('as'=>'search','uses'=>'\App\Http\Controllers\JobsController@search'));
@@ -45,8 +47,8 @@ Route::group(['middleware' => 'web'], function () {
 	//States
 	Route::get('/admin/states','\Modules\Admin\Http\Controllers\StatesController@index');
 	Route::get('/admin/states/all','\Modules\Admin\Http\Controllers\StatesController@allStates');
-	Route::get('/admin/states/getbycountry/{cid}',array('as'=>'states.getbycountry', 'uses'=>'\Modules\Admin\Http\Controllers\StatesController@getByCountry'));
-	Route::get('/admin/cities/getbystate/{cid}',array('as'=>'cities.getbystate', 'uses'=>'\Modules\Admin\Http\Controllers\CitiesController@getByState'));
+	Route::get('/{country?}/admin/states/getbycountry/{cid}',array('as'=>'states.getbycountry', 'uses'=>'\Modules\Admin\Http\Controllers\StatesController@getByCountry'));
+	Route::get('/{country?}/admin/cities/getbystate/{cid}',array('as'=>'cities.getbystate', 'uses'=>'\Modules\Admin\Http\Controllers\CitiesController@getByState'));
 	Route::get('/admin/states/create','\Modules\Admin\Http\Controllers\StatesController@create');
 	Route::post('/admin/states/create','\Modules\Admin\Http\Controllers\StatesController@create');
 	Route::get('/admin/states/edit/{id}','\Modules\Admin\Http\Controllers\StatesController@edit');
@@ -184,6 +186,27 @@ Route::group(['middleware' => 'web'], function () {
 });
 
 Route::group(['middleware' => ['web','auth']], function () {
+
+	//Seeker - Reschedule Interview 
+	Route::get('/{country}/seekers/interview/confirm/{id}', array('as'=>'confirm','uses'=>'\Modules\Employers\Http\Controllers\InterviewsController@confirm'));
+
+	//Employers - Reschedule Interview 
+	Route::post('/{country}/employers/interview/reschedule/update/{id}', array('as'=>'emp.reschedule.update','uses'=>'\Modules\Employers\Http\Controllers\InterviewsController@empRescheduleUpdate'));
+
+	Route::get('/{country}/employers/interview/reschedule/{id}', '\Modules\Employers\Http\Controllers\InterviewsController@empReschedule');
+	//Employers - Delete Interview
+	Route::get('/{country}/employers/interview/delete/{id}', '\Modules\Employers\Http\Controllers\InterviewsController@deleteInterview');
+
+	//Employers - List Employer's Scheduled Interviews
+	Route::get('/{country}/employers/interviews', array('as'=>'scheduled.interviews','uses'=>'\Modules\Employers\Http\Controllers\InterviewsController@scheduledInterviews'));
+
+	Route::get('/{country}/seeker/interview/{id}', array('as'=>'interview.detail','uses'=>'\Modules\Employers\Http\Controllers\InterviewsController@detail'));
+
+	//Seeker - Reschedule Interview 
+	Route::post('/{country}/seekers/interview/reschedule/update/{id}', array('as'=>'reschedule.update','uses'=>'\Modules\Employers\Http\Controllers\InterviewsController@rescheduleUpdate'));
+	Route::get('/{country}/seekers/interview/reschedule/{id}', array('as'=>'reschedule','uses'=>'\Modules\Employers\Http\Controllers\InterviewsController@reschedule'));
+
+
 	Route::post('/{country?}/employers/save-vanue', array('as'=>'emp.savevanue','uses'=>'\Modules\Employers\Http\Controllers\VanueController@save'));
 	Route::post('/{country?}/employers/schedule/{application_id}', array('as'=>'scheduleinterview','uses'=>'\Modules\Employers\Http\Controllers\InterviewsController@schedule'));
 	Route::get('/{country}/employers/interviews/schedule/{id}', array('as'=>'schedule-interview','uses'=>'\Modules\Employers\Http\Controllers\InterviewsController@scheduleInterview'));
@@ -200,6 +223,8 @@ Route::group(['middleware' => ['web','auth']], function () {
 	Route::get('/{country}/seekers/manage/resume/delete/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@delete');
 	Route::post('/{country}/employers/savejob', array('as'=>'emp.savejob', 'uses'=>'\App\Http\Controllers\JobsController@savejob'));
 	Route::post('/{country}/employers/savejob/{id}', array('as'=>'emp.savejob', 'uses'=>'\App\Http\Controllers\JobsController@savejob'));
+	Route::get('/{country}/seekers/profile-picture', array('as'=>'uploadpp1','uses'=>'\Modules\Employers\Http\Controllers\EmployersController@profile_picture'));
+Route::post('/{country}/seekers/upload-profile-picture', array('as'=>'uploadpp','uses'=>'\Modules\Employers\Http\Controllers\EmployersController@upload_profile_picture'));
 	Route::get('/{country}/seekers/my-saved-jobs', array('as'=>'savedjobs','uses'=>'\App\Http\Controllers\JobsController@mySavedJobs'));
 	Route::get('/{country}/seekers/my-applications', array('as'=>'applications','uses'=>'\App\Http\Controllers\JobsController@myApplications'));
 	Route::get('{country}/seekers/my-application-on-jobs/{resumeid}', array('as'=>'applicationonjobs','uses'=>'\App\Http\Controllers\JobsController@myApplicationOnJobs'));
@@ -276,17 +301,34 @@ Route::group(['middleware' => ['web','auth']], function () {
 	Route::get('/{country}/employers/dashboard','\Modules\Employers\Http\Controllers\EmployersController@dashboard');
 	Route::get('/{country}/employers','\Modules\Employers\Http\Controllers\EmployersController@dashboard');
 	Route::get('/{country}/employers/my-jobs','\App\Http\Controllers\JobsController@myjobs');
-	//Employers Departments
+	//Employers Departments 
+
+	Route::post('/{country}/employers/departments/save/{id}',array('as'=>'emp.savedepartment','uses'=>'\Modules\Employers\Http\Controllers\DepartmentsController@save'));
+		Route::get('/{country}/employers/departments/new','\Modules\Employers\Http\Controllers\DepartmentsController@edit');
+	Route::get('/{country}/employers/mydepartmentsajax','\Modules\Employers\Http\Controllers\DepartmentsController@mydepartmentsajax');
 	Route::get('/{country}/employers/departments','\Modules\Employers\Http\Controllers\DepartmentsController@index');
 	Route::get('/{country}/employers/departments/all','\Modules\Employers\Http\Controllers\DepartmentsController@allDepartments');
 	Route::get('/{country}/employers/departments/create','\Modules\Employers\Http\Controllers\DepartmentsController@create');
 	Route::post('/{country}/employers/departments/create',array('as'=>'department.add','uses'=>'\Modules\Employers\Http\Controllers\DepartmentsController@create'));
-	Route::get('/{country}/employers/departments/edit/{id}','\Modules\Employers\Http\Controllers\DepartmentsController@edit');
+	Route::get('/{country}/employers/departments/edit/{id?}','\Modules\Employers\Http\Controllers\DepartmentsController@edit');
 	Route::post('/{country}/employers/departments/edit/{id}','\Modules\Employers\Http\Controllers\DepartmentsController@edit');
 	Route::post('/{country}/employers/departments/update/{id}',array('as'=>'departments.update','uses'=>'\Modules\Employers\Http\Controllers\DepartmentsController@update'));
 	Route::get('/{country}/employers/departments/delete/{id}','\Modules\Employers\Http\Controllers\DepartmentsController@delete');
 	//Employers
-	
+	Route::get('/{country}/employers/change-password', array('as'=>'change.password','uses'=>'\Modules\Employers\Http\Controllers\CompanyInfoController@changePassword'));
+Route::get('/{country}/employers/profile', array('as'=>'view.profile','uses'=>'\Modules\Employers\Http\Controllers\EmployersController@profile'));
+Route::post('/{country}/employers/updateprofile', array('as'=>'update.profile','uses'=>'\Modules\Employers\Http\Controllers\EmployersController@updateprofile'));
+Route::post('/{country}/employers/updatePassword', array('as'=>'updatePassword','uses'=>'\Modules\Employers\Http\Controllers\CompanyInfoController@updatePassword'));
+
+//privacy
+Route::get('/{country}/employers/privacy', array('as'=>'view.privacy','uses'=>'\Modules\Employers\Http\Controllers\EmployersController@privacy'));
+Route::post('/{country}/employers/updateprivacy', array('as'=>'update.privacy','uses'=>'\Modules\Employers\Http\Controllers\EmployersController@updateprivacy'));
+
+//Notifications
+Route::get('/{country}/employers/job-alerts', array('as'=>'view.alerts','uses'=>'\Modules\Employers\Http\Controllers\EmployersController@jobalerts'));
+Route::post('/{country}/employers/updatejobalerts', array('as'=>'update.alerts','uses'=>'\Modules\Employers\Http\Controllers\EmployersController@updatejobalerts'));
+
+
 	Route::get('/{country}/employers/update_company', array('as'=>'update.company','uses'=>'\Modules\Employers\Http\Controllers\CompanyInfoController@updateCompnay'));
 	Route::get('/{country}/employers/logo', '\Modules\Employers\Http\Controllers\CompanyInfoController@logo');
 	Route::post('/{country}/employers/save', array('as'=>'updatecompany' ,'uses'=>'\Modules\Employers\Http\Controllers\CompanyInfoController@save'));
@@ -301,6 +343,10 @@ Route::group(['middleware' => ['web','auth']], function () {
 	Route::get('/{country}/seekers/withdraw/{id}', '\App\Http\Controllers\JobsController@withdraw');
 
 	Route::get('/{country}/employers/messages', '\App\Http\Controllers\ConversationController@inbox');
+
+
+	
+
 });
 /*Route::group(['middleware' => 'web'], function () {
     Route::auth();

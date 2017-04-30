@@ -1,36 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="">
 @include('seeker::dashboard-links',array('country'=>$country))
+<div class="row">
+        <div class="col-md-12 list-col ">
+            @include('seeker::nav',array('country'=>$country))
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12 list-col ">
            <div class="panel panel-default">
-                <div class="panel-heading">
-               
-      @include('seeker::nav',array('country'=>$country))
-  </div>
-</nav></div>
+                <div class="panel-heading">              
+<h4>My Saved Jobs</h4>
+                </div>
+
                 <div class="panel-body ">
                     <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Job Title</th>
-                <th>Posted By</th>
-                <th>Date Posted</th>
-               
-
-
-                <th>Action</th>
-            </tr>
-        </thead>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Job Title</th>
+                                <th>Posted By</th>
+                                <th>Date Posted</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
         
-    </table>
+                    </table>
                 </div>
             </div>
-        </div>
-         
+        </div>         
     </div>
 </div>
 

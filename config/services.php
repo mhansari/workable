@@ -37,25 +37,25 @@ return [
     'facebook' => [
         'client_id' => '1793018594303270',
         'client_secret' => 'fdb6e4ebf266b56caaa54c45f4105b1a',
-        'redirect' => 'http://localhost/workable/public/callback/facebook',
+        'redirect' => 'http://localhost/workable/public/pk/callback/facebook',
     ],
     
     'twitter' => [
         'client_id' => 'UA0HbY57eP46iQiIUDc4bWRrb',
         'client_secret' => 'rGdxlrXLwZCtshPizueqiUmmlOMrmLLpcYg9RdsN24SwctSplj',
-        'redirect' => 'http://localhost/workable/public/callback/twitter',
+        'redirect' => 'http://localhost/workable/public/pk/callback/twitter',
     ],
     
     'google' => [
         'client_id' => '1094679016108-h1957lk2k5jp1h4dpof8k14lak6rjbh3.apps.googleusercontent.com',
         'client_secret' => '2Fg4SGZMAmLbbicUzq6E0z-h',
-        'redirect' => 'http://localhost/workable/public/callback/google',
+        'redirect' => 'http://localhost/workable/public/pk/callback/google',
     ],
     
     'linkedin' => [
         'client_id' => '86ef68765qjs45',
         'client_secret' => 'oo0L21Z9nY7aDkqo',
-        'redirect' => 'http://localhost/workable/public/callback/linkedin',
+        'redirect' => 'http://localhost/workable/public/pk/callback/linkedin',
     ],
 
 ];

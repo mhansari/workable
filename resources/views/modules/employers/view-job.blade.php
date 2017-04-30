@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="">
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                      @if(Session::has('flash_message'))
@@ -161,7 +161,7 @@
                         <div class="col-md-12">
                             <h4>{{$j->companies->company_name}}</h4>
                             <h5>{{$j->companies->city->Name}}, {{$j->companies->country->Name}}</h5>
-                            {!!strlen($j->companies->about_company)>255?substr($j->companies->about_company,0,255) . '<br/><a href="'.asset($country .'/company/' . $j->user_id).'">[more]</a>' : $job->description  !!}
+                            {!!strlen($j->companies->about_company)>255?substr($j->companies->about_company,0,255) . '<br/><a href="'.asset($country .'/company/' . $j->user_id).'">[more]</a>' : $j->companies->about_company  !!}
                         </div>
                     </div>
 
@@ -170,9 +170,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            Google Ads
-        </div>
+       
     </div>
 </div>
 <script>

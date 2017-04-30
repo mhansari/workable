@@ -1,9 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Search</div>
                 <div class="panel-body">
@@ -41,17 +39,18 @@
                             <li class="media col-md-4 mt0">
                             <div class="box">
                                 <div class="media-left pt0 pr10">
-                                    <a href="/jobs/job/164375">
-                                        <thumb>
+                       <a href="{{asset($country . '/company/' . $job->companies->user_id)}}">
                                             <div class="thumb-latest" style="width: 50px; height: 50px; line-height: inherit; background-color: transparent; font-size: 25px;">
                                                 <span class="helper"></span>
-                                                <img src="{{$job->companies->company_logo}}">
+                                                
+                                                <img src="{{$job->companies->company_logo}}" alt="{{$job->companies->company_name}}">
+                                            
                                             </div>
-                                        </thumb>
-                                    </a>
+                                          </a>
+                                    
                                 </div>
                                 <div class="media-body">
-                                    <div class="media-heading b" style="height:16px;overflow:hidden;"><a href="/jobs/job/164375">{{$job->job_title}}</a></div>
+                                    <div class="media-heading b" style="height:16px;overflow:hidden;"><a href="{{ asset($country .'/jobs/' . $job->id) }}">{{$job->job_title}}</a></div>
                                     <div class="text-sm">
                                         <div style="height:16px;overflow:hidden;">{{$job->companies->company_name}}</div>
                                         <div style="height:16px;overflow:hidden;">{{(count($job->cities)>0?$job->cities[0]->Name . ', ':'')}}
@@ -77,12 +76,11 @@
                             <div class="box">
                                 <div class="media-left pt0 pr10">
                                     <a href="{{asset($country . '/seekers/profile/' . $seeker->id)}}">
-                                        <thumb>
-                                            <div class="thumb-latest-profile" style="width: 50px; height: 50px; line-height: inherit; background-color: transparent; font-size: 25px;">
+                                                                                    <div class="thumb-latest-profile" style="width: 50px; height: 50px; line-height: inherit; background-color: transparent; font-size: 25px;">
                                                 <span class="helper"></span>
-                                                <img src="{{$seeker->pp==''?'pp/placeholder.png':$seeker->pp}}">
+                                                <img src="{{$seeker->pp==''?'pp/placeholder.png':$seeker->pp}}" alt="{{$seeker->first_name}} {{$seeker->last_name}}">
                                             </div>
-                                        </thumb>
+                                        
                                     </a>
                                 </div>
                                 <div class="media-body">
@@ -101,7 +99,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
+           
 @endsection

@@ -12,7 +12,7 @@ class Applied extends Model
     {
         return $this->belongsTo('App\Jobs','job_id');
     }
-
+    
     public function status()
     {
         return $this->belongsTo('App\ApplicationStatus','status_id');
