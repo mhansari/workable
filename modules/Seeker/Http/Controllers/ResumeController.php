@@ -932,8 +932,9 @@ public function delete($country,$resumeid)
 	public function resumePrintEmployer($country, $resumeid)
 	{
 		$profile = \App\ResumeSeekerProfile::with(['maritalstatus','awards','affilitions','publications','references','education','experiance','projects','languages','skills'])->where('resume_id', $resumeid)->first();
-		$v= view('seeker::print-resume')->with('country',$country)->with('profile',$profile);
+		$v= view('seeker::print-resume2')->with('country',$country)->with('profile',$profile);
 		$pdf = PDF::loadHTML($v)->setPaper('a4', 'portrait')->setWarnings(false);
+		
 		return $pdf->download(str_replace(' ', '_', $profile->first_name).'_'.str_replace(' ','_', $profile->last_name).'.pdf');
 	}
 }

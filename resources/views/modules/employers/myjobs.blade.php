@@ -6,27 +6,36 @@
     <div class="row">
         <div class="col-md-12 list-col ">
           @include('employers::nav',array('country'=>$country))
-            <div class="panel-body">
-                 @if($errors->has())
-                     @foreach ($errors->all() as $error)
-                        <div class="alert alert-danger">{{ $error }}</div>
-                    @endforeach
-                  @endif
-                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Job Title</th>
-                            <th>Posted By</th>
-                            <th>Date Posted</th>
-                            <th>Job Type</th>
-                            <th>Status</th>
-                            <th>Applications</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-        
-                </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 list-col">
+            <div class="panel  panel-default">
+                <div class="panel-heading">
+                    <h4>My Jobs</h4>
+                </div>
+                <div class="panel-body">
+                     @if($errors->has())
+                         @foreach ($errors->all() as $error)
+                            <div class="alert alert-danger">{{ $error }}</div>
+                        @endforeach
+                      @endif
+                    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Job Title</th>
+                                <th>Posted By</th>
+                                <th>Date Posted</th>
+                                <th>Job Type</th>
+                                <th>Status</th>
+                                <th>Applications</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+            
+                    </table>
+                </div>
             </div>
         </div>
     </div>

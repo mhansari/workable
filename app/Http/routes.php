@@ -182,7 +182,7 @@ Route::get('/{country}/jobs/applicantsajax','\App\Http\Controllers\JobsControlle
 	Route::get('/htmls/seeker_signup_html', array('as'=>'seeker.signup_html' ,'uses'=>'\App\Http\Controllers\HtmlsController@seeker_signup_html'));
 	Route::get('/htmls/department_html', array('as'=>'emp.department_html' ,'uses'=>'\App\Http\Controllers\HtmlsController@department_html'));
 	Route::get('/{country}/seekers/profile/{id}','\Modules\Seeker\Http\Controllers\ResumeController@viewresume');
-	Route::get('/{country}/seekers/profile/download/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumePrintEmployer');
+	//Route::get('/{country}/seekers/profile/download/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumePrintEmployer');
 });
 
 Route::group(['middleware' => ['web','auth']], function () {
@@ -233,8 +233,8 @@ Route::post('/{country}/seekers/upload-profile-picture', array('as'=>'uploadpp',
 	Route::post('/{country}/seekers/save-job', array('as'=>'job.save','uses'=>'\Modules\Seeker\Http\Controllers\SavedJobsController@save'));
 	Route::post('/{country}/employers/changeStatus', array('as'=>'changeStatus','uses'=>'\Modules\Seeker\Http\Controllers\ApplicationController@changeStatus'));
 	Route::get('/{country}/seekers/manage/resume/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumeView');
-	Route::get('/{country}/seekers/manage/resume/download/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumePrint');
-	Route::get('/{country}/employers/view/resume/download/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumePrintEmployer');
+	//Route::get('/{country}/seekers/manage/resume/download/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumePrint');
+	Route::get('/{country}/employers/download/resume/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumePrintEmployer');
 	//Languages
 	Route::get('/{country}/seekers/manage/resume-languages/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumeLanguages');
 	Route::get('/{country}/seekers/manage/update_language/{resumeid}/{id}','\Modules\Seeker\Http\Controllers\ResumeController@updateLanguage');

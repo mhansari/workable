@@ -42,6 +42,10 @@
         </style>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="{{ asset('css/build.css') }}"/>
+        <link rel="stylesheet" href="{{asset('/css/font-awesome/css/font-awesome.css')}}">
+    
+    <!-- Theme CSS -->  
+    <link id="theme-style" rel="stylesheet" href="{{asset('/css/styles-5.css')}}">
     </head>
     <body id="app-layout">
         <nav class="navbar navbar-default">
@@ -114,5 +118,6 @@
     <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+    <script type="text/javascript" src="{{asset('/js/main.js')}}"></script> 
     </body>
 </html>

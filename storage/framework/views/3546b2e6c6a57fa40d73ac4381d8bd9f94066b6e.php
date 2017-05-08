@@ -2,6 +2,11 @@
 <div class="">
     <?php echo $__env->make('seeker::dashboard-links',array('country'=>$country), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
     <div class="row">
+        <div class="col-md-12 list-col ">
+            <?php echo $__env->make('seeker::nav',array('country'=>$country), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-3 list-col ">
            <div class="panel panel-default">
                 <div class="panel-heading"><h4>Manage Resume</h4></div>

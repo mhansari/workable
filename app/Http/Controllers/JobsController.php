@@ -428,4 +428,31 @@ $j = \App\Jobs::with(['applications','users','benefits','experiance','adtype','j
 		$profile = \App\ResumeSeekerProfile::with(['awards'=>function($query){$query->orderBy('award_date');},'affilitions','publications','references','education','experiance','projects','languages','skills'])->where('resume_id', $id)->first();
 		return view('employers::view-resume')->with('application_id',$application_id)->with('country',$country)->with('sections',$sections)->with('obj',$obj)->with('profile',$profile);
 	}
+
+
+	public function filter_applicants(Request $request,$country, \App\Jobs $user)
+	{
+		$c = Config::all()->keyBy('k');
+		$user = $user->with(['categories','adtype','jobtype','cities','companies','shift'])->newQuery();
+
+		if ($request->has('category_id') !='') {
+		    $user->where('category_id', $request->input('category_id'));
+		}
+		if ($request->has('experiance_id') !='') {
+		    $user->where('experiance_level_id', $request->input('experiance_id'));
+		}
+		if ($request->has('MinS') !='') {
+		    $user->where('currency_min','>=', $request->input('MinS'));
+		}
+		if ($request->has('MaxS') !='') {
+		    $user->where('salary_max','<=', $request->input('MaxS'));
+		}
+		$j = $user->paginate($c['PAGE_SIZE']->v)->appends($request->input());
+
+		$cntry = Countries::where('active',1)->where('seo',$country)->first();
+		$el = ExperianceLevels::where('active',1)->orderBy('name')->lists('name','id');
+		$obj2 = Categories::where('active',1)->orderBy('name')->lists('name','id');
+		
+		return view('search', compact('obj2','el'))->with('cntry', $cntry)->with('country',$country)->with('j',$j)->with('config',$c);
+	}
 }

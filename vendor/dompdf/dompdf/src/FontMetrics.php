@@ -245,7 +245,7 @@ class FontMetrics
             $font = Font::load($localTempFile);
             
             if (!$font) {
-                unlink($localTempFile);
+                @unlink($localTempFile);
                 return false;
             }
             
@@ -253,7 +253,7 @@ class FontMetrics
             $font->saveAdobeFontMetrics("$cacheEntry.ufm");
             $font->close();
             
-            unlink($localTempFile);
+            @unlink($localTempFile);
             
             if ( !file_exists("$cacheEntry.ufm") ) {
                 return false;
@@ -263,7 +263,7 @@ class FontMetrics
             file_put_contents($localFile, file_get_contents($remoteFile, null, $context));
             
             if ( !file_exists($localFile) ) {
-                unlink("$cacheEntry.ufm");
+                @unlink("$cacheEntry.ufm");
                 return false;
             }
             

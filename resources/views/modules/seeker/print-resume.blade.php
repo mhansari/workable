@@ -8,8 +8,26 @@
     <title>Resume</title>
 <style>
 body{
-font-family: Verdana, Geneva, sans-serif;
-font-size: 12.5px;
+font-family: Trebuchet MS;
+font-size: 14px;
+
+}
+.MsoTitle{
+  font-family: Trebuchet MS;
+font-size: 27px;
+color: #0096ce;
+}
+h1{
+    font-family: Trebuchet MS;
+font-size: 20px;
+color: #6abbe0;
+}
+.content{
+      margin-top: -20px;
+}
+
+.content-other{
+      margin-top: 25px;
 }
 </style>
     <style>
@@ -20,7 +38,7 @@ font-size: 12.5px;
         background-position: bottom left;
   }
 
-  #footer { color:#ccc; text-align:center; position: fixed; left: 0px; bottom: -160px; right: 0px; height: 160px;}
+  #footer { color:#ccc; text-align:right; position: fixed; left: 0px; bottom: -160px; right: 0px; height: 160px;}
     #footer .page:after { content: counter(page); }
     </style>
     <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
@@ -28,381 +46,326 @@ font-size: 12.5px;
      <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 
 </head>
-<body id="app-layout">
-    <div id="footer">
-        Generated with CareerJin.com © Copyright {{date("Y")}}
-    <p class="page">Page </p>
-  </div>
-    <div class="container">
-        <table width="100%">
-         @if($profile->pp != '')
-             <tr style="width:100%; padding:3px;text-align:center" class="print-padding">
-                <td>
-                    <img src="{{ URL::asset($profile->pp) }}" class="img-circle">
-                   
-                </td>
-            </tr>
-        @endif
-            <tr style="width:100%; padding:3px;text-align:center" class="print-padding print-bottom-border">
-                <td>
-                    <h2>{{$profile->first_name}} {{$profile->last_name}}</h2>
-                    {{$profile->address}}. {{$profile->city->Name}} - {{$profile->postal_code}}, {{$profile->country->Name}}.<br/>
-                    Phone : {{$profile->phone_day}}, {{$profile->phone_night}} Mobile : {{$profile->mobile}} <br/>
-                    Email : {{$profile->email}}
-                </td>
-            </tr>
-        </table>
- 
-        <br/>
-        @if(strlen($profile->professional_summary)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px; text-align:left" >
-                <th >
-                    <div class="print-padding print-bottom-border" style="text-align:left" >
-                        <strong>SUMMARY</strong>
-                    </div>
-                </th>
-            </tr>
-            <tr style="width:100%; padding:3px" >
-                <td style="padding:3px; text-align:left">
-                    <div class="print-padding-lr" >
-                        {!! $profile->professional_summary !!}
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <br/>
-        @endif
-        <!-- Education Section -->
-        @if(count($profile->education)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" style="text-align:left">
-                        <strong>EDUCATION</strong>
-                    </div>
-                </th>
-            </tr>            
-            @foreach($profile->education as $e)
-            <tr>
-                <td style="width:12%; padding:3px; padding-right" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->completion_date))}}
-                </td>
-                <td style="width:88%; padding:3px; padding-left:15px; text-align:left">
-                    <strong>{{$e->degreelevel->name}} - {{$e->degree}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                            <i>{{$e->institute}}, {{$e->city->Name}}, {{$e->country->Name}} with (Grade/GPA) {{$e->grade}}</i>
-                    </td>
-                </tr>            
-            </tr>
-            @endforeach                
-        </table>
-        <br/>
-        @endif        
-        <!-- Experiance Section -->
-        @if(count($profile->experiance)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" style="text-align:left">
-                        <strong>EXPERIANCE</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->experiance as $e)
-                <tr>
-                    <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                        {{date("M Y",strtotime($e->start_date))}} -@if($e->current_working)Till Date
+
+<body>
+<p class=MsoTitle>{{$profile->first_name}} {{$profile->last_name}}</p>
+<p class="content">{{$profile->phone_day}}, {{$profile->phone_night}}, {{$profile->mobile}}&nbsp;&nbsp;|&nbsp;&nbsp;{{$profile->email}} &nbsp;&nbsp;|&nbsp;&nbsp;{{$profile->address}}. {{$profile->city->Name}} - {{$profile->postal_code}}, {{$profile->country->Name}}</p>
+
+<!-- summary -->
+@if(strlen($profile->professional_summary)>0)
+<h1>Summary</h1>
+<p class=content-other>{!! $profile->professional_summary !!}</p>
+@endif
+<!-- end summary -->
+
+@if(count($profile->experiance)>0)
+
+<h1>Experience</h1>
+<table  width="100%">
+ @foreach($profile->experiance as $e)
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal><strong><span style='font-family:"Trebuchet MS",sans-serif;
+  mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
+  "Times New Roman";mso-bidi-theme-font:minor-bidi'>{{$e->job_title}}</span></strong>,
+  {{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}</p>
+
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate>{{date("M Y",strtotime($e->start_date))}} -@if($e->current_working)Present
                         @else
                             {{date("M Y",strtotime($e->end_date))}}
-                        @endif
-                    </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->job_title}}</strong>
-                </td>
+                        @endif</p>
+  </td>
+ </tr>
+ @if(strlen($e->details)>0)
+ <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal>{!! $e->details!!}<br/><br/></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ @endif
+ @endforeach
+ </table>
+@endif
+@if(count($profile->education)>0)
+<h1>Education</h1>
 
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                            <i>{{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}</i>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                            {{$e->details}}
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ title="Resume detail" width=672 style='width:7.0in;border-collapse:collapse;
+ mso-padding-alt:0in 0in 0in 0in'>
+ @foreach($profile->education as $e)
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal><strong><span style='font-family:"Trebuchet MS",sans-serif;
+  mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
+  "Times New Roman";mso-bidi-theme-font:minor-bidi'>{{$e->degreelevel->name}} - {{$e->degree}}</span></strong></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate>{{date("M Y",strtotime($e->completion_date))}}</p>
+  </td>
+ </tr>
+  <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal>{{$e->institute}}, {{$e->city->Name}}, {{$e->country->Name}} with (Grade/GPA) {{$e->grade}}<br/><br/></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate></p>
+  </td>
+ </tr>
+ @endforeach
+</table>
+@endif
+@if(count($profile->languages)>0)
+<h1>Languages</h1>
 
-        <!-- Project Section -->
-        @if(count($profile->projects)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" style="text-align:left">
-                        <strong>PROJECTS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->projects as $e)
-            <tr>
-                <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->start_date))}} -
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ title="Resume detail" width=672 style='width:7.0in;border-collapse:collapse;
+ mso-padding-alt:0in 0in 0in 0in'>
+ @foreach($profile->languages as $e)
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal><strong><span style='font-family:"Trebuchet MS",sans-serif;
+  mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
+  "Times New Roman";mso-bidi-theme-font:minor-bidi'>{{$e->language->name}}</span></strong>
+ <o:p></o:p></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate>{{$e->proficiencylevel->name}}<o:p></o:p></p>
+  </td>
+ </tr>
+
+ @endforeach
+</table>
+@endif
+@if(count($profile->skills)>0)
+<h1>Skills</h1>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ title="Resume detail" width=672 style='width:7.0in;border-collapse:collapse;
+ mso-padding-alt:0in 0in 0in 0in'>
+ @foreach($profile->skills as $e)
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal><strong><span style='font-family:"Trebuchet MS",sans-serif;
+  mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
+  "Times New Roman";mso-bidi-theme-font:minor-bidi'>{{$e->name}}</span></strong>
+  <o:p></o:p></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate>{{$e->skilllevel->name}}<o:p></o:p></p>
+  </td>
+ </tr>
+@endforeach
+</table>
+@endif
+ @if(count($profile->certifications)>0)
+<h1>Certifications</h1>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ title="Resume detail" width=672 style='width:7.0in;border-collapse:collapse;
+ mso-padding-alt:0in 0in 0in 0in'>
+ @foreach($profile->certifications as $e)
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal><strong><span style='font-family:"Trebuchet MS",sans-serif;
+  mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
+  "Times New Roman";mso-bidi-theme-font:minor-bidi'>{{$e->name}}<o:p></o:p></span></strong></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate>{{date("M Y",strtotime($e->completion_date))}}<o:p></o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal>{{$e->institution}}, {{$e->city->Name}}, {{$e->country->Name}} with (Grade/Score) {{$e->score}}<o:p></o:p></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate><o:p></o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal>{!! $e->details !!}<br/><br/></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate><o:p></o:p></p>
+  </td>
+ </tr>
+ @endforeach
+</table>
+@endif
+@if(count($profile->publications)>0)
+<p class=MsoNormal><o:p>&nbsp;</o:p></p>
+
+<h1>Publications</h1>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ title="Resume detail" width=672 style='width:7.0in;border-collapse:collapse;
+ mso-padding-alt:0in 0in 0in 0in'>
+ @foreach($profile->publications as $e)
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal><strong><span style='font-family:"Trebuchet MS",sans-serif;
+  mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
+  "Times New Roman";mso-bidi-theme-font:minor-bidi'>{{$e->title}}<o:p></o:p></span></strong></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate>{{date("M Y",strtotime($e->publication_date))}}<o:p></o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal>Author(s) : {{ $e->author }}<o:p></o:p></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate><o:p></o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;mso-yfti-lastrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal style='tab-stops:50.25pt'>{{ $e->publisher}}, {{$e->city->Name}}, {{$e->country->Name}}<o:p>&nbsp;</o:p></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ @endforeach
+</table>
+@endif
+
+@if(count($profile->affilitions)>0)
+<h1>Affiliations</h1>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ title="Resume detail" width=672 style='width:7.0in;border-collapse:collapse;
+ mso-padding-alt:0in 0in 0in 0in'>
+ @foreach($profile->affilitions as $e)
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal><strong><span style='font-family:"Trebuchet MS",sans-serif;
+  mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
+  "Times New Roman";mso-bidi-theme-font:minor-bidi'>{{$e->position}}<o:p></o:p></span></strong></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate>{{date("M Y",strtotime($e->start_date))}} -
                     @if($e->current_working)
-                        Till Date
+                        Present
                     @else
                         {{date("M Y",strtotime($e->end_date))}}
-                    @endif
-                </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->title}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        <i>As {{$e->position}} - {{$e->experiances->organization}} {{$e->experiances->city->Name}}, {{$e->experiances->country->Name}}</i>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        {{$e->details}}
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
+                    @endif</p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal>{{ $e->organization}}</p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;mso-yfti-lastrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal>{{$e->city->Name}}, {{$e->country->Name}}<o:p></o:p></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ @endforeach
+</table>
+@endif
+@if(count($profile->awards)>0)
+<h1>Awards</h1>
 
-        <!-- Languages Section -->
-        @if(count($profile->languages)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" style="text-align:left">
-                        <strong>LANGUAGES</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->languages as $e)
-            <tr>
-                <td style="width:12%; padding:3px"></td>
-                <td style="width:44%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->language->name}}</strong>
-                </td>
-                <td style="width:44%; padding:3px; text-align:right">
-                    ({{$e->proficiencylevel->name}})
-                </td>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ title="Resume detail" width=672 style='width:7.0in;border-collapse:collapse;
+ mso-padding-alt:0in 0in 0in 0in'>
+ @foreach($profile->awards as $e)
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal><strong><span style='font-family:"Trebuchet MS",sans-serif;
+  mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
+  "Times New Roman";mso-bidi-theme-font:minor-bidi'>{{$e->title}}<o:p></o:p></span></strong></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate>{{date("M Y",strtotime($e->award_date))}}<o:p></o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal>{{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}<o:p></o:p></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate><o:p></o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal>{!!$e->details!!}<o:p></o:p></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate><o:p></o:p></p>
+  </td>
+ </tr>
+ @endforeach
+</table>
+@endif
+@if(count($profile->references)>0)
+<h1>References</h1>
 
-        <!-- Skills Section -->
-        @if(count($profile->skills)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" style="text-align:left">
-                        <strong>SKILLS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->skills as $e)
-            <tr>
-                <td style="width:12%; padding:3px"></td>
-                <td style="width:44%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->name}}</strong>
-                </td>
-                <td style="width:44%; padding:3px; text-align:right">
-                    ({{$e->skilllevel->name}})
-                </td>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ title="Resume detail" width=672 style='width:7.0in;border-collapse:collapse;
+ mso-padding-alt:0in 0in 0in 0in'>
+ @foreach($profile->references as $e)
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal><strong><span style='font-family:"Trebuchet MS",sans-serif;
+  mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
+  "Times New Roman";mso-bidi-theme-font:minor-bidi'>{{$e->name}}<o:p></o:p></span></strong></p>
+  </td>
 
-        <!-- Certifications Section -->
-        @if(count($profile->certifications)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" style="text-align:left">
-                        <strong>CERTIFICATIONS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->certifications as $e)
-            <tr>
-                <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->completion_date))}}
-                </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->name}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        <i>{{$e->institution}}, {{$e->city->Name}}, {{$e->country->Name}} with (Grade/Score) {{$e->score}}</i>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        {!! $e->details !!}
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
-
-        <!-- References Section -->
-        @if(count($profile->references)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="2">
-                    <div class="print-padding print-bottom-border" style="text-align:left">
-                        <strong>REFERENCES</strong>
-                    </div>
-                </th>
-            </tr>
-                @foreach($profile->references as $e)
-            <tr>
-                <td style="width:12%; padding:3px"></td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->name}}</strong><br/>
-                     {{$e->job_title}} at {{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}<br/>
+ </tr>
+ <tr style='mso-yfti-irow:1;mso-yfti-lastrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal>{{$e->job_title}} at {{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}<br/>
                         Phone: {{$e->phone}}<br/>
                         Email: {!! '<a href="mailto:'. $e->email . '">' . $e->email . '</a>' !!}<br/>
-                        Reference Type: {{$e->referencetype->name}}
-                </td>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
+                        Reference Type: {{$e->referencetype->name}}<br/><br/><o:p></o:p></p>
+  </td>
+  <td width=154 valign=top style='width:1.6in;padding:0in 0in 0in 0in'>
+  <p class=MsoDate><o:p></o:p></p>
+  </td>
+ </tr>
+ @endforeach
+</table>
+@else
+<h1>References</h1>
 
-<!-- Publications Section -->
-        @if(count($profile->publications)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" style="text-align:left">
-                        <strong>PUBLICATIONS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->publications as $e)
-            <tr>
-                <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->publication_date))}}
-                </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->title}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        Author(s) : {{ $e->author }}
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        {{ $e->publisher}}, {{$e->city->Name}}, {{$e->country->Name}}
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ title="Resume detail" width=672 style='width:7.0in;border-collapse:collapse;
+ mso-padding-alt:0in 0in 0in 0in'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>
+  <td width=518 valign=top style='width:5.4in;padding:0in 0in 0in 0in'>
+  <p class=MsoNormal><strong><span style='font-family:"Trebuchet MS",sans-serif;
+  mso-ascii-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:
+  "Times New Roman";mso-bidi-theme-font:minor-bidi'>Will be furnished upon request<o:p></o:p></span></strong></p>
+  </td>
 
-<!-- Affiliations Section -->
-        @if(count($profile->affilitions)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="2">
-                    <div class="print-padding print-bottom-border" style="text-align:left">
-                        <strong>AFFILIATIONS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->affilitions as $e)
-            <tr>
-                <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->start_date))}} -
-                    @if($e->current_working)
-                        Till Date
-                    @else
-                        {{date("M Y",strtotime($e->end_date))}}
-                    @endif
-                </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->position}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        <i>{{ $e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}>/i>
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
+ </tr>
 
-        <!-- Honors & Awards Section -->
-        @if(count($profile->awards)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" style="text-align:left">
-                        <strong>AWARDS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->awards as $e)
-            <tr>
-                <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->award_date))}}
-                </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->title}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        <i>{{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}</i>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        {!! $e->details !!}
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
-    </div>
-   
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</table>
+@endif
+<p class=MsoNormal align=right style='text-align:right;tab-stops:center 382.1pt left 483.75pt'><span
+style='font-size:6.0pt;mso-bidi-font-size:9.5pt;line-height:150%'><span
+style='mso-tab-count:1'>                                                                                                                                                                                                                                    </span>Generated
+with CareerJin.com<span style='mso-tab-count:1'>                                         </span><o:p></o:p></span></p>
+
+</div>
+
 </body>
+
 </html>

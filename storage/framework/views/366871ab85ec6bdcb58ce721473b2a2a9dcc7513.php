@@ -96,7 +96,7 @@
                             <?php echo $__env->yieldContent('content'); ?>
                         </div>                
                         <div class="col-md-2">
-                            google
+                            <?php echo $__env->make('seeker::google-left',array('country'=>$country), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                         </div>
                     </div>
                 </div>

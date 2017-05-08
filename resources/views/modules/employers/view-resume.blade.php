@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+        <link rel="stylesheet" href="{{ asset('css/build.css') }}"/>
+        <link rel="stylesheet" href="{{asset('/css/font-awesome/css/font-awesome.css')}}">
+    
+    <!-- Theme CSS -->  
+    <link id="theme-style" rel="stylesheet" href="{{asset('/css/styles-5.css')}}">
 <div class="">
     @include('seeker::dashboard-links',array('country'=>$country))
     <div class="row">
@@ -20,14 +25,14 @@
             <button type="button" value="5" class="btn btn-primary btn-sm btn-toolbar-margin">Offered</button>
             <button type="button" value="6" class="btn btn-primary btn-sm btn-toolbar-margin">Hired</button>
             <button type="button" value="7" class="btn btn-primary btn-sm btn-toolbar-margin">Junk</button>
-            <button type="button" value="msg" class="btn btn-primary btn-sm btn-toolbar-margin">Message</button>
+            <!--button type="button" value="msg" class="btn btn-primary btn-sm btn-toolbar-margin">Message</button-->
             <!--button type="button" value="interview" class="btn btn-primary btn-sm btn-toolbar-margin" id="interview">Interview</button-->
           </div> <br/>
         <br/> 
 
                             </td>
                             <td style="width:20%" class="text-right">
-                                <a  class="btn btn-info " href="download/{{$profile->resume_id}}">
+                                <a  class="btn btn-info " href="{{ asset('/'.$country.'/employers/download/resume/'.$profile->resume_id)}}">
                                     <span class="glyphicon glyphicon-download-alt"></span>&nbsp;&nbsp;Download
                                 </a>
                             </td>
@@ -57,372 +62,217 @@
                   
                 </div>
 <div class="panel-body ">
-        <table width="100%">
-            <tr style="width:100%; padding:3px;text-align:center" class="print-padding">
-                <td>
-                    <img src="../../../../../{{$profile->pp}}">
-                   
-                </td>
-            </tr>
-            <tr style="width:100%; padding:3px;text-align:center" class="print-padding print-bottom-border">
-                <td>
-                    <h2>{{$profile->first_name}} {{$profile->last_name}}</h2>
-                   
-                    {{$profile->address}}. {{$profile->city->Name}} - {{$profile->postal_code}}, {{$profile->country->Name}}.<br/>
-                    Phone : {{$profile->phone_day}}, {{$profile->phone_night}} Mobile : {{$profile->mobile}} <br/>
-                    Email : {{$profile->email}}
-                </td>
-            </tr>
-        </table>
-        <br/>
+<div class="wrapper">
+        <div class="sidebar-wrapper">
+            <div class="profile-container">
+                <img class="profile img-circle" src="{{asset($profile->pp)}}" alt="" />
+                <h1 class="name">{{$profile->first_name}} {{$profile->last_name}}</h1>
+                {{$profile->address}}. {{$profile->city->Name}} - {{$profile->postal_code}}, {{$profile->country->Name}}.
+            </div><!--//profile-container-->
+            
+            <div class="contact-container container-block">
+                <ul class="list-unstyled contact-list">
+                    <li class="email"><i class="fa fa-envelope"></i><a href="mailto:{{$profile->email}}">{{$profile->email}}</a></li>
+                    <li class="phone"><i class="fa fa-phone"></i>{{$profile->phone_day}}</li>
+                    <li class="phone"><i class="fa fa-phone"></i>{{$profile->phone_night}}</li>
+                    <li class="phone"><i class="fa fa-phone"></i>{{$profile->mobile}}</li>
+                    <li class="website"><i class="fa fa-globe"></i><a href="{{$profile->website}}" target="_blank">{{$profile->website}}</a></li>
+                    <li class="linkedin"><i class="fa fa-linkedin"></i><a href="#" target="_blank">{{$profile->linkedin}}</a></li>
+                    <li class="facebook"><i class="fa fa-facebook"></i><a href="#" target="_blank">{{$profile->facebook}}</a></li>
+                    <li class="twitter"><i class="fa fa-twitter"></i><a href="{{$profile->twitter}}" target="_blank">{{$profile->twitter}}</a></li>
+                </ul>
+            </div><!--//contact-container-->
+            @if(count($profile->education)>0)
+            <div class="education-container container-block">
+                <h2 class="container-block-title">Education</h2>
+                @foreach($profile->education as $e)
+                <div class="item">
+                    <h4 >{{$e->degreelevel->name}}</h4>
+                    <h5 >{{$e->degree}}</h5>
+                    <h5 >{{$e->institute}}</h5>
+                    <h5 class="meta"><i>{{$e->city->Name}}, {{$e->country->Name}} with (Grade/GPA) {{$e->grade}}</i></h5>
+                    <div class="time">{{date("M Y",strtotime($e->completion_date))}}</div>
+                </div><!--//item-->
+                @endforeach
+            </div><!--//education-container-->
+            @endif
+            @if(count($profile->languages)>0)
+            <div class="languages-container container-block">
+                <h2 class="container-block-title">Languages</h2>
+                <ul class="list-unstyled interests-list">
+                    @foreach($profile->languages as $e)
+                        <li>{{$e->language->name}} <span class="lang-desc">({{$e->proficiencylevel->name}})</span></li>
+                    @endforeach
+                </ul>
+            </div><!--//interests-->
+            @endif
+            @if(count($profile->references)>0)
+            <div class="interests-container container-block">
+                <h2 class="container-block-title">References</h2>
+                <ul class="list-unstyled interests-list">
+                    @foreach($profile->references as $e)
+                        <li><strong>{{$e->name}}</strong><br/>
+                        <span class="lang-desc">{{$e->job_title}} at {{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}<br/>
+                        <i class="fa fa-phone"></i>&nbsp;{{$e->phone}}<br/>
+                        <i class="fa fa-envelope"></i>&nbsp;{!! '<a href="mailto:'. $e->email . '">' . $e->email . '</a>' !!}</span></li>
+                    @endforeach
+                </ul>
+            </div><!--//interests-->
+            @endif
+        </div><!--//sidebar-wrapper-->
+        
+        <div class="main-wrapper">
         @if(strlen($profile->professional_summary)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th >
-                    <div class="print-padding print-bottom-border" >
-                        <strong>SUMMARY</strong>
-                    </div>
-                </th>
-            </tr>
-            <tr style="width:100%; padding:3px" >
-                <td style="padding:3px">
-                    <div class="print-padding-lr" >
-                        {!! $profile->professional_summary !!}
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <br/>
+            <section class="section summary-section">
+                <h2 class="section-title"><i class="fa fa-user"></i>Summary</h2>
+                <div class="summary">
+                    <p>{!! $profile->professional_summary !!}</p>
+                </div><!--//summary-->
+            </section><!--//section-->
         @endif
-        <!-- Education Section -->
-        @if(count($profile->education)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" >
-                        <strong>EDUCATION</strong>
-                    </div>
-                </th>
-            </tr>            
-            @foreach($profile->education as $e)
-            <tr>
-                <td style="width:12%; padding:3px; padding-right" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->completion_date))}}
-                </td>
-                <td style="width:88%; padding:3px; padding-left:15px" class="text-left">
-                    <strong>{{$e->degreelevel->name}} - {{$e->degree}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                            <i>{{$e->institute}}, {{$e->city->Name}}, {{$e->country->Name}} with (Grade/GPA) {{$e->grade}}</i>
-                    </td>
-                </tr>            
-            </tr>
-            @endforeach                
-        </table>
-        <br/>
-        @endif        
-        <!-- Experiance Section -->
         @if(count($profile->experiance)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" >
-                        <strong>EXPERIANCE</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->experiance as $e)
-                <tr>
-                    <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                        {{date("M Y",strtotime($e->start_date))}} -@if($e->current_working)Till Date
+            <section class="section experiences-section">
+                <h2 class="section-title"><i class="fa fa-briefcase"></i>Experiences</h2>
+                @foreach($profile->experiance as $e)
+                <div class="item">
+                    <div class="meta">
+                        <div class="upper-row">
+                            <h3 class="job-title">{{$e->job_title}}</h3>
+                            <div class="time">{{date("M Y",strtotime($e->start_date))}} -@if($e->current_working)Present
                         @else
                             {{date("M Y",strtotime($e->end_date))}}
-                        @endif
-                    </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->job_title}}</strong>
-                </td>
-
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                            <i>{{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}</i>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                            {{$e->details}}
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
+                        @endif</div>
+                        </div><!--//upper-row-->
+                        <div class="company">{{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}</div>
+                    </div><!--//meta-->
+                    <div class="details">
+                        <p>{!!$e->details!!}</p>
+                    </div><!--//details-->
+                </div><!--//item-->
+                @endforeach
+            </section><!--//section-->
         @endif
-
-        <!-- Project Section -->
         @if(count($profile->projects)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" >
-                        <strong>PROJECTS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->projects as $e)
-            <tr>
-                <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->start_date))}} -
+            <section class="section projects-section">
+                <h2 class="section-title"><i class="fa fa-archive"></i>Projects</h2>
+                @foreach($profile->projects as $e)
+                <div class="item">
+                    <div class="meta">
+                        <div class="upper-row">
+                            <h3 class="job-title">{{$e->title}}</h3>
+                            <div class="time">{{date("M Y",strtotime($e->start_date))}} -
                     @if($e->current_working)
-                        Till Date
+                        Present
                     @else
                         {{date("M Y",strtotime($e->end_date))}}
-                    @endif
-                </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->title}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        <i>As {{$e->position}} - {{$e->experiances->organization}} {{$e->experiances->city->Name}}, {{$e->experiances->country->Name}}</i>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        {{$e->details}}
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
+                    @endif</div>
+                        </div><!--//upper-row-->
+                        <div class="company">As {{$e->position}} - {{$e->experiances->organization}} {{$e->experiances->city->Name}}, {{$e->experiances->country->Name}}</div>
+                    </div><!--//meta-->
+                    <div class="details">
+                        <p>{!!$e->details!!}</p>
+                    </div><!--//details-->
+                </div><!--//item-->
+                @endforeach
+            </section><!--//section-->
         @endif
-
-        <!-- Languages Section -->
-        @if(count($profile->languages)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" >
-                        <strong>LANGUAGES</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->languages as $e)
-            <tr>
-                <td style="width:12%; padding:3px"></td>
-                <td style="width:44%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->language->name}}</strong>
-                </td>
-                <td style="width:44%; padding:3px; text-align:right">
-                    ({{$e->proficiencylevel->name}})
-                </td>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
+        @if(count($profile->certifications)>0)<!-- certifications -->
+            <section class="section projects-section">
+                <h2 class="section-title"><i class="fa fa-archive"></i>CERTIFICATIONS</h2>
+                @foreach($profile->certifications as $e)
+                <div class="item">
+                    <div class="meta">
+                        <div class="upper-row">
+                            <h3 class="job-title">{{$e->name}}</h3>
+                            <div class="time">{{date("M Y",strtotime($e->completion_date))}}</div>
+                        </div><!--//upper-row-->
+                        <div class="company">{{$e->institution}}, {{$e->city->Name}}, {{$e->country->Name}} with (Grade/Score) {{$e->score}}</div>
+                    </div><!--//meta-->
+                    <div class="details">
+                        <p>{!!$e->details!!}</p>
+                    </div><!--//details-->
+                </div><!--//item-->
+                @endforeach
+            </section><!--//section-->
         @endif
+        @if(count($profile->publications)>0)<!-- publications -->
+            <section class="section projects-section">
+                <h2 class="section-title"><i class="fa fa-archive"></i>Publications</h2>
+                @foreach($profile->publications as $e)
+                <div class="item">
+                    <div class="meta">
+                        <div class="upper-row">
+                            <h3 class="job-title">{{$e->title}}</h3>
+                            <div class="time">{{date("M Y",strtotime($e->publication_date))}}</div>
+                        </div><!--//upper-row-->
+                        <div class="company">Author(s) : {{ $e->author }}</div>
+                    </div><!--//meta-->
+                    <div class="details">
+                        <p>{{ $e->publisher}}, {{$e->city->Name}}, {{$e->country->Name}}</p>
+                    </div><!--//details-->
+                </div><!--//item-->
+                @endforeach
+            </section><!--//section-->
+        @endif
+        @if(count($profile->affilitions)>0)<!-- affiliation -->
+            <section class="section projects-section">
+                <h2 class="section-title"><i class="fa fa-archive"></i>Affiliations</h2>
+                @foreach($profile->affilitions as $e)
+                <div class="item">
+                    <div class="meta">
+                        <div class="upper-row">
+                            <h3 class="job-title">{{$e->position}}</h3>
+                            <div class="time">{{date("M Y",strtotime($e->start_date))}} -
+                    @if($e->current_working)
+                        Present
+                    @else
+                        {{date("M Y",strtotime($e->end_date))}}
+                    @endif</div>
+                        </div><!--//upper-row-->
+                        <div class="company">{{ $e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}</div>
+                    </div><!--//meta-->
 
-        <!-- Skills Section -->
+                </div><!--//item-->
+                @endforeach
+            </section><!--//section-->
+        @endif
+        @if(count($profile->awards)>0)<!-- publications -->
+            <section class="section projects-section">
+                <h2 class="section-title"><i class="fa fa-archive"></i>Awards</h2>
+                @foreach($profile->awards as $e)
+                <div class="item">
+                    <div class="meta">
+                        <div class="upper-row">
+                            <h3 class="job-title">{{$e->title}}</h3>
+                            <div class="time">{{date("M Y",strtotime($e->award_date))}}</div>
+                        </div><!--//upper-row-->
+                        <div class="company">{{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}</div>
+                    </div><!--//meta-->
+                    <div class="details">
+                        <p>{!! $e->details !!}</p>
+                    </div><!--//details-->
+                </div><!--//item-->
+                @endforeach
+            </section><!--//section-->
+        @endif
         @if(count($profile->skills)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" >
-                        <strong>SKILLS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->skills as $e)
-            <tr>
-                <td style="width:12%; padding:3px"></td>
-                <td style="width:44%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->name}}</strong>
-                </td>
-                <td style="width:44%; padding:3px; text-align:right">
-                    ({{$e->skilllevel->name}})
-                </td>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
+            <section class="skills-section section">
+                <h2 class="section-title"><i class="fa fa-rocket"></i>Skills &amp; Proficiency</h2>
+                <div class="skillset">   
+                @foreach($profile->skills as $e)     
+                    <div class="item">
+                        <h3 class="level-title">{{$e->name}}</h3>
+                        <div class="level-bar">
+                            <div class="level-bar-inner" data-level="{{$e->skill_level_id*33.3 }}%">
+                            </div>                                      
+                        </div><!--//level-bar-->                                 
+                    </div><!--//item-->
+                @endforeach
+                </div>  
+            </section><!--//skills-section-->
         @endif
-
-        <!-- Certifications Section -->
-        @if(count($profile->certifications)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" >
-                        <strong>CERTIFICATIONS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->certifications as $e)
-            <tr>
-                <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->completion_date))}}
-                </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->name}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        <i>{{$e->institution}}, {{$e->city->Name}}, {{$e->country->Name}} with (Grade/Score) {{$e->score}}</i>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        {!! $e->details !!}
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
-
-        <!-- References Section -->
-        @if(count($profile->references)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="2">
-                    <div class="print-padding print-bottom-border" >
-                        <strong>REFERENCES</strong>
-                    </div>
-                </th>
-            </tr>
-                @foreach($profile->references as $e)
-            <tr>
-                <td style="width:12%; padding:3px"></td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->name}}</strong><br/>
-                     {{$e->job_title}} at {{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}<br/>
-                        Phone: {{$e->phone}}<br/>
-                        Email: {!! '<a href="mailto:'. $e->email . '">' . $e->email . '</a>' !!}<br/>
-                        Reference Type: {{$e->referencetype->name}}
-                </td>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
-
-<!-- Publications Section -->
-        @if(count($profile->publications)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" >
-                        <strong>PUBLICATIONS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->publications as $e)
-            <tr>
-                <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->publication_date))}}
-                </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->title}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        Author(s) : {{ $e->author }}
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        {{ $e->publisher}}, {{$e->city->Name}}, {{$e->country->Name}}
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
-
-<!-- Affiliations Section -->
-        @if(count($profile->affilitions)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="2">
-                    <div class="print-padding print-bottom-border" >
-                        <strong>AFFILIATIONS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->affilitions as $e)
-            <tr>
-                <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->start_date))}} -
-                    @if($e->current_working)
-                        Till Date
-                    @else
-                        {{date("M Y",strtotime($e->end_date))}}
-                    @endif
-                </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->position}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        <i>{{ $e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}>/i>
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
-
-        <!-- Honors & Awards Section -->
-        @if(count($profile->awards)>0)
-        <table width="100%">
-            <tr style="width:100%; padding:3px" >
-                <th colspan="3">
-                    <div class="print-padding print-bottom-border" >
-                        <strong>AWARDS</strong>
-                    </div>
-                </th>
-            </tr>
-            @foreach($profile->awards as $e)
-            <tr>
-                <td style="width:12%; padding:3px" class="print-padding-lr text-right print-date-size">
-                    {{date("M Y",strtotime($e->award_date))}}
-                </td>
-                <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                    <strong>{{$e->title}}</strong>
-                </td>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        <i>{{$e->organization}}, {{$e->city->Name}}, {{$e->country->Name}}</i>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:12%; padding:3px"></td>
-                    <td style="width:88%; padding:3px;  padding-left:15px" class="text-left">
-                        {!! $e->details !!}
-                    </td>
-                </tr>
-            </tr>
-            @endforeach
-        </table>
-        <br/>
-        @endif
- </div>
+        </div><!--//main-body-->
+    </div> </div>
          </div>
 
 </div>
@@ -530,4 +380,5 @@ function ajax(d,s,t)
     });
 }
 </script>
+<script type="text/javascript" src="{{asset('/js/main.js')}}"></script> 
 @endsection

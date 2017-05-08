@@ -96,7 +96,7 @@
                             @yield('content')
                         </div>                
                         <div class="col-md-2">
-                            google
+                            @include('seeker::google-left',array('country'=>$country))
                         </div>
                     </div>
                 </div>

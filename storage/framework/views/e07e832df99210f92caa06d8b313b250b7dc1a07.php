@@ -67,7 +67,7 @@ No records returned.
             <button type="button" value="7" class="btn btn-primary btn-sm btn-toolbar-margin">Junk</button>
             <!--button type="button" value="msg" class="btn btn-primary btn-sm btn-toolbar-margin">Message</button-->
             <!--button type="button" value="interview" class="btn btn-primary btn-sm btn-toolbar-margin" id="interview">Interview</button-->
-            <a href="javascript:;" class="fil" id="filter2">Filter</a>
+            <!--a href="javascript:;" class="fil" id="filter2">Filter</a-->
           </div>
         </div>
         <br/>

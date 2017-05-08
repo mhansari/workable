@@ -93,13 +93,13 @@
                 <div class="container">
                     <div class="row"> 
                     <div class="col-md-2">
-                            google
+                            @include('seeker::google-right',array('country'=>$country))
                         </div>                 
                         <div class="col-md-8">
                             @yield('content')
                         </div>                
                         <div class="col-md-2">
-                            google
+                            @include('seeker::google-left',array('country'=>$country))
                         </div> 
                     </div>
                 </div>

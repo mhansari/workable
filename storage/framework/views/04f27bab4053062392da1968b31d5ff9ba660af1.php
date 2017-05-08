@@ -4,27 +4,36 @@
     <div class="row">
         <div class="col-md-12 list-col ">
           <?php echo $__env->make('employers::nav',array('country'=>$country), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
-            <div class="panel-body">
-                 <?php if($errors->has()): ?>
-                     <?php foreach($errors->all() as $error): ?>
-                        <div class="alert alert-danger"><?php echo e($error); ?></div>
-                    <?php endforeach; ?>
-                  <?php endif; ?>
-                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Job Title</th>
-                            <th>Posted By</th>
-                            <th>Date Posted</th>
-                            <th>Job Type</th>
-                            <th>Status</th>
-                            <th>Applications</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-        
-                </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 list-col">
+            <div class="panel  panel-default">
+                <div class="panel-heading">
+                    <h4>My Jobs</h4>
+                </div>
+                <div class="panel-body">
+                     <?php if($errors->has()): ?>
+                         <?php foreach($errors->all() as $error): ?>
+                            <div class="alert alert-danger"><?php echo e($error); ?></div>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
+                    <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Job Title</th>
+                                <th>Posted By</th>
+                                <th>Date Posted</th>
+                                <th>Job Type</th>
+                                <th>Status</th>
+                                <th>Applications</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+            
+                    </table>
+                </div>
             </div>
         </div>
     </div>
