@@ -4,7 +4,16 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Laravel</title>
+        <title>Jobs in Pakistan - CareerJin</title>
+         <meta name="keywords" content="Jobs in Pakistan, Jobs Pakistan, Jobs, Careers, Recruitment, Employment, Hiring, Banking, CVs, Career, Finance, IT, Marketing, Online Jobs, Opportunity,Pakistan, Resume, Work, naukri, rizq, Rozi" />
+<meta name="description" content="Find best Jobs in Pakistan, jobs listings and job opportunities on CareerJin.com. Browse more and apply for free! CareerJin.com is Pakistan's leading job website where companies are posting jobs" /><link rel="canonical" href="https://www.careerjin.com/" />
+         
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="CareerJin.com"/>
+    <meta property="fb:app_id" content="108372302535151"/>
+    <meta property="og:title" content="Jobs in Pakistan - CareerJin.com"/>
+    <meta property="og:url" content="//www.careerjin.com/"/>
+<meta property="og:description" content="Find best Jobs in Pakistan, jobs listings and job opportunities on CareerJin.com. Browse and apply for free! ROZEE.PK is Pakistan's leading job website where companies are posting jobs"/><meta property="og:image" content="http://careerjin.com/images/logo.png" />
         <!-- Fonts -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
         <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel='stylesheet' type='text/css'>

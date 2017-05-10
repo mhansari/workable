@@ -35,27 +35,27 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
     'facebook' => [
-        'client_id' => '1793018594303270',
-        'client_secret' => 'fdb6e4ebf266b56caaa54c45f4105b1a',
-        'redirect' => 'http://localhost/workable/public/pk/callback/facebook',
+        'client_id' => '176663976026604',
+        'client_secret' => '1460744d53bf8a8aefc5acbb39d0353b',
+        'redirect' => 'http://www.careerjin.com/pk/account/callback/facebook',
     ],
     
     'twitter' => [
         'client_id' => 'UA0HbY57eP46iQiIUDc4bWRrb',
         'client_secret' => 'rGdxlrXLwZCtshPizueqiUmmlOMrmLLpcYg9RdsN24SwctSplj',
-        'redirect' => 'http://localhost/workable/public/pk/callback/twitter',
+        'redirect' => 'http://www.careerjin.com/pk/account/callback/twitter',
     ],
     
     'google' => [
         'client_id' => '1094679016108-h1957lk2k5jp1h4dpof8k14lak6rjbh3.apps.googleusercontent.com',
         'client_secret' => '2Fg4SGZMAmLbbicUzq6E0z-h',
-        'redirect' => 'http://localhost/workable/public/pk/callback/google',
+        'redirect' => 'http://www.careerjin.com/pk/account/callback/google',
     ],
     
     'linkedin' => [
         'client_id' => '86ef68765qjs45',
         'client_secret' => 'oo0L21Z9nY7aDkqo',
-        'redirect' => 'http://localhost/workable/public/pk/callback/linkedin',
+        'redirect' => 'http://www.careerjin.com/pk/account/callback/linkedin',
     ],
 
 ];
