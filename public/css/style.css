@@ -441,3 +441,13 @@ overflow-x: hidden;
     background-color: #fff;
 }
 
+.margin-logo
+{
+    margin-top: -10px;
+   
+}
+.header-bar-borders
+{
+    border-width: 0px;
+    height:57px; margin-bottom: 0px;
+}
