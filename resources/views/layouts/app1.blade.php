@@ -57,7 +57,7 @@
     <link id="theme-style" rel="stylesheet" href="{{asset('/css/styles-5.css')}}">
     </head>
     <body id="app-layout">
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default header-bar-borders">
             <div class="container">
                 <div class="navbar-header">
                     <!-- Collapsed Hamburger -->
@@ -68,7 +68,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand margin-logo" href="{{ url('/') }}">
                         <img src="{{ URL::asset('images/logo.png') }}" alt="CareerJin.com"/>
                     </a>
                 </div>
