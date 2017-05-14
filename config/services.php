@@ -37,25 +37,25 @@ return [
     'facebook' => [
         'client_id' => '176663976026604',
         'client_secret' => '1460744d53bf8a8aefc5acbb39d0353b',
-        'redirect' => 'http://www.careerjin.com/pk/account/callback/facebook',
+        'redirect' => 'http://www.jobstreet.pk/pk/account/callback/facebook',
     ],
     
     'twitter' => [
         'client_id' => 'UA0HbY57eP46iQiIUDc4bWRrb',
         'client_secret' => 'rGdxlrXLwZCtshPizueqiUmmlOMrmLLpcYg9RdsN24SwctSplj',
-        'redirect' => 'http://www.careerjin.com/pk/account/callback/twitter',
+        'redirect' => 'http://www.jobstreet.pk/pk/account/callback/twitter',
     ],
     
     'google' => [
         'client_id' => '1094679016108-h1957lk2k5jp1h4dpof8k14lak6rjbh3.apps.googleusercontent.com',
         'client_secret' => '2Fg4SGZMAmLbbicUzq6E0z-h',
-        'redirect' => 'http://www.careerjin.com/pk/account/callback/google',
+        'redirect' => 'http://www.jobstreet.pk/pk/account/callback/google',
     ],
     
     'linkedin' => [
         'client_id' => '86ef68765qjs45',
         'client_secret' => 'oo0L21Z9nY7aDkqo',
-        'redirect' => 'http://www.careerjin.com/pk/account/callback/linkedin',
+        'redirect' => 'http://www.jobstreet.pk/pk/account/callback/linkedin',
     ],
 
 ];
