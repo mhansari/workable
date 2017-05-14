@@ -11,7 +11,7 @@ class Twitter extends Server
      */
     public function urlTemporaryCredentials()
     {
-        return 'https://api.twitter.com/oauth/authorize';
+        return 'https://api.twitter.com/oauth/request_token';
     }
 
     /**
