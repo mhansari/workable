@@ -15,7 +15,7 @@ class SocialAuthController extends Controller
         echo $provider;
 		return Socialite::driver($provider)->redirect();
 	}
-http://www.jobstreet.pk/pk/account/callback/twitter?oauth_token=MjM8BAAAAAAAyAw_AAABXAZ9QOA&oauth_verifier=9DJi7KyxYmR31cEeRVU7X3hqYtWmjAZF
+
     public function callback($country, $provider)
     {
       echo $provider;
