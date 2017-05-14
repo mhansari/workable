@@ -14,7 +14,6 @@ DB::enableQueryLog();
 use Illuminate\Support\Facades\Redirect;
 Route::group(['middleware' => 'web'], function () {
 Route::get('/{country}/jobs/applicantsajax','\App\Http\Controllers\JobsController@applicantsajax');
-
 	Route::get('/{country}/account/redirect/{provider}', '\App\Http\Controllers\SocialAuthController@redirect');
 	Route::get('/{country}/account/callback/{provider}', '\App\Http\Controllers\SocialAuthController@callback');
 	Route::get('/{country}/account/logout', '\Modules\Employers\Http\Controllers\EmployersController@logout');

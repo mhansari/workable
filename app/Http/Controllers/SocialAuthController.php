@@ -15,12 +15,12 @@ class SocialAuthController extends Controller
         echo $provider;
 		return Socialite::driver($provider)->redirect();
 	}
-
-    public function callback(SocialAccountService $service,$country, $provider)
+http://www.jobstreet.pk/pk/account/callback/twitter?oauth_token=MjM8BAAAAAAAyAw_AAABXAZ9QOA&oauth_verifier=9DJi7KyxYmR31cEeRVU7X3hqYtWmjAZF
+    public function callback($country, $provider)
     {
       echo $provider;
-      print_r(Socialite::driver('twitter')->user());
-        $user = $service->createOrGetUser(Socialite::driver($provider));
+      print_r(Socialite::driver($provider)->user());
+       // $user = $service->createOrGetUser(Socialite::driver($provider));
 print_r($user);
 //auth()->login($user);
 
