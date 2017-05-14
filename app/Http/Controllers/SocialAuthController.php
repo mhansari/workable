@@ -18,7 +18,7 @@ class SocialAuthController extends Controller
     public function callback(SocialAccountService $service,$country, $provider)
     {
       
-        $user = $service->createOrGetUser(Socialite::driver($provider)->userFromTokenAndSecret($oauth_token, $oauth_token_secret));
+        $user = $service->createOrGetUser(Socialite::driver($provider));
 
     auth()->login($user);
 
