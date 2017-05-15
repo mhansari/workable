@@ -20,7 +20,7 @@ class SocialAuthController extends Controller
     {
       echo $provider;
       print_r(Socialite::with($provider)->user());
-       // $user = $service->createOrGetUser(Socialite::driver($provider));
+        $user = $service->createOrGetUser(Socialite::driver($provider));
 print_r($user);
 //auth()->login($user);
 
