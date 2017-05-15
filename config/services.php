@@ -41,8 +41,8 @@ return [
     ],
     
     'twitter' => [
-        'client_id' => '88893630-uMxYqWXHncXMokJbeVIaioOKaAQOWFp6EFcoGPLc6',
-        'client_secret' => 'ujeTvi7Q3edoWEBZLjYWU8e7bLD4ZuVPbV5RYHcmBFzct',
+        'client_id' => '88893630-795x3vde98G1x2gqePqPXv0iS',
+        'client_secret' => 'PkXXM2WQSREt8uNljGZ20EnUSIz7HigTTPulpOc5B3o7xjns3g',
         'redirect' => 'http://www.jobstreet.pk/pk/account/callback/twitter',
     ],
     
