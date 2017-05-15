@@ -48,7 +48,7 @@ abstract class AbstractProvider implements ProviderContract
 
         //Only set if file is empty!!!<br>
 if(file_exists(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp") === FALSE){
-if(file_put_contents(storage_path("pp").DIRECTORY_SEPARATOR."oauth.temp", serialize($this->request->getSession()->get("oauth.temp"))) === FALSE){
+if(file_put_contents(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp", serialize($this->request->getSession()->get("oauth.temp"))) === FALSE){
 die("Could not write temp credentials. Is your storage/app path writable?");
 }
 }
