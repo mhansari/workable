@@ -12,14 +12,14 @@ class SocialAuthController extends Controller
 {
     public function redirect($country,$provider)
 	{
-        echo $provider;
+
 		return Socialite::driver($provider)->redirect();
 	}
 
     public function callback($country, $provider)
     {
       echo $provider;
-      print_r(Socialite::driver($provider)->user());
+      print_r(Socialite::with($provider)->user());
        // $user = $service->createOrGetUser(Socialite::driver($provider));
 print_r($user);
 //auth()->login($user);
