@@ -22,7 +22,8 @@
         "phenx/php-font-lib": "0.4 as 0.2.2",
         "laravel/socialite": "^2.0",
         "mauro-moreno/laravel-highcharts": "^1.0",
-        "fx3costa/laravelchartjs": "^2.2"
+        "fx3costa/laravelchartjs": "^2.2",
+        "league/oauth1-client": "^1.7"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
