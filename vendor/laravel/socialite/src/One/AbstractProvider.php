@@ -47,11 +47,11 @@ abstract class AbstractProvider implements ProviderContract
     {
 
         //Only set if file is empty!!!<br>
-if(file_exists(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp") === FALSE){
-if(file_put_contents(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp", serialize($this->request->getSession()->get("oauth.temp"))) === FALSE){
-die("Could not write temp credentials. Is your storage/app path writable?");
-}
-}
+//if(file_exists(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp") === FALSE){
+//if(file_put_contents(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp", serialize($this->request->getSession()->get("oauth.temp"))) === FALSE){
+//die("Could not write temp credentials. Is your storage/app path writable?");
+//}
+//}
         $this->request->session()->set(
             'oauth.temp', $temp = $this->server->getTemporaryCredentials()
         );
@@ -114,10 +114,10 @@ die("Could not write temp credentials. Is your storage/app path writable?");
      */
     protected function getToken()
     {
-        $temp = unserialize(file_get_contents(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp"));
-@unlink(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp");
-      //  $temp = $this->request->session()->get('oauth.temp');
-
+      //  $temp = unserialize(file_get_contents(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp"));
+//@unlink(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp");
+        $temp = $this->request->session()->get('oauth.temp');
+print_r($temp);
         return $this->server->getTokenCredentials(
             $temp, $this->request->get('oauth_token'), $this->request->get('oauth_verifier')
         );
