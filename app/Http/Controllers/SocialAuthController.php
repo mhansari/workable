@@ -16,7 +16,7 @@ class SocialAuthController extends Controller
 		return Socialite::driver($provider)->redirect();
 	}
 
-    public function callback($country, $provider)
+    public function callback(SocialAccountService $service,$country, $provider)
     {
       echo $provider;
       print_r(Socialite::with($provider)->user());
@@ -24,6 +24,6 @@ class SocialAuthController extends Controller
 print_r($user);
 //auth()->login($user);
 
-    //return redirect()->to('/home');
+    return redirect()->to('/home');
     }
 }
