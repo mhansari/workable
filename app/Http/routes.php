@@ -12,7 +12,7 @@ DB::enableQueryLog();
 |
 */
 use Illuminate\Support\Facades\Redirect;
-Route::group(['middlewareGroups' => ['web']], function () {
+Route::group(['middleware' => ['web']], function () {
 Route::get('/{country}/jobs/applicantsajax','\App\Http\Controllers\JobsController@applicantsajax');
 	Route::get('/{country}/account/redirect/{provider}', '\App\Http\Controllers\SocialAuthController@redirect');
 	Route::get('/{country}/account/callback/{provider}', '\App\Http\Controllers\SocialAuthController@callback');
@@ -184,7 +184,7 @@ Route::get('/{country}/jobs/applicantsajax','\App\Http\Controllers\JobsControlle
 	//Route::get('/{country}/seekers/profile/download/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumePrintEmployer');
 });
 
-Route::group(['middlewareGroups' => ['web','auth']], function () {
+Route::group(['middleware' => ['web','auth']], function () {
 
 	//Seeker - Reschedule Interview 
 	Route::get('/{country}/seekers/interview/confirm/{id}', array('as'=>'confirm','uses'=>'\Modules\Employers\Http\Controllers\InterviewsController@confirm'));
