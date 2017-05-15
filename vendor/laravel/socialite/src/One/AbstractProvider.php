@@ -117,7 +117,7 @@ abstract class AbstractProvider implements ProviderContract
       //  $temp = unserialize(file_get_contents(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp"));
 //@unlink(storage_path("app").DIRECTORY_SEPARATOR."oauth.temp");
         $temp = $this->request->session()->get('oauth.temp');
-print_r($temp);
+//print_r($temp);
         return $this->server->getTokenCredentials(
             $temp, $this->request->get('oauth_token'), $this->request->get('oauth_verifier')
         );
