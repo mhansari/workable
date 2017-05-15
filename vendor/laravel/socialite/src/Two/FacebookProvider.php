@@ -62,7 +62,8 @@ class FacebookProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getTokenUrl()
     {
-        return $this->graphUrl.'/oauth/access_token';
+      //  return $this->graphUrl.'/oauth/access_token';
+        return $this->graphUrl.'/'.$this->version.'/oauth/access_token';
     }
 
     /**
