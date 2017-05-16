@@ -18,11 +18,11 @@ class SocialAuthController extends Controller
 
     public function callback(SocialAccountService $service,$country, $provider)
     {
-      echo $provider;
-      print_r(Socialite::with($provider)->user());
+     // echo $provider;
+     // print_r(Socialite::driver('twitter')->user());
         $user = $service->createOrGetUser(Socialite::driver($provider));
-print_r($user);
-//auth()->login($user);
+//print_r($user);
+        auth()->login($user);
 
     return redirect()->to('/home');
     }
