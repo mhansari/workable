@@ -46,7 +46,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="CountryID" class="control-label">Country</label>
                                 {!! Form::select('CountryID', $countries, null, ['data-error'=>'Required', 'id'=>'CountryID','class'=>'form-control','placeholder'=>'Select Country','required'=>'required']) !!}
@@ -54,14 +54,14 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="StateID" class="control-label">State/Province</label>
                                 {!! Form::select('StateID', $states, null, ['' => '','data-error'=>'Required', 'id'=>'StateID','class'=>'form-control','placeholder'=>'Select State/Province','required'=>'required']) !!}
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="CityID" class="control-label">City</label>
                                 {!! Form::select('CityID', $cities, null, ['data-error'=>'Required', 'id'=>'CityID','class'=>'form-control','placeholder'=>'Please select City','required'=>'required']) !!}
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                    
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="mobile_number" class="control-label">Mobile</label>
                                 {{Form::input('text', 'mobile_number', '',['data-error'=>'Required','id'=>'mobile_number', 'placeholder'=>'Mobile Number', 'required'=>'required', 'class'=>'form-control'])}}
@@ -78,7 +78,7 @@
                         </div>
                        
             
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                
                                 <label for="email" class="control-label">Email</label>
@@ -86,35 +86,35 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                             <label for="password" class="control-label">Password</label>
                                 {{Form::input('password', 'password', '',['data-minlength'=>'6','data-error'=>'Required','id'=>'password', 'placeholder'=>'Password', 'required'=>'required', 'class'=>'form-control'])}}
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="confirm_password" class="control-label">Confirm Password</label>
                                 {{Form::input('password', 'confirm_password', '',['data-error'=>'Password does not match','id'=>'confirm_password', 'data-match'=>'#password', 'placeholder'=>'Confirm Password', 'required'=>'required', 'class'=>'form-control'])}}
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="QuestionID" class="control-label">Security Question</label>
                                 {!! Form::select('QuestionID', $questions, null, ['data-error'=>'Required', 'id'=>'QuestionID','class'=>'form-control','placeholder'=>'Select Security Question','required'=>'required']) !!}
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="security_answer" class="control-label">Security Answer</label>
                                 {{Form::input('text', 'security_answer', old('security_answer'),['data-error'=>'Required','id'=>'security_answer', 'placeholder'=>'Your Security Answer', 'required'=>'required', 'class'=>'form-control'])}}
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 {{Form::checkbox('newsletter', '1', '',['id'=>'newsletter'])}} Subscribe to daily job alerts?
                             </div>
