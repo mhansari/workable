@@ -53,8 +53,8 @@ return [
     ],
     
     'linkedin' => [
-        'client_id' => '86ef68765qjs45',
-        'client_secret' => 'oo0L21Z9nY7aDkqo',
+        'client_id' => '817ww1vve3urf8',
+        'client_secret' => 'XCI8U0It4BmpHxpB',
         'redirect' => 'http://www.jobstreet.pk/pk/account/callback/linkedin',
     ],
 
