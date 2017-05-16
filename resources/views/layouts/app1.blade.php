@@ -104,11 +104,12 @@
         <div id="holder">
             <div id="body">
                 <div class="container">
-                    <div class="row">                 
+                    <div class="row">     
+                    <br/>            
                         <div class="col-md-12">
                             @yield('content')
                         </div>                
-                        
+                        <br/>
                     </div>
                 </div>
             </div>

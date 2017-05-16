@@ -100,13 +100,15 @@
         <div id="holder">
             <div id="body">
                 <div class="container">
-                    <div class="row">                 
+                    <div class="row">     
+                    <br/>            
                         <div class="col-md-10">
                             @yield('content')
                         </div>                
                         <div class="col-md-2">
                             @include('seeker::google-left',array('country'=>$country))
                         </div>
+                        <br/>
                     </div>
                 </div>
             </div>
