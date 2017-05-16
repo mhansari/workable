@@ -24,6 +24,6 @@ class SocialAuthController extends Controller
 //print_r($user);
         auth()->login($user);
 
-    return redirect()->to('/home');
+    return redirect()->to('/');
     }
 }
