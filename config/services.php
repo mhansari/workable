@@ -47,8 +47,8 @@ return [
     ],
     
     'google' => [
-        'client_id' => '1094679016108-h1957lk2k5jp1h4dpof8k14lak6rjbh3.apps.googleusercontent.com',
-        'client_secret' => '2Fg4SGZMAmLbbicUzq6E0z-h',
+        'client_id' => '608764785078-s9dap3el1pn7svnm8825mlv39428m0nb.apps.googleusercontent.com',
+        'client_secret' => 'bcph1-xXDD63TECofHHVF0YV',
         'redirect' => 'http://www.jobstreet.pk/pk/account/callback/google',
     ],
     
