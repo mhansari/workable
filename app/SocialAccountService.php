@@ -17,7 +17,7 @@ class SocialAccountService
         if ($account) {
             return $account->user;
         } else {
-
+            print_r($account);
             $account = new SocialAccount([
                 'provider_user_id' => $providerUser->getId(),
                 'provider' => $providerName
