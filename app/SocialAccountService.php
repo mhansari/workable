@@ -17,7 +17,7 @@ class SocialAccountService
         if ($account) {
             return $account->user;
         } else {
-            print_r($account);
+
             $account = new SocialAccount([
                 'provider_user_id' => $providerUser->getId(),
                 'provider' => $providerName
@@ -32,9 +32,9 @@ class SocialAccountService
                     'first_name' => $providerUser->getName(),
                 ]);
             }
-
-            $account->user()->associate($user);
-            $account->save();
+            print_r($account->user());
+           // $account->user()->associate($user);
+          //  $account->save();
 
             return $user;
 
