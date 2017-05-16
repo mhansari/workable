@@ -16,7 +16,7 @@
                     @endif
                     
                    {{ Form::open(array('onload'=>'javascript:alert("hi")','url'=> route('emp.signup',array('country'=>$country)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
-                    <div class="col-md-6">
+                    <div class="col-md-12">
  
                         <div class="col-md-12">
                             <div class="form-group">
@@ -77,9 +77,7 @@
                             </div>
                         </div>
                        
-                </div>
-
-                <div class="col-md-6">
+            
                         <div class="col-md-12">
                             <div class="form-group">
                                
