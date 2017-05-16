@@ -18,14 +18,14 @@
                    {{ Form::open(array('onload'=>'javascript:alert("hi")','url'=> route('emp.signup',array('country'=>$country)),'id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
                     <div class="col-md-12">
  
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="firstname" class="control-label">First Name</label>
                                 {{Form::input('text', 'firstname', '',['data-error'=>'Required','id'=>'firstname', 'placeholder'=>'First Name', 'required'=>'required', 'class'=>'form-control'])}}
                                 <div class="help-block with-errors"></div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="lastname" class="control-label">Last Name</label>
                                 {{Form::input('text', 'lastname', '',['data-error'=>'Required','id'=>'lastname', 'placeholder'=>'Last Name', 'required'=>'required', 'class'=>'form-control'])}}
