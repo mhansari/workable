@@ -39,8 +39,11 @@ class HomeController extends Controller
         return Redirect::to('/'.$c['DEFAULT_COUNTRY']->v);
     }
 
-
-     public function welcome($country)
+    public function fb()
+    {
+        
+    }
+    public function welcome($country)
     {
 
         $c = Config::all()->keyBy('k');
