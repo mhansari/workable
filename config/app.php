@@ -163,6 +163,7 @@ Unisharp\Ckeditor\ServiceProvider::class,
 Barryvdh\DomPDF\ServiceProvider::class,
 Laravel\Socialite\SocialiteServiceProvider::class,
 Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
+SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider::class,
     ],
 
     /*
@@ -216,7 +217,7 @@ Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        
+        'Facebook' => SammyK\LaravelFacebookSdk\FacebookFacade::class,
 
     ],
 
