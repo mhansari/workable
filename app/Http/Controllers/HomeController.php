@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Categories;
 use App\Config;
 use Illuminate\Support\Facades\Redirect;
+use Facebook;
 class HomeController extends Controller
 {
     /**
@@ -42,7 +43,7 @@ class HomeController extends Controller
     public function fb()
     {
 
-        vendor/facebook/graph-sdk/src/Facebook/Facebook::object('299010880556401/feed')->with('test')->post();
+        Facebook::object('299010880556401/feed')->with('test')->post();
     }
     public function welcome($country)
     {
