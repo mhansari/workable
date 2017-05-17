@@ -13,6 +13,7 @@ DB::enableQueryLog();
 */
 use Illuminate\Support\Facades\Redirect;
 Route::group(['middleware' => ['web']], function () {
+	Route::get('/{country}/fb/post-test','\App\Http\Controllers\HomeController@fb');
 Route::get('/{country}/jobs/applicantsajax','\App\Http\Controllers\JobsController@applicantsajax');
 	Route::get('/{country}/account/redirect/{provider}', '\App\Http\Controllers\SocialAuthController@redirect');
 	Route::get('/{country}/account/callback/{provider}', '\App\Http\Controllers\SocialAuthController@callback');

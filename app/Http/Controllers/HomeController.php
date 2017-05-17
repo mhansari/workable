@@ -41,7 +41,7 @@ class HomeController extends Controller
 
     public function fb()
     {
-        
+        Facebook::object('299010880556401/feed')->with('test')->post();
     }
     public function welcome($country)
     {
