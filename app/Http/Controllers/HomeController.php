@@ -8,6 +8,17 @@ use App\Categories;
 use App\Config;
 use Illuminate\Support\Facades\Redirect;
 use Vinkla\Facebook\Facades\Facebook;
+use Facebook\FacebookSession;
+use Facebook\FacebookRedirectLoginHelper;
+use Facebook\FacebookRequest;
+use Facebook\FacebookResponse;
+use Facebook\FacebookSDKException;
+use Facebook\FacebookRequestException;
+use Facebook\FacebookOtherException;
+use Facebook\FacebookAuthorizationException;
+use Facebook\GraphObject;
+use Facebook\GraphSessionInfo;
+session_start();
 class HomeController extends Controller
 {
     /**
@@ -43,7 +54,7 @@ class HomeController extends Controller
     public function fb()
     {
 // start session
-session_start();
+
 
 // init app with app id and secret
 FacebookSession::setDefaultApplication( 'xxx','yyy' );
