@@ -15,10 +15,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    var $fb;
+    var $fb2;
     public function __construct()
     {
-       $fb = \App::make('SammyK\LaravelFacebookSdk\LaravelFacebookSdk');
+       $fb2 = \App::make('SammyK\LaravelFacebookSdk\LaravelFacebookSdk');
     }    
 
     /**
@@ -44,7 +44,7 @@ class HomeController extends Controller
     public function fb()
     {
      //$fb = new Facebook();
-      $helper = $fb->getPageTabHelper();
+      $helper = $fb2->getPageTabHelper();
     $accessToken = $helper->getAccessToken();   
 
     print_r($helper);
