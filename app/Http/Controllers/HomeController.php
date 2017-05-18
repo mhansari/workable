@@ -44,7 +44,7 @@ class HomeController extends Controller
     public function fb()
     {
      //$fb = new Facebook();
-      $helper = $fb2->getPageTabHelper();
+      $helper = $this->fb2->getPageTabHelper();
     $accessToken = $helper->getAccessToken();   
 
     print_r($helper);
