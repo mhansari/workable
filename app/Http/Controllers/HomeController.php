@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Categories;
 use App\Config;
 use Illuminate\Support\Facades\Redirect;
- // use Facebook;
+use Vinkla\Facebook\Facades\Facebook;
 class HomeController extends Controller
 {
     /**
@@ -42,12 +42,8 @@ class HomeController extends Controller
 
     public function fb()
     {
-     \SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 ;
-      $helper = $fb2->getPageTabHelper();
-    $accessToken = $helper->getAccessToken();   
-
-    print_r($helper);
-    echo $accessToken;
+     // …is identical to writing this
+Facebook::get('/me', '{access-token}');
     }
     public function welcome($country)
     {

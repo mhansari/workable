@@ -24,7 +24,8 @@
         "mauro-moreno/laravel-highcharts": "^1.0",
         "fx3costa/laravelchartjs": "^2.2",
         "league/oauth1-client": "^1.7",
-        "sammyk/laravel-facebook-sdk": "^3.4"
+        "sammyk/laravel-facebook-sdk": "^3.4",
+        "vinkla/facebook": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
