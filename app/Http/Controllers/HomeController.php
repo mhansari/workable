@@ -43,7 +43,7 @@ class HomeController extends Controller
 
     public function fb()
     {
-     $fb = new Facebook();
+     //$fb = new Facebook();
       $helper = $fb->getPageTabHelper();
     $accessToken = $helper->getAccessToken();   
 
