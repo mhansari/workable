@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Categories;
 use App\Config;
 use Illuminate\Support\Facades\Redirect;
-  use Facebook\FacebookRequest;
-  use Session;
+  use Facebook;
 class HomeController extends Controller
 {
     /**
@@ -43,24 +42,8 @@ class HomeController extends Controller
 
     public function fb()
     {
-      
-
-// Assuming $session was obtained from a helper...
-
-// Get a list of pages that this user admins; requires "manage_pages" permission
-$request = new FacebookRequest($session, 'GET', '/me/accounts?fields=name,access_token,perms');
-$pageList = $request->execute()
-  ->getGraphObject()
-  ->asArray();
-
-foreach ($pageList as $page) {
-  $pageAccessToken = $page['access_token'];
-  // Store $pageAccessToken and/or
-  // send requests to Graph on behalf of the page
-  print_r($pageAccessToken);
-}
-
-
+     $fb = new Facebook();
+     print_r($fb);
     }
     public function welcome($country)
     {
