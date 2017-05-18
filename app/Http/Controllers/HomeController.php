@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Categories;
 use App\Config;
 use Illuminate\Support\Facades\Redirect;
-  use Facebook;
 class HomeController extends Controller
 {
     /**
