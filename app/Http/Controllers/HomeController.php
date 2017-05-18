@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Categories;
 use App\Config;
 use Illuminate\Support\Facades\Redirect;
+use Socialite;
  // use Facebook;
 class HomeController extends Controller
 {
@@ -42,12 +43,10 @@ class HomeController extends Controller
 
     public function fb(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 )
     {
-     
-      // Send an array of permissions to request
-    $login_url = $fb2->getLoginUrl(['email','','']);
+    $user = Socialize::with('facebook')->user();
 
-    // Obviously you'd do this in blade :)
-    echo '<a href="' . $login_url . '">Login with Facebook</a>';
+echo $user->token;
+
     }
     public function welcome($country)
     {
