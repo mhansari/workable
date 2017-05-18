@@ -159,11 +159,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-Unisharp\Ckeditor\ServiceProvider::class,
-Barryvdh\DomPDF\ServiceProvider::class,
-Laravel\Socialite\SocialiteServiceProvider::class,
-Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
-SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider::class,
+        Unisharp\Ckeditor\ServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
+        Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
+        SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider::class,
     ],
 
     /*

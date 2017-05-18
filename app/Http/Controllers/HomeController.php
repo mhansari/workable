@@ -18,7 +18,7 @@ class HomeController extends Controller
     var $fb2;
     public function __construct()
     {
-       $fb2 = \App::make('SammyK\LaravelFacebookSdk\LaravelFacebookSdk');
+       $fb2 = app(SammyK\LaravelFacebookSdk\LaravelFacebookSdk::class);
     }    
 
     /**
