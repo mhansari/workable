@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Categories;
 use App\Config;
 use Illuminate\Support\Facades\Redirect;
+ // use Facebook;
 class HomeController extends Controller
 {
     /**
@@ -14,9 +15,10 @@ class HomeController extends Controller
      *
      * @return void
      */
+    var $fb;
     public function __construct()
     {
-       // $this->middleware('auth');
+       $fb = App::make('SammyK\LaravelFacebookSdk\LaravelFacebookSdk');
     }    
 
     /**
