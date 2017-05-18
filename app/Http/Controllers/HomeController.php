@@ -43,25 +43,11 @@ class HomeController extends Controller
     public function fb()
     {
      $fb = new Facebook();
-     $data = [
-        'message' => 'This is a sample sharing',
-        //'source' => $fb->fileToUpload(asset('photo.jpg')),
-    ];
+      $helper = $fb->getPageTabHelper();
+    $accessToken = $helper->getAccessToken();   
 
-    try {
-
-      $response = $fb->post('/me/feed', $data, '{access-token}');
-      var_dump($response);
-      exit;
-    } catch(Facebook\Exceptions\FacebookResponseException $e) {
-      echo 'Graph returned an error: ' . $e->getMessage();
-      exit;
-    } catch(Facebook\Exceptions\FacebookSDKException $e) {
-      echo 'Facebook SDK returned an error: ' . $e->getMessage();
-      exit;
-    }
-        $graphNode = $response->getGraphNode();
-        echo 'Photo ID: ' . $graphNode['id'];
+    print_r($helper);
+    echo $accessToken;
     }
     public function welcome($country)
     {
