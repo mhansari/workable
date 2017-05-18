@@ -218,8 +218,8 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        //'Facebook' => SammyK\LaravelFacebookSdk\FacebookFacade::class,
-        'Facebook' => Vinkla\Facebook\Facades\Facebook::class,
+        'Facebook' => SammyK\LaravelFacebookSdk\FacebookFacade::class,
+
     ],
 
 ];
