@@ -45,7 +45,7 @@ class HomeController extends Controller
     {
     $user = Socialite::driver('facebook')->user();
 
-echo $user->token;
+echo $user;
 
     }
     public function welcome($country)
