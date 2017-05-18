@@ -8,6 +8,7 @@ use App\Categories;
 use App\Config;
 use Illuminate\Support\Facades\Redirect;
   use Facebook\FacebookRequest;
+  use Session;
 class HomeController extends Controller
 {
     /**
