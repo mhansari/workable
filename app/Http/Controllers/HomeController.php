@@ -42,59 +42,23 @@ class HomeController extends Controller
 
     public function fb()
     {
-        $fb = new Facebook();
-        try {
-        $token = $fb->getAccessTokenFromRedirect();
-    } catch (Facebook\Exceptions\FacebookSDKException $e) {
-        dd($e->getMessage());
-    }
+        use Facebook\FacebookRequest;
 
-    // Access token will be null if the user denied the request
-    // or if someone just hit this URL outside of the OAuth flow.
-    if (! $token) {
-        // Get the redirect helper
-        $helper = $fb->getRedirectLoginHelper();
+// Assuming $session was obtained from a helper...
 
-        if (! $helper->getError()) {
-            abort(403, 'Unauthorized action.');
-        }
+// Get a list of pages that this user admins; requires "manage_pages" permission
+$request = new FacebookRequest($session, 'GET', '/me/accounts?fields=name,access_token,perms');
+$pageList = $request->execute()
+  ->getGraphObject()
+  ->asArray();
 
-        // User denied the request
-        dd(
-            $helper->getError(),
-            $helper->getErrorCode(),
-            $helper->getErrorReason(),
-            $helper->getErrorDescription()
-        );
-    }
+foreach ($pageList as $page) {
+  $pageAccessToken = $page['access_token'];
+  // Store $pageAccessToken and/or
+  // send requests to Graph on behalf of the page
+  print_r($pageAccessToken);
+}
 
-    if (! $token->isLongLived()) {
-        // OAuth 2.0 client handler
-        $oauth_client = $fb->getOAuth2Client();
-
-        // Extend the access token.
-        try {
-            $token = $oauth_client->getLongLivedAccessToken($token);
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            dd($e->getMessage());
-        }
-    }
-
-    $fb->setDefaultAccessToken($token);
-
-    // Save for later
-    Session::put('fb_user_access_token', (string) $token);
-
-    // Get basic info on the user from Facebook.
-    try {
-        $response = $fb->get('/me?fields=id,name,email');
-    } catch (Facebook\Exceptions\FacebookSDKException $e) {
-        dd($e->getMessage());
-    }
-
-    // Convert the response to a `Facebook/GraphNodes/GraphUser` collection
-    $facebook_user = $response->getGraphUser();
-print_r($facebook_user);
 
     }
     public function welcome($country)
