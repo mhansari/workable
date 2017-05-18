@@ -43,10 +43,11 @@ class HomeController extends Controller
     public function fb(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 )
     {
      
-      $helper = $fb2->getPageTabHelper();
-    $accessToken = $fb2->getAccessTokenFromRedirect();
-  
-    echo $accessToken;
+      // Send an array of permissions to request
+    $login_url = $fb2->getLoginUrl(['email','','']);
+
+    // Obviously you'd do this in blade :)
+    echo '<a href="' . $login_url . '">Login with Facebook</a>';
     }
     public function welcome($country)
     {
