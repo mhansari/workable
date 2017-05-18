@@ -44,7 +44,8 @@ class HomeController extends Controller
     {
      
       $helper = $fb2->getPageTabHelper();
-    $accessToken = $helper->getAccessToken();   
+    $accessToken = $fb2->getAccessTokenFromRedirect();
+  
     echo $accessToken;
     }
     public function welcome($country)
