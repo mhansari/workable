@@ -45,6 +45,7 @@ class HomeController extends Controller
 
         $helper = Facebook::getRedirectLoginHelper(); 
         $accessToken = $helper->getAccessToken();  
+        echo $accessToken;
      // …is identical to writing this
 Facebook::get('/me', $accessToken);
     }
