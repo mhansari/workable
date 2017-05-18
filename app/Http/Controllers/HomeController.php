@@ -42,7 +42,7 @@ class HomeController extends Controller
 
     public function fb()
     {
-     $fb2 = new \SammyK\LaravelFacebookSdk\LaravelFacebookSdk();
+     \SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 ;
       $helper = $fb2->getPageTabHelper();
     $accessToken = $helper->getAccessToken();   
 
