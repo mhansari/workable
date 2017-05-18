@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Categories;
 use App\Config;
 use Illuminate\Support\Facades\Redirect;
-use Facebook;
+  use Facebook\FacebookRequest;
 class HomeController extends Controller
 {
     /**
@@ -42,7 +42,7 @@ class HomeController extends Controller
 
     public function fb()
     {
-        use Facebook\FacebookRequest;
+      
 
 // Assuming $session was obtained from a helper...
 
