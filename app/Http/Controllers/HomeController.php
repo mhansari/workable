@@ -46,7 +46,7 @@ class HomeController extends Controller
     {
     
     $fb = new Facebook();
-    $res = $fb->get('/me', 'Session('token')');
+    $res = $fb->get('/me', Session('token'));
     print_r($res);
     }
     public function welcome($country)
