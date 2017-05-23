@@ -46,8 +46,12 @@ class HomeController extends Controller
     {
     
 
-    $res = $fb2->get('/me', Session('token'));
-    print_r($res);
+$fb2->setDefaultAccessToken(Session('token'));
+$fb2->sendRequest('POST', "me/feed", [
+    'message' => 'I Like French Fries.',
+    'link' => 'http://blog.damirmiladinov.com',
+]);
+
     }
     public function welcome($country)
     {
