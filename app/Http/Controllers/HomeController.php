@@ -9,6 +9,7 @@ use App\Config;
 use Illuminate\Support\Facades\Redirect;
 use Socialite;
  use Session;
+ use Facebook;
 class HomeController extends Controller
 {
     /**
