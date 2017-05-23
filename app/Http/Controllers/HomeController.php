@@ -46,13 +46,8 @@ class HomeController extends Controller
     {
     
     $fb = new Facebook();
-
-$fb->setDefaultAccessToken(Session('token'));
-$fb->sendRequest('POST', "me/feed", [
-    'message' => 'I Like French Fries.',
-    'link' => 'http://blog.damirmiladinov.com',
-]);
-
+    $res = $fb->get('/me', 'Session('token')');
+    print_r($res);
     }
     public function welcome($country)
     {
