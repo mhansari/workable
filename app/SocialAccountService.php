@@ -11,7 +11,7 @@ class SocialAccountService
 		$providerUser = $provider->user();
 
       if($provider=='facebook')
-        Session::put('token', $providerUser->token);
+        Session::put('token', ((string)$providerUser->token));
         $providerName = class_basename($provider);
         $account = SocialAccount::whereProvider($providerName)
             ->whereProviderUserId($providerUser->getId())
