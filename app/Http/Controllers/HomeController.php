@@ -8,7 +8,7 @@ use App\Categories;
 use App\Config;
 use Illuminate\Support\Facades\Redirect;
 use Socialite;
- // use Facebook;
+ use Session;
 class HomeController extends Controller
 {
     /**
@@ -43,9 +43,8 @@ class HomeController extends Controller
 
     public function fb(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 )
     {
-    $user = Socialite::with('facebook')->user();
-
-print_r($user);
+    
+    echo Session('token');
 
     }
     public function welcome($country)

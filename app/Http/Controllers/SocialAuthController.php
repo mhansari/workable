@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Socialite;
 use App\SocialAccountService;
+use Session;
 class SocialAuthController extends Controller
 {
     public function redirect($country,$provider)
@@ -19,11 +20,14 @@ class SocialAuthController extends Controller
     public function callback(SocialAccountService $service,$country, $provider)
     {
      // echo $provider;
-      print_r(Socialite::driver('facebook')->user());
+    //  print_r(Socialite::driver('facebook')->user());
+
+      if($provider=='facebook')
+        Session::put('token', Socialite::driver('facebook')->user()->token);
         $user = $service->createOrGetUser(Socialite::driver($provider));
-//print_r($user);
+
         auth()->login($user);
-echo $user->token;
-   // return redirect()->to('/');
+
+    return redirect()->to('/');
     }
 }
