@@ -44,7 +44,13 @@ class HomeController extends Controller
     public function fb(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 )
     {
     
-    echo Session('token');
+    $fb = new Facebook();
+
+$fb->setDefaultAccessToken(Session('token'));
+$fb->sendRequest('POST', "me/feed", [
+    'message' => 'I Like French Fries.',
+    'link' => 'http://blog.damirmiladinov.com',
+]);
 
     }
     public function welcome($country)
