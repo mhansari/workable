@@ -43,7 +43,7 @@ class HomeController extends Controller
 
     public function fb(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 )
     {
-    $user = Socialite::driver('facebook')->user();
+    $user = Socialite::with('facebook')->user();
 
 print_r($user);
 
