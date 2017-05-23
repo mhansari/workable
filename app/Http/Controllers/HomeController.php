@@ -45,7 +45,7 @@ class HomeController extends Controller
     public function fb(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 )
     {
     
-    $fb = new Facebook();
+
     $res = $fb2->get('/me', Session('token'));
     print_r($res);
     }
