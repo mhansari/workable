@@ -22,8 +22,6 @@ class SocialAuthController extends Controller
      // echo $provider;
     //  print_r(Socialite::driver('facebook')->user());
 
-      if($provider=='facebook')
-        Session::put('token', Socialite::driver('facebook')->user()->token);
         $user = $service->createOrGetUser(Socialite::driver($provider));
 
         auth()->login($user);

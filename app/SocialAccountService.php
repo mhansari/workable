@@ -3,12 +3,15 @@
 namespace App;
 
 use Laravel\Socialite\Contracts\Provider;
-
+use Session;
 class SocialAccountService
 {
     public function createOrGetUser(Provider $provider)
     {
 		$providerUser = $provider->user();
+
+      if($provider=='facebook')
+        Session::put('token', $providerUser->token);
         $providerName = class_basename($provider);
         $account = SocialAccount::whereProvider($providerName)
             ->whereProviderUserId($providerUser->getId())
