@@ -51,6 +51,12 @@ class HomeController extends Controller
     echo '<a href="' . $login_url . '">Login with Facebook</a>';
         
     }
+    public function cb(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 )
+    {
+        $token = $fb2->getAccessTokenFromRedirect();
+        echo $token
+        
+    }
     public function welcome($country)
     {
 
