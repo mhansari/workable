@@ -14,7 +14,7 @@ class SocialAuthController extends Controller
     public function redirect($country,$provider)
 	{
 
-		return Socialite::driver($provider)->scopes()->redirect();
+		return Socialite::driver($provider)->scopes(['publish_stream','manage_pages'])->redirect();
 	}
 
     public function callback(SocialAccountService $service,$country, $provider)
