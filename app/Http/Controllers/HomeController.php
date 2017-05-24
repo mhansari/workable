@@ -54,7 +54,7 @@ class HomeController extends Controller
     {
         $token = $fb2->getAccessTokenFromRedirect();
         $fb2->setDefaultAccessToken($token);
-        $response = $fb2->get('/me/accounts');
+        $response = $fb2->get('/299010880556401/feed');
         print_r($response);
     }
     public function welcome($country)
