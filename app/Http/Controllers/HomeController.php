@@ -54,7 +54,7 @@ class HomeController extends Controller
     public function cb(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 )
     {
         $token = $fb2->getAccessTokenFromRedirect();
-        $response = $fb2->get('/me?fields=id,name,email', $token);
+        $response = $fb2->get('/299010880556401?fields=access-token');
         print_r($response);
     }
     public function welcome($country)
