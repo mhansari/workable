@@ -14,7 +14,7 @@ DB::enableQueryLog();
 use Illuminate\Support\Facades\Redirect;
 Route::group(['middleware' => ['web']], function () {
 
-Route::get('/{country}/facebook/callback','\App\Http\Controllers\HomeController@cb');
+Route::get('/facebook/callback','\App\Http\Controllers\HomeController@cb');
 
 	Route::get('/{country}/fb/post-test','\App\Http\Controllers\HomeController@fb');
 Route::get('/{country}/jobs/applicantsajax','\App\Http\Controllers\JobsController@applicantsajax');
