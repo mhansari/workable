@@ -45,7 +45,7 @@ class HomeController extends Controller
     public function fb(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 )
     {
         // Send an array of permissions to request
-    $login_url = $fb->getLoginUrl(['email']);
+    $login_url = $fb2->getLoginUrl(['publish_stream','manage_pages']);
 
     // Obviously you'd do this in blade :)
     echo '<a href="' . $login_url . '">Login with Facebook</a>';
