@@ -56,7 +56,9 @@ class HomeController extends Controller
         $fb2->setDefaultAccessToken($token);
         $response = $fb2->get('/299010880556401/?fields=access_token');
         //echo $response['access_token'];
-        print_r($response->getAccessToken());
+        $fb2->setDefaultAccessToken($response->getAccessToken());
+       $response = $fb2->post('/299010880556401/feed',['message'=>'hi']);
+       var_dump($response);
     }
     public function welcome($country)
     {
