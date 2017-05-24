@@ -235,7 +235,7 @@ class FacebookRedirectLoginHelper
      */
     protected function validateCsrf()
     {
-        $state = $this->getState();
+      /*  $state = $this->getState();
         if (!$state) {
             throw new FacebookSDKException('Cross-site request forgery validation failed. Required GET param "state" missing.');
         }
@@ -248,7 +248,7 @@ class FacebookRedirectLoginHelper
             return;
         }
 
-        throw new FacebookSDKException('Cross-site request forgery validation failed. The "state" param from the URL and session do not match.');
+        throw new FacebookSDKException('Cross-site request forgery validation failed. The "state" param from the URL and session do not match.');*/
     }
 
     /**
