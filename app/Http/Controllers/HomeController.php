@@ -53,7 +53,7 @@ class HomeController extends Controller
     }
     public function cb(\SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb2 )
     {
-        $token = $fb2->getAccessTokenFromRedirect();
+        $token = $fb2->getPageTabHelper()->getAccessToken();
         echo $token;
         
     }
