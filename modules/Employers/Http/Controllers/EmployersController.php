@@ -70,7 +70,7 @@ class EmployersController extends Controller {
 	{
 		return view('employers::register+success')->with('msg','');
 	}
-	public function createUser(Request $request)
+	public function createUser(Request $request,$country='pk')
 	{
 		//var_dump($request);
 		$users = SiteUsers::select('id')->where('Email', '=',$request->input('email'))->get();
