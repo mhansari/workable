@@ -109,7 +109,7 @@ class EmployersController extends Controller {
 					$code = str_random(10);
 					$user->code = $code;
 					$user->suspended = '0';
-					$user->active = '0';
+					$user->active = 1;
 					$user->save();
 					$company_info->user_id = $user->id;
 					$company_info->save();
@@ -136,7 +136,7 @@ class EmployersController extends Controller {
 					$n->save();
 					//$this->activationEmail( $user->FirstName . ' ' . $user->LastName, $user->Email, $code);
 					Session::set('msg', "Your account has created, Activation link has been emailed on the provided email address.");
-					return Redirect::to('employers/success/' . $request->input('ut'));
+					return Redirect::to($country . '/employers/success/' . $request->input('ut'));
 
 
 			}
@@ -159,14 +159,14 @@ class EmployersController extends Controller {
           	if(!$user->active)
           	{
           		Session::set('msg', "Your account has not activated yet, please activate your account.");
-				return Redirect::to('account/login/' . $request->input('ut'))->withInput(Input::except('password'));
+				return Redirect::to($country . '/account/login/' . $request->input('ut'))->withInput(Input::except('password'));
           		//return response()->json(['error' => 'Your account has not activated yet, please activate your account.']);
           	}
 
           	if($user->suspended == 1)
           	{
           		Session::set('msg', "Your account has suspended, contact support for more information.");
-				return Redirect::to('account/login/' . $request->input('ut'))->withInput(Input::except('password'));
+				return Redirect::to($country . '/account/login/' . $request->input('ut'))->withInput(Input::except('password'));
           		//return response()->json(['error' => 'Your account has suspended, contact support for more information']);
           	}
         //  	if($user->user_type==1){
@@ -179,7 +179,7 @@ class EmployersController extends Controller {
         else
         {
         	Session::set('msg', "Invalid credentials.");
-			return Redirect::to('account/login')->withInput(Input::except('password'));
+			return Redirect::to($country . '/account/login')->withInput(Input::except('password'));
         	//return response()->json(['error' => 'Invalid credentials.']);
         }
     
@@ -188,10 +188,10 @@ class EmployersController extends Controller {
 
 	private function activationEmail($name, $email, $code)
 	{
-		$url= App::make('url')->to('/') . '/employers/activate/'. $code;
+		$url= App::make('url')->to('/') . $country . '/employers/activate/'. $code;
 		Mail::send('emails.test', ['link' => $url, 'name'=>$name, 'email'=>$email], function ($m) use ($email, $name){
 					//$m->from('info@localhost', 'GetHired.pk');
-					$m->to($email, $name)->subject('Gethired.pk - Activate your account');
+					$m->to($email, $name)->subject('JobStreet.pk - Activate your account');
         		}
         );
 	}
