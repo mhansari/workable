@@ -119,7 +119,7 @@ class EmployersController extends Controller {
 						$ups = new \App\UserPrivacySettings();
 						$ups->user_id =  $user->id;
 						$ups->privacy_settings_id = $p->id;
-						$ups->visit = 1;
+						$ups->visible = 1;
 						$ups->save();
 					}
 					$n = new \App\Notifications();
