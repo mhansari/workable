@@ -236,7 +236,7 @@ Route::post('/{country}/seekers/upload-profile-picture', array('as'=>'uploadpp',
 	Route::post('/{country}/seekers/save-job', array('as'=>'job.save','uses'=>'\Modules\Seeker\Http\Controllers\SavedJobsController@save'));
 	Route::post('/{country}/employers/changeStatus', array('as'=>'changeStatus','uses'=>'\Modules\Seeker\Http\Controllers\ApplicationController@changeStatus'));
 	Route::get('/{country}/seekers/manage/resume/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumeView');
-	//Route::get('/{country}/seekers/manage/resume/download/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumePrint');
+	Route::get('/{country}/seekers/manage/resume/download/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumePrint');
 	Route::get('/{country}/employers/download/resume/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumePrintEmployer');
 	//Languages
 	Route::get('/{country}/seekers/manage/resume-languages/{resumeid}','\Modules\Seeker\Http\Controllers\ResumeController@resumeLanguages');
