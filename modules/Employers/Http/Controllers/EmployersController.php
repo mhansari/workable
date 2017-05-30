@@ -66,9 +66,9 @@ class EmployersController extends Controller {
 		Session::flush();
 		return Redirect::to('/'.$country);
 	}
-	public function success()
+	public function success($country='pk')
 	{
-		return view('employers::register+success')->with('msg','');
+		return view('employers::register+success')->with('msg','')->with('country',$country);
 	}
 	public function createUser(Request $request,$country='pk')
 	{
