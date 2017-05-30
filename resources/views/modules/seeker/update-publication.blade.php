@@ -111,7 +111,7 @@ function selectCity(StateId,CityId)
 function loadStates(CountryId, StateId)
 {
    if(CountryId >0 && CountryId != ""){
-       $.get("{{asset('/admin/states/getbycountry/')}}/" + CountryId, function(data){
+       $.get("{{asset('/'.$country.'/admin/states/getbycountry/')}}/" + CountryId, function(data){
             $('#StateID').empty();
             $('#StateID').append('<option value>Please select State/Province</option>');
             $('#CityID').empty();
@@ -135,7 +135,7 @@ function loadStates(CountryId, StateId)
 function loadcities(StateId, CityId)
 {
     if(StateId >0 && StateId != ""){
-        $.get("{{asset('/admin/cities/getbystate/')}}/" + StateId, function(data){
+        $.get("{{asset('/'.$country.'/admin/cities/getbystate/')}}/" + StateId, function(data){
             $('#CityID').empty();
             $('#CityID').append('<option value>Please select City</option>');
             $.each(data, function(index, stateObj){
