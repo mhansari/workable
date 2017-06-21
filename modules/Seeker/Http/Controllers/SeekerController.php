@@ -10,8 +10,7 @@ class SeekerController extends Controller {
 	{
 
 		$interviews = \App\Interview::with(['jobs','vanue'])->where('applicant_id','=',Auth::user()->id)->get();
-		print_r($interviews);
-		//return view('seeker::dashboard')->with('country',$country)->with('interviews',$interviews);
+		return view('seeker::dashboard')->with('country',$country)->with('interviews',$interviews);
 	}
 	public function myresumes($country)
 	{
