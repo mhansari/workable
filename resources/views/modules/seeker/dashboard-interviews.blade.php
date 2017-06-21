@@ -21,7 +21,7 @@
                     <div class="media-heading b" style="height:16px;overflow:hidden;"><a href="{{ asset($country .'/jobs/' . $obj->job_id) }}">{{$obj->jobs->job_title}}</a></div>
                     <div class="text-sm">
                         <div style="height:16px;overflow:hidden;">
-                     </div>
+                        <a href="{{asset($country . '/company/' . $obj->jobs->companies->user_id)}}">{{$obj->jobs->companies->company_name}}</a></div>
                         <div style="height:16px;overflow:hidden;">
                             <div><a href="{{route('interview.detail',array('country'=>$country,'id'=>$obj->id))}}">
                         <i class="  glyphicon glyphicon-calendar"></i>
