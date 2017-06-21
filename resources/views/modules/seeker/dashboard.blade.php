@@ -29,7 +29,7 @@
 		    @include('seeker::dashboard-applicationonjobs',array('country'=>$country))
 		  </div>
 		  <div id="inter" class="tab-pane fade">
-		    @include('seeker::dashboard-interviews',array('country'=>$country))
+		   
 		  </div>
 		</div>		
 	</div>
