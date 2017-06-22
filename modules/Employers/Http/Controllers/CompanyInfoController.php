@@ -91,10 +91,10 @@ class CompanyInfoController extends Controller {
     return redirect()->back();
 
 	}
-public function cover()
+public function cover($country)
 	{
 		$ci = CompanyInfo::where('user_id',Auth::user()->id)->get();
-		return view('employers::upload_cover')->with('ci',$ci);
+		return view('employers::upload_cover')->with('ci',$ci)->('country',$country);
 	}
 
 	public function uploadCover(Request $request)
