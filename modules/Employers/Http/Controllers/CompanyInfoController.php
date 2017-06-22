@@ -94,7 +94,7 @@ class CompanyInfoController extends Controller {
 public function cover($country)
 	{
 		$ci = CompanyInfo::where('user_id',Auth::user()->id)->get();
-		return view('employers::upload_cover')->with('ci',$ci)->('country',$country);
+		return view('employers::upload_cover')->with('ci',$ci)->with('country',$country);
 	}
 
 	public function uploadCover(Request $request)
