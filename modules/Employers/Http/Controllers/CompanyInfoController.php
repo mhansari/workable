@@ -97,7 +97,7 @@ public function cover($country)
 		return view('employers::upload_cover')->with('ci',$ci)->with('country',$country);
 	}
 
-	public function uploadCover(Request $request)
+	public function uploadCover($country,Request $request)
 	{
 		if(Input::file())
         {
@@ -115,7 +115,7 @@ public function cover($country)
                 $obj->company_cover = 'covers/' . $filename;
                 $obj->save();
                 Session::flash('flash_message', 'Cover Updated!');
-			    return Redirect::to('employers/cover');
+			    return Redirect::to($country . '/employers/cover');
            }
 	}
 
