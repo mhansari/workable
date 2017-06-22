@@ -16,7 +16,7 @@
                         </div>
                     @endif
 
-                    {{ Form::open(array('url'=> route('upload.cover'),'files'=>'true','class'=>'form-horizontal','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
+                    {{ Form::open(array('url'=> route('upload.cover',array('country',$country)),'files'=>'true','class'=>'form-horizontal','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
                         <div class="cover-employers-alignment" >
                           <img class="img-responsive" src="{{ asset($ci[0]->company_cover) }}" />
                         </div>
