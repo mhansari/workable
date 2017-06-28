@@ -67,6 +67,7 @@ class CompanyInfoController extends Controller {
 	{
 		$obj = CompanyInfo::find(Auth::user()->id);
 		$obj->company_name	=	$request->input('company_name');
+		$obj->about_compnay = $request->input('about_compnay');
 		$obj->designation	=	$request->input('designation');
 		$obj->country_id	=	$request->input('CountryID');
 		$obj->state_id	=	$request->input('StateID');
