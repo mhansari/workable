@@ -46,6 +46,8 @@
                       <ul class="nav nav-pills nav-stacked nav-touched">
                       <li><a href="departments">Departments</a></li>
                       <li><a href="update_company">Update Company</a></li>
+                      <li><a href="update_company">Update Logo</a></li>
+                      <li><a href="update_company">Update Cover</a></li>
                       <li><a href="{{ asset($country .'/employers/vanues') }}">Interview Venues</a></li>
                     </ul> 
                 </ul>

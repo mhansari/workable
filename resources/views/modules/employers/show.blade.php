@@ -3,7 +3,7 @@
 @section('content')
 <div class="">
     <div class="photo-cover" id="cover" >
-        <img src="{{ asset($company->company_cover) }}" class="img-responsive" />
+        <img src="{{ asset($company->company_cover) }}" class="img-responsive" width="100%" />
     </div>
     <div class="col-md-2 text-center">
         <div class="img-thumbnail">
