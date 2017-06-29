@@ -39,7 +39,7 @@
                 <div class="panel-body ">
                     <div class="tab-content">
                      <div id="home" class="tab-pane fade in active">
-                        {{$company->about_company}}
+                        {!!$company->about_company!!}
                     </div>
                     <div id="menu1" class="tab-pane fade">
                         @foreach($latest as $job)
