@@ -14,7 +14,7 @@
         </div> 
     </div>
     <div class="col-md-10 col-sm-9 text-center-xs">
-        <h2 class="company_name"><a href="{{asset($country . '/company/' . $company->user_id)}}">{{$company->company_name}}, {{$company->city->name }}, {{$company->country['name']}}</a></h2>
+        <h2 class="company_name"><a href="{{asset($country . '/company/' . $company->user_id)}}">{{$company->company_name}}, {{$company->city->Name }}, {{$company->country->Name}}</a></h2>
         <br>
         <div class="row">
             <div class="col-md-8">
@@ -78,7 +78,7 @@
                                 @if($sep != '')
                                     {{--*/ $sep = $sep . ', ' /*--}}
                                 @endif
-                                {{--*/ $sep = $sep . $c['name'] /*--}}
+                                {{--*/ $sep = $sep . $c->Name /*--}}
                             
                             @endforeach
                             {{ $sep }} - {{$job->countries->Name}}
@@ -112,7 +112,7 @@
                     <div class="mb5"><strong>Established In: </strong> <br/>{{ date('m-d-Y',strtotime($company->established_in))}}</div>
                     <div class="mb5"><strong>No. of Employees: </strong> <br/>{{ $company->total_employees}}</div>
                     <div class="mb5">
-                        <strong>Location: </strong> <br/><a class="inverse" href="/companies/{{$company->country['name']}}/{{$company->city->seo}}/">{{$company->city['name']}}</a>, {{$company->state['name']}}, <a class="inverse" href="/companies/{{$company->country->seo}}/" title="Companies in {{ $company->country['name']}}">{{ $company->country['name']}}</a>
+                        <strong>Location: </strong> <br/><a class="inverse" href="/companies/{{$company->country['name']}}/{{$company->city->seo}}/">{{$company->city->Name}}</a>, {{$company->state->Name}}, <a class="inverse" href="/companies/{{$company->country->seo}}/" title="Companies in {{ $company->country->Name}}">{{ $company->country->Name}}</a>
                     </div>
                 </div>
             </div>
