@@ -112,7 +112,7 @@
                     <div class="mb5"><strong>Established In: </strong> <br/>{{ date('m-d-Y',strtotime($company->established_in))}}</div>
                     <div class="mb5"><strong>No. of Employees: </strong> <br/>{{ $company->total_employees}}</div>
                     <div class="mb5">
-                        <strong>Location: </strong> <br/><a class="inverse" href="/companies/{{$company->country['name']}}/{{$company->city->seo}}/">{{$company->city->Name}}</a>, {{$company->state->Name}}, <a class="inverse" href="/companies/{{$company->country->seo}}/" title="Companies in {{ $company->country->Name}}">{{ $company->country->Name}}</a>
+                        <strong>Location: </strong> <br/><a class="inverse" href="/{{$country}}/jobs/city/{{$company->city->seo}}/">{{$company->city->Name}}</a>, {{$company->state->Name}}, <a class="inverse" href="/companies/{{$company->country->seo}}/" title="Companies in {{ $company->country->Name}}">{{ $company->country->Name}}</a>
                     </div>
                 </div>
             </div>
