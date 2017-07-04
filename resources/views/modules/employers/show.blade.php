@@ -81,7 +81,7 @@
                                 {{--*/ $sep = $sep . $c['name'] /*--}}
                             
                             @endforeach
-                            {{ $sep }} - {{$job->countries['name']}}
+                            {{ $sep }} - {{$job->countries->Name}}
                             </li>
                             <li class="col-md-3 list-group-item result text-left "><span class="glyphicon glyphicon-time"></span> {{ \Carbon\Carbon::createFromTimeStamp(strtotime($job->created_at))->diffForHumans() }}</li>
 
