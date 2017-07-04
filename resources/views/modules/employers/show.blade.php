@@ -21,7 +21,7 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#home" id="ab">About</a></li>
                     <li><a data-toggle="tab" href="#menu1" id="lj">Lastest Jobs</a></li>
-                    <li><a data-toggle="tab" href="#menu3" id="mp">Contact</a></li>
+                
                 </ul>
             </div>
         </div>
@@ -91,9 +91,7 @@
                     </div></div>
                     @endforeach
                     </div>
-                    <div id="menu3" class="tab-pane fade">
-                        <div id="map" name="map"></div>
-                    </div>
+                   
                     </div>
                 </div>
             </div>
@@ -112,7 +110,7 @@
                     <div class="mb5"><strong>Established In: </strong> <br/>{{ date('m-d-Y',strtotime($company->established_in))}}</div>
                     <div class="mb5"><strong>No. of Employees: </strong> <br/>{{ $company->total_employees}}</div>
                     <div class="mb5">
-                        <strong>Location: </strong> <br/><a class="inverse" href="/{{$country}}/jobs/city/{{$company->city->seo}}/">{{$company->city->Name}}</a>, {{$company->state->Name}}, <a class="inverse" href="/companies/{{$company->country->seo}}/" title="Companies in {{ $company->country->Name}}">{{ $company->country->Name}}</a>
+                        <strong>Location: </strong> <br/><a class="inverse" href="/{{$country}}/jobs/city/{{$company->city->seo}}/">{{$company->city->Name}}</a>, {{$company->state->Name}}, <a class="inverse" href="/{{$company->country->seo}}/" title="Companies in {{ $company->country->Name}}">{{ $company->country->Name}}</a>
                     </div>
                 </div>
             </div>
@@ -120,11 +118,11 @@
         </div>
     </div>
 </div>
-  <script src="https://maps.google.com/maps/api/js?key=AIzaSyDNkInU-qm_PaRpIviucjqFvj_hJGsgIzg"></script>
+  
    <script> 
     $(document).ready(function() {
        $('#heading').text($('#ab').text());
-init_map();
+
         $('#mp').click(function(){
             init_map();
             $('#heading').text($('#mp').text());
@@ -141,29 +139,7 @@ init_map();
             $('#heading').text($('#ab').text());
         });
 
-    });var map;
-    var marker ;
-      function init_map() {
-        var myLocation = new google.maps.LatLng({{$company->lat}},{{$company->lan}});
-        
-        var mapOptions = {
-           zoom: 14,
-            center:myLocation
-        };
-        
-       marker = new google.maps.Marker({
-            position: myLocation,
-            title:"{{$company->company_name}}"});
-             
-         map= new google.maps.Map(document.getElementById("map"),
-            mapOptions);
-        
-        marker.setMap(map); 
-
-      }
-      
-      google.maps.event.addDomListener(window, 'load', init_map);
-      
+    });
     </script>
     <script>
 $('.save').click(function() {
