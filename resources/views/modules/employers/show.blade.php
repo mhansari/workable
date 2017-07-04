@@ -129,7 +129,7 @@
         });
 
         $('#lj').click(function(){
-            $('#heading').text($('#lj').text() + " by {{$company->company_name}}" );
+            $('#heading').text($('#lj').text() + " by {!!$company->company_name!!}" );
         });
 
         $('#pj').click(function(){
