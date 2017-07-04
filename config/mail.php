@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'mhansari@gmail.com', 'name' => 'GetHired.pk'],
+    'from' => ['address' => 'info@jobstreet.pk', 'name' => 'JobStreet.pk'],
 
     /*
     |--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'username' => 'mhansari@gmail.com',
+    'username' => 'info@jobstreet.pk',
 
     /*
     |--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ return [
     |
     */
 
-    'password' => '786warning786',
+    'password' => 'cdhyfw',
 
     /*
     |--------------------------------------------------------------------------
