@@ -30,7 +30,9 @@
                     @endif 
 
                     @foreach($j as $job)
-             
+                        @if(count($job->cities)<1)
+                            @continue;
+                        @endif
                     <div class="panel panel-default"><div class="panel-body ">
                          <ul class="list-group box-search">
                             <li class="col-md-10 list-group-item result "><a href="{{ asset($cntry->seo .'/jobs/' . $job->id) }}"><strong>{{ $job->job_title }}</strong></a></li>

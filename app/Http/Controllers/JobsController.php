@@ -222,8 +222,7 @@ $j = collect($j);
 		    $query->where('seo', $city);
 		},'countries'])->where('active', '=',1)->paginate($c['PAGE_SIZE']->v)->appends($request->input());
 
-		if(count($j->cities)==0)
-			$j = array();
+	
 		$cntry = Countries::where('active',1)->where('seo',$country)->first();
 		$el = ExperianceLevels::where('active',1)->orderBy('name')->lists('name','id');
 		$obj2 = Categories::where('active',1)->orderBy('name')->lists('name','id');
