@@ -136,7 +136,7 @@ class EmployersController extends Controller {
 					$n->city_id = $user->city_id;
 					$n->save();
 					//$this->activationEmail( $user->FirstName . ' ' . $user->LastName, $user->Email, $code);
-					$this->WelcomeEmail($user->FirstName . ' ' . $user->LastName, $user->Email,$p);
+					$this->WelcomeEmail($user->first_name . ' ' . $user->last_name, $user->email,$p);
 					Session::set('msg', "Your account has created, Activation link has been emailed on the provided email address.");
 					return Redirect::to($country . '/employers/success/' . $request->input('ut'));
 
