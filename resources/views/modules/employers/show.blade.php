@@ -14,7 +14,7 @@
         </div> 
     </div>
     <div class="col-md-10 col-sm-9 text-center-xs">
-        <h2 class="company_name"><a href="{{asset($country . '/company/' . $company->user_id)}}">{{$company->company_name}}, {{$company->city['name'] }}, {{$company->country['name']}}</a></h2>
+        <h2 class="company_name"><a href="{{asset($country . '/company/' . $company->user_id)}}">{{$company->company_name}}, {{$company->city->name }}, {{$company->country['name']}}</a></h2>
         <br>
         <div class="row">
             <div class="col-md-8">
