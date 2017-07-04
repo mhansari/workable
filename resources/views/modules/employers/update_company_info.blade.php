@@ -198,7 +198,7 @@ function loadcities(StateId, CityId)
 selectCity($('#stid').val(),$('#ctid').val());
 });
 
- $(document).ready(function() {
+ /*$(document).ready(function() {
         jQuery('#about_company').summernote({
              toolbar: [
                         // [groupName, [list of button]]
@@ -210,7 +210,7 @@ selectCity($('#stid').val(),$('#ctid').val());
                       ]
             
         });
-    });
+    });*/
 </script>
 
 @endsection
