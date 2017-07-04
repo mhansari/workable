@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'mail.jobstreet.pk'),
+    'host' => env('MAIL_HOST', 'vps-1125261-15080.manage.myhosting.com'),
 
     /*
     |--------------------------------------------------------------------------
