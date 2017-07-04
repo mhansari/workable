@@ -67,7 +67,7 @@ class CompanyInfoController extends Controller {
 	{
 		$obj = CompanyInfo::find(Auth::user()->id);
 		$obj->company_name	=	$request->input('company_name');
-		print_r($request->all());
+		
 		 $obj->about_company = 		$request->input('about_company');
 		$obj->designation	=	$request->input('designation');
 		$obj->country_id	=	$request->input('CountryID');
@@ -90,7 +90,7 @@ class CompanyInfoController extends Controller {
 		$obj->save();
 		Session::flash('flash_message', 'Company Information Updated!');
 
-    //return redirect()->back();
+    return redirect()->back();
 
 	}
 public function cover($country)
