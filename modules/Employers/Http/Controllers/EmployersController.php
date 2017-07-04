@@ -88,6 +88,7 @@ class EmployersController extends Controller {
 		{
 			if($request->input('firstname'))
 			{
+				$p = Hash::make($request->input('confirm_password'));
 					$user = new SiteUsers;
 					$company_info = new CompanyInfo;
 					$po = \App\PrivacyOptions::where('active','=',1)->get();
@@ -101,7 +102,7 @@ class EmployersController extends Controller {
 				//	$user->mobile_prefix = $request->input('mobile-prefix');
 					$company_info->mobile = $user->mobile_phone = $request->input('mobile_number');
 					$user->email = $request->input('email');
-					$user->password = Hash::make($request->input('confirm_password'));
+					$user->password = $p;
 					$user->question_id = $request->input('QuestionID');
 					$user->answer = $request->input('security_answer');
 					$user->newsletter = ($request->input('newsletter')==''?'0':'1');
@@ -135,6 +136,7 @@ class EmployersController extends Controller {
 					$n->city_id = $user->city_id;
 					$n->save();
 					//$this->activationEmail( $user->FirstName . ' ' . $user->LastName, $user->Email, $code);
+					$this->WelcomeEmail($user->FirstName . ' ' . $user->LastName, $user->Email,$p);
 					Session::set('msg', "Your account has created, Activation link has been emailed on the provided email address.");
 					return Redirect::to($country . '/employers/success/' . $request->input('ut'));
 
@@ -192,6 +194,14 @@ class EmployersController extends Controller {
 		Mail::send('emails.test', ['link' => $url, 'name'=>$name, 'email'=>$email], function ($m) use ($email, $name){
 					//$m->from('info@localhost', 'GetHired.pk');
 					$m->to($email, $name)->subject('JobStreet.pk - Activate your account');
+        		}
+        );
+	}
+	private function WelcomeEmail($name, $email,$pwd)
+	{
+		Mail::send('emails.welcome', ['pwd' => $pwd, 'name'=>$name, 'email'=>$email], function ($m) use ($email, $name){
+					$m->from('info@jobstreet.pk', 'JobStreet.pk');
+					$m->to($email, $name)->subject('Welcome to JobStreet.pk');
         		}
         );
 	}
