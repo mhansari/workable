@@ -69,10 +69,11 @@ class HomeController extends Controller
         $obj2 = Categories::where('active',1)->orderBy('name')->lists('name','id');
 $j = \App\Jobs::with(['companies','cities','countries'])->orderBy('created_at','desc')->limit(18)->get();
 $s = \App\ResumeSeekerProfile::with(['city','country','resume'=>function($q){
-     $q->where('isdefault', '1');
+     //$q->where('isdefault', '1');
 },'experiance' => function($query){
             $query->orderBy('start_date', 'desc');
         }])->orderBy('created_at','desc')->limit(18)->get();
         return view('welcome' , compact('obj','obj1','obj2'))->with('s',$s)->with('j',$j)->with('config',$c)->with('country',$country);
     }
 }
+ 

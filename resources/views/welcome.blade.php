@@ -78,7 +78,7 @@
                                     <a href="{{asset($country . '/seekers/profile/' . $seeker->id)}}">
                                                                                     <div class="thumb-latest-profile" style="width: 50px; height: 50px; line-height: inherit; background-color: transparent; font-size: 25px;">
                                                 <span class="helper"></span>
-                                                <img src="{{$seeker->pp==''?'pp/placeholder.png':$seeker->pp}}" alt="{{$seeker->first_name}} {{$seeker->last_name}}">
+                                                <img src="{{$seeker->user->pp==''?'pp/placeholder.png':$seeker->user->pp}}" alt="{{$seeker->first_name}} {{$seeker->last_name}}">
                                             </div>
                                         
                                     </a>

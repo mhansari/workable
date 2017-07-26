@@ -20,6 +20,10 @@ public function getFullNameAttribute()
     {
         return $this->belongsTo('App\Countries','country_id');
     }
+    public function user()
+    {
+        return $this->belongsTo('App\User','user_id');
+    }
     public function state()
     {
         return $this->belongsTo('App\States','state_id');
