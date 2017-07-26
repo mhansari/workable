@@ -2,13 +2,12 @@
 
 namespace App;
 
-//use Laravel\Socialite\Contracts\User as ProviderUser;
 
 class SocialAccountService
 {
-    public function createOrGetUser(Laravel\Socialite\Contracts\User $providerUser)
+    public function createOrGetUser(Laravel\Socialite\Contracts\Provider $provider)
     {
-		//$providerUser = $provider->user();
+		$providerUser = $provider->user();
         $providerName = class_basename($provider);
         $account = SocialAccount::whereProvider($providerName)
             ->whereProviderUserId($providerUser->getId())
