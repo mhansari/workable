@@ -4,7 +4,7 @@
     <div class="wrapper">
         <div class="sidebar-wrapper">
             <div class="profile-container">
-                <img class="profile img-circle" src="{{asset($profile->pp)}}" alt="" />
+                <img class="profile img-circle" src="{{asset($profile->user->pp)}}" alt="" />
                 <h1 class="name">{{$profile->first_name}} {{$profile->last_name}}</h1>
                 {{$profile->address}}. {{$profile->city->Name}} - {{$profile->postal_code}}, {{$profile->country->Name}}.
             </div><!--//profile-container-->
