@@ -13,7 +13,7 @@ class SocialAuthController extends Controller
 {
   public function redirect($country,$provider)
 	{
-    if($provider=='facebook');
+    if($provider=='facebook')
 		  return Socialite::driver($provider)->scopes(['publish_actions','manage_pages'])->redirect();
     else
       return Socialite::driver($provider)->redirect();      
