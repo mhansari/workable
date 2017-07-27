@@ -32,7 +32,9 @@ class CompanyInfoController extends Controller {
 		$inc = IncorporationType::where('active',1)->orderBy('name')->lists('name','id');
 		$states = array();//States::all()->lists('Name', 'id');
 		$cities = array();//Cities::all()->lists('Name', 'id');
-		$ci = CompanyInfo::where('user_id',Auth::user()->id)->get();
+		$ci = CompanyInfo::where('user_id',Auth::user()->id)->first();
+		if(!$ci)
+			$ci = new CompanyInfo;
 		return view('employers::update_company_info', compact('countries','states', 'cities','categories','inc'))->with('ci',$ci)->with('country',$country);
 	}
 

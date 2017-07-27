@@ -18,22 +18,22 @@
                     {{ Form::open(array('url'=> route('updatecompany',array('country'=>$country)),'class'=>'form-horizontal','id'=>'demo-form', 'data-toggle'=>'validator','role'=>'form'))}}
                         <div class="form-group">                               
                             <label for="company_name" class="col-sm-3 control-label">Company Name</label>
-                            {{Form::input('company_name', 'company_name', $ci[0]->company_name,['data-error'=>'Required','id'=>'company_name', 'placeholder'=>'Company Name', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('company_name', 'company_name', $ci->company_name,['data-error'=>'Required','id'=>'company_name', 'placeholder'=>'Company Name', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">                               
                             <label for="about_company" class="col-sm-3 control-label">Abous Company</label>
-                            {{Form::textarea('about_company', $ci[0]->about_company,['data-error'=>'Required','id'=>'about_company', 'placeholder'=>'About Company', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::textarea('about_company', $ci->about_company,['data-error'=>'Required','id'=>'about_company', 'placeholder'=>'About Company', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">                               
                             <label for="designation" class="col-sm-3 control-label">Designation</label>
-                            {{Form::input('designation', 'designation', $ci[0]->designation,['data-error'=>'Required','id'=>'designation', 'placeholder'=>'Designation', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('designation', 'designation', $ci->designation,['data-error'=>'Required','id'=>'designation', 'placeholder'=>'Designation', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">
                             <label for="CountryID" class="col-sm-3  control-label">Country</label>
-                            {!! Form::select('CountryID', $countries, $ci[0]->country_id, ['data-error'=>'Required', 'id'=>'CountryID','class'=>'input-width form-control','placeholder'=>'Select Country','required'=>'required']) !!}
+                            {!! Form::select('CountryID', $countries, $ci->country_id, ['data-error'=>'Required', 'id'=>'CountryID','class'=>'input-width form-control','placeholder'=>'Select Country','required'=>'required']) !!}
                             <div class="help-block with-errors error-label"></div>
                         </div>
 
@@ -49,67 +49,67 @@
                         </div>
                         <div class="form-group">                               
                             <label for="phone" class="col-sm-3 control-label">Phone (Landline)</label>
-                            {{Form::input('phone', 'phone', $ci[0]->phone,['data-error'=>'Required','id'=>'phone', 'placeholder'=>'Phone (Landline)', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('phone', 'phone', $ci->phone,['data-error'=>'Required','id'=>'phone', 'placeholder'=>'Phone (Landline)', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">                               
                             <label for="mobile" class="col-sm-3 control-label">Mobile</label>
-                            {{Form::input('mobile', 'mobile', $ci[0]->mobile,['data-error'=>'Required','id'=>'mobile', 'placeholder'=>'Mobile', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('mobile', 'mobile', $ci->mobile,['data-error'=>'Required','id'=>'mobile', 'placeholder'=>'Mobile', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">                               
                             <label for="fax" class="col-sm-3 control-label">Fax</label>
-                            {{Form::input('fax', 'fax', $ci[0]->fax,['data-error'=>'Required','id'=>'fax', 'placeholder'=>'Fax', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('fax', 'fax', $ci->fax,['data-error'=>'Required','id'=>'fax', 'placeholder'=>'Fax', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">                               
                             <label for="website" class="col-sm-3 control-label">Website</label>
-                            {{Form::input('website', 'website', $ci[0]->website,['data-error'=>'Required','id'=>'website', 'placeholder'=>'www.yourwebsite.com', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('website', 'website', $ci->website,['data-error'=>'Required','id'=>'website', 'placeholder'=>'www.yourwebsite.com', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">                               
                             <label for="facebook" class="col-sm-3 control-label">Facebook</label>
-                            {{Form::input('facebook', 'facebook', $ci[0]->facebook,['data-error'=>'Required','id'=>'facebook', 'placeholder'=>'Facebook', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('facebook', 'facebook', $ci->facebook,['data-error'=>'Required','id'=>'facebook', 'placeholder'=>'Facebook', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">                               
                             <label for="twitter" class="col-sm-3 control-label">Twitter</label>
-                            {{Form::input('twitter', 'twitter', $ci[0]->twitter,['data-error'=>'Required','id'=>'twitter', 'placeholder'=>'Twitter', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('twitter', 'twitter', $ci->twitter,['data-error'=>'Required','id'=>'twitter', 'placeholder'=>'Twitter', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">                               
                             <label for="linkedin" class="col-sm-3 control-label">LinkedIn</label>
-                            {{Form::input('linkedin', 'linkedin', $ci[0]->linkedin,['data-error'=>'Required','id'=>'linkedin', 'placeholder'=>'LinkedIn', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('linkedin', 'linkedin', $ci->linkedin,['data-error'=>'Required','id'=>'linkedin', 'placeholder'=>'LinkedIn', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">                               
                             <label for="google" class="col-sm-3 control-label">Google</label>
-                            {{Form::input('google', 'google', $ci[0]->google,['data-error'=>'Required','id'=>'google', 'placeholder'=>'Google', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('google', 'google', $ci->google,['data-error'=>'Required','id'=>'google', 'placeholder'=>'Google', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">
                             <label for="incorporationtype" class="col-sm-3  control-label">Incorporation Type</label>
-                            {!! Form::select('incorporationtype', $inc, $ci[0]->business_incorporation_type, ['data-error'=>'Required', 'id'=>'incorporationtype','class'=>'input-width form-control','placeholder'=>'Select Incorporation Type','required'=>'required']) !!}
+                            {!! Form::select('incorporationtype', $inc, $ci->business_incorporation_type, ['data-error'=>'Required', 'id'=>'incorporationtype','class'=>'input-width form-control','placeholder'=>'Select Incorporation Type','required'=>'required']) !!}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">
                             <label for="CategoryID" class="col-sm-3  control-label">Industry</label>
-                            {!! Form::select('CategoryID', $categories, $ci[0]->category_id, ['data-error'=>'Required', 'id'=>'CategoryID','class'=>'input-width form-control','placeholder'=>'Select Industry','required'=>'required']) !!}
+                            {!! Form::select('CategoryID', $categories, $ci->category_id, ['data-error'=>'Required', 'id'=>'CategoryID','class'=>'input-width form-control','placeholder'=>'Select Industry','required'=>'required']) !!}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                         <div class="form-group">
                             <label for="incdate" class="col-sm-3 control-label">Incorporation Date</label>
-                            {{Form::input('text', 'incdate', date("d/m/Y", strtotime($ci[0]->established_in)),['data-error'=>'Required','readonly'=>'readonly','pattern'=>'^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$', 'id'=>'incdate','placeholder'=>'Incorporation date', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('text', 'incdate', date("d/m/Y", strtotime($ci->established_in)),['data-error'=>'Required','readonly'=>'readonly','pattern'=>'^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$', 'id'=>'incdate','placeholder'=>'Incorporation date', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
                          <div class="form-group">                               
                             <label for="totalemp" class="col-sm-3 control-label">Total Employees</label>
-                            {{Form::input('totalemp', 'totalemp', $ci[0]->total_employees,['data-error'=>'Required','id'=>'totalemp', 'placeholder'=>'Total Employees', 'required'=>'required', 'class'=>'input-width form-control'])}}
+                            {{Form::input('totalemp', 'totalemp', $ci->total_employees,['data-error'=>'Required','id'=>'totalemp', 'placeholder'=>'Total Employees', 'required'=>'required', 'class'=>'input-width form-control'])}}
                             <div class="help-block with-errors error-label"></div>
                         </div>
-                        <input type="hidden" id="stid" value="{{ $ci[0]->state_id}}" />
-<input type="hidden" id="cntid" value="{{ $ci[0]->country_id}}" />
-                        <input type="hidden" id="ctid" value="{{ $ci[0]->city_id}}" />
+                        <input type="hidden" id="stid" value="{{ $ci->state_id}}" />
+<input type="hidden" id="cntid" value="{{ $ci->country_id}}" />
+                        <input type="hidden" id="ctid" value="{{ $ci->city_id}}" />
 <div class="form-group">
     <div class="col-md-5 col-md-offset-4">
     <button type="submit" class="btn btn-primary">Save</button>
