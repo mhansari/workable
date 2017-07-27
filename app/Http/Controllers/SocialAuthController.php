@@ -11,10 +11,13 @@ use App\SocialAccountService;
 use Session;
 class SocialAuthController extends Controller
 {
-    public function redirect($country,$provider)
+  public function redirect($country,$provider)
 	{
+    if($provider=='facebook');
+		  return Socialite::driver($provider)->scopes(['publish_actions','manage_pages'])->redirect();
+    else
+      return Socialite::driver($provider)->redirect();      
 
-		return Socialite::driver($provider)->scopes(['publish_actions','manage_pages'])->redirect();
 	}
 
     public function callback(SocialAccountService $service,$country, $provider)
